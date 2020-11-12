@@ -1,0 +1,9 @@
+Library/
+build/
+Assets/tmp/
+Temp/
+bin/
+MAPI/
+obj/
+_design/
+.vs/

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rules for spatial_cell_sim" Description="Code analysis rules for spatial_cell_sim.vcxproj." ToolsVersion="16.0">
+  <IncludeAll Action="Warning" />
+  <Rules AnalyzerId="Microsoft.Analyzers.NativeCodeAnalysis" RuleNamespace="Microsoft.Rules.Native">
+    <Rule Id="C26408" Action="None" />
+    <Rule Id="C26429" Action="None" />
+    <Rule Id="C26440" Action="None" />
+    <Rule Id="C26481" Action="None" />
+    <Rule Id="C26493" Action="None" />
+    <Rule Id="C26496" Action="None" />
+  </Rules>
+</RuleSet>
