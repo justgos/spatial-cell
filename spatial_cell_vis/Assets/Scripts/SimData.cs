@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SimData : MonoBehaviour
 {
@@ -15,12 +16,15 @@ public class SimData : MonoBehaviour
     private List<SimFrame> frames = new List<SimFrame>();
     public ComputeBuffer frameBuffer;
 
+    public Slider frameSlider;
+
     void Start()
     {
         var simFrames = File.ReadAllBytes(@"../spatial_cell_sim/results/frames.dat");
         var br = new BinaryReader(new MemoryStream(simFrames));
         var nParticles = 1 * 1024 * 1024;
-        var nFrames = 3;
+        var nFrames = 101;
+        frameSlider.maxValue = nFrames - 1;
         frameBuffer = new ComputeBuffer(nParticles, sizeof(float) * 3);
         for (var j = 0; j < nFrames; j++)
         {
@@ -50,7 +54,17 @@ public class SimData : MonoBehaviour
 
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+            frameBuffer.SetData(frames[0].positions);
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+            frameBuffer.SetData(frames[1].positions);
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+            frameBuffer.SetData(frames[2].positions);
+    }
+
+    public void ChangeFrame(float frameNum)
+    {
+        frameBuffer.SetData(frames[(int)frameNum].positions);
     }
 
     //void OnDrawGizmosSelected()

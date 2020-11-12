@@ -7,8 +7,9 @@
 
 	SubShader{
 		//the material is completely non-transparent and is rendered at the same time as the other opaque geometry
-		Tags{ "RenderType" = "Opaque" "Queue" = "Geometry" }
+		//Tags{ "RenderType" = "Opaque" "Queue" = "Geometry" }
 		//Tags{ "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
+		Tags {"Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout"}
 
 		/*Cull Off
 		ZWrite Off
@@ -36,7 +37,8 @@
 			StructuredBuffer<float3> vertices;*/
 			uniform StructuredBuffer<float3> quadPoints;
 			uniform StructuredBuffer<float2> quadUVs;
-			float4x4 baseTransform;
+			uniform float4x4 baseTransform;
+			uniform float scale;
 
 			struct appdata
 			{
@@ -58,18 +60,22 @@
 				float3 p = particles[instanceId];
 				float3 v = quadPoints[id];
 				o.uv = quadUVs[id];
-				// Discard near-zero cells and the topmost layer of simulation
-				/*if (p.val < cutoffValue || p.position.y > 150) {
-					o.pos = float4(0, 0, 0, 0);
-				}
-				else {*/
-					o.pos = mul(UNITY_MATRIX_P,
-						mul(UNITY_MATRIX_V,
-							mul(baseTransform,
-								float4(p, 1)
-							)) + float4(quadPoints[id] * float3(0.005, 0.005, 1), 0));
-				//}
+				
+				o.pos = mul(baseTransform,
+					float4(p * scale, 1)
+				);
+				float3 clippedCameraPos = float3(
+					min(max(_WorldSpaceCameraPos.x, 0.0), 1.0 * scale),
+					min(max(_WorldSpaceCameraPos.y, 0.0), 1.0 * scale),
+					min(max(_WorldSpaceCameraPos.z, 0.0), 1.0 * scale)
+				);
+				float3 cameraDist = o.pos - clippedCameraPos;
+				o.pos = mul(UNITY_MATRIX_P,
+					mul(UNITY_MATRIX_V, o.pos) + float4(quadPoints[id] * float3(0.005 * scale, 0.005 * scale, 1), 0)
+				);
+				
 				o.col = float4(1, 1, 1, 1);
+				o.col.xyz /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / scale);
 				UNITY_TRANSFER_FOG(o, o.pos);
 				return o;
 			}
@@ -78,6 +84,7 @@
 			{
 				fixed4 pc = tex2D(_MainTex, i.uv);
 				fixed4 d = _Color * pc * i.col;
+				clip(d.a - 0.01);
 				return d;
 			}
 

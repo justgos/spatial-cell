@@ -21,6 +21,8 @@
 
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
+#include <curand.h>
+#include <curand_kernel.h>
 //#include <crt/math_functions.h>
 #include <cub/cub.cuh>
 //#include <cub/device/device_radix_sort.cuh>
@@ -68,24 +70,38 @@ makeIdx(Particle p)
 }
 
 __global__ void
-updateIndices(const Particle* curParticles, unsigned int* indices, int numElements)
-{
-    int i = blockDim.x * blockIdx.x + threadIdx.x;
-    if (i >= numElements)
+setupKernel(curandState* rngState, int numElements) {
+
+    int idx = threadIdx.x + blockDim.x * blockIdx.x;
+    if (idx >= numElements)
         return;
 
-    indices[i] = makeIdx(curParticles[i]);
+    /*curand_init(42, idx, 0, &rngState[idx]);*/
+
+    // Faster initialization
+    // Ref: https://forums.developer.nvidia.com/t/curand-initialization-time/19758/3
+    curand_init((42 << 24) + idx, 0, 0, &rngState[idx]);
+}
+
+__global__ void
+updateIndices(const Particle* curParticles, unsigned int* indices, int numElements)
+{
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx >= numElements)
+        return;
+
+    indices[idx] = makeIdx(curParticles[idx]);
 }
 
 __global__ void
 updateGridRanges(const unsigned int* indices, unsigned int* gridRanges, int numElements)
 {
-    int i = blockDim.x * blockIdx.x + threadIdx.x;
-    if (i >= GRID_SIZE)
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx >= GRID_SIZE)
         return;
 
-    const int startIndex = i * (long long)numElements / GRID_SIZE;
-    const int endIndex = min((i + 1) * (long long)numElements / GRID_SIZE, (long long)numElements);
+    const int startIndex = idx * (long long)numElements / GRID_SIZE;
+    const int endIndex = min((idx + 1) * (long long)numElements / GRID_SIZE, (long long)numElements);
 
     int lastIdx = indices[startIndex];
     if (startIndex <= 0 || indices[startIndex - 1] != lastIdx)
@@ -104,19 +120,19 @@ updateGridRanges(const unsigned int* indices, unsigned int* gridRanges, int numE
 }
 
 __global__ void
-move(const Particle *curParticles, Particle *nextParticles, unsigned int* indices, unsigned int* gridRanges, int numElements)
+move(curandState* rngState, const Particle *curParticles, Particle *nextParticles, unsigned int* indices, unsigned int* gridRanges, int numElements)
 {
-    int i = blockDim.x * blockIdx.x + threadIdx.x;
-    if (i >= numElements)
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx >= numElements)
         return;
 
-    Particle p = curParticles[i];
+    Particle p = curParticles[idx];
 
-    float maxDist = 0.01;
+    float maxDist = 0.005;
 
     float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
     constexpr float clipImpulse = 10.0f;
-    constexpr float impulseScale = 10.01f;
+    constexpr float impulseScale = 0.0001f;
     constexpr float distScale = 100.0f;
 
     const int cgx = getGridIdx(p.pos.x),
@@ -131,7 +147,7 @@ move(const Particle *curParticles, Particle *nextParticles, unsigned int* indice
                 const unsigned int startIdx = gridRanges[makeIdx(gx, gy, gz) * 2];
                 const unsigned int endIdx = gridRanges[makeIdx(gx, gy, gz) * 2 + 1];
                 for (int j = startIdx; j < endIdx; j++) {
-                    if (j == i)
+                    if (j == idx)
                         continue;
                     const Particle tp = curParticles[j];
                     float3 delta = make_float3(
@@ -151,13 +167,18 @@ move(const Particle *curParticles, Particle *nextParticles, unsigned int* indice
             }
         }
     }
-    /*p.pos.x = fmin(fmax(p.pos.x + moveVec.x, 0.0f), SIM_SIZE);
+    float movementNoiseScale = 0.0005f;
+    moveVec.x += (curand_normal(&rngState[idx]) - 0.0) * movementNoiseScale;
+    moveVec.y += (curand_normal(&rngState[idx]) - 0.0) * movementNoiseScale;
+    moveVec.z += (curand_normal(&rngState[idx]) - 0.0) * movementNoiseScale;
+
+    p.pos.x = fmin(fmax(p.pos.x + moveVec.x, 0.0f), SIM_SIZE);
     p.pos.y = fmin(fmax(p.pos.y + moveVec.y, 0.0f), SIM_SIZE);
-    p.pos.z = fmin(fmax(p.pos.z + moveVec.z, 0.0f), SIM_SIZE);*/
+    p.pos.z = fmin(fmax(p.pos.z + moveVec.z, 0.0f), SIM_SIZE);
     /*p.pos.x += moveVec.x;
     p.pos.y += moveVec.y;
     p.pos.z += moveVec.z;*/
-    nextParticles[i] = p;
+    nextParticles[idx] = p;
 }
 
 template <typename T>
@@ -242,6 +263,9 @@ main(void)
     cudaAlloc(&d_NextIndices, count);
     cudaAlloc(&d_GridRanges, GRID_SIZE * 2);
 
+    curandState* rngState;
+    cudaAlloc(&rngState, count);
+
     void* d_temp_storage = NULL;
     size_t temp_storage_bytes = 0;
     cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
@@ -277,13 +301,15 @@ main(void)
     int gridBlocksPerGrid = (GRID_SIZE + threadsPerBlock - 1) / threadsPerBlock;
     printf("Grid CUDA kernel with %d blocks of %d threads\n", gridBlocksPerGrid, threadsPerBlock);
 
+    setupKernel KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (rngState, numParticles);
+
     std::ofstream fout;
     fout.open("./results/frames.dat", std::ios::binary | std::ios::out);
     fout.write((char*)h_Particles, size);
     
     std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
-    constexpr int nIter = 2;
+    constexpr int nIter = 100;
     for (int i = 0; i < nIter; i++) {
         std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
         updateIndices KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (d_Particles, d_Indices, numParticles);
@@ -301,7 +327,7 @@ main(void)
         cudaDeviceSynchronize();
         std::chrono::high_resolution_clock::time_point t5 = std::chrono::high_resolution_clock::now();
         //printCUDAIntArray(d_GridRanges, GRID_SIZE * 2);
-        move KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (d_Particles, d_NextParticles, d_Indices, d_GridRanges, numParticles);
+        move KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (rngState, d_Particles, d_NextParticles, d_Indices, d_GridRanges, numParticles);
         swapBuffers(&d_Particles, &d_NextParticles);
         cudaDeviceSynchronize();
         std::chrono::high_resolution_clock::time_point t6 = std::chrono::high_resolution_clock::now();
