@@ -18,6 +18,7 @@
 #include <ctime>
 #include <ratio>
 #include <chrono>
+#include <random>
 
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
@@ -260,7 +261,8 @@ main(void)
     // Error code to check return values for CUDA calls
     cudaError_t err = cudaSuccess;
 
-    srand(42);
+    std::mt19937 rngGen(42);
+    std::uniform_real_distribution<double> rng(0.0, 1.0);
 
     int numParticles = 1 * 2 * 1024;
     size_t count = numParticles;
@@ -295,12 +297,12 @@ main(void)
     for (int i = 0; i < numParticles; i++)
     {
         h_Particles[i].pos = make_float3(
-            rand() / (float)RAND_MAX * SIM_SIZE,
-            rand() / (float)RAND_MAX * SIM_SIZE,
-            rand() / (float)RAND_MAX * SIM_SIZE
+            rng(rngGen) * SIM_SIZE,
+            rng(rngGen) * SIM_SIZE,
+            rng(rngGen) * SIM_SIZE
         );
         h_Particles[i].velocity = make_float3(0, 0, 0);
-        h_Particles[i].type = rand() / (float)RAND_MAX * numTypes;
+        h_Particles[i].type = rng(rngGen) * numTypes;
     }
 
     // Copy the host input vectors A and B in host memory to the device input vectors in
@@ -336,7 +338,7 @@ main(void)
     
     std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
-    constexpr int nIter = 201;
+    constexpr int nIter = 101;
     for (int i = 0; i < nIter; i++) {
         std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
         updateIndices KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (d_Particles, d_Indices, numParticles);

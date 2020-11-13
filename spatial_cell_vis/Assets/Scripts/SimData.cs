@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -8,10 +9,22 @@ using UnityEngine.UI;
 public class SimData : MonoBehaviour
 {
     public GameObject spherePrefab;
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Vector3_
+    {
+        //[MarshalAs(UnmanagedType.fl)]
+        public float x;
+        public float y;
+        public float z;
+    };
+
+    [StructLayout(LayoutKind.Sequential)]
     public struct Particle
     {
-        public Vector3 pos;
-        public Vector3 velocity;
+        //[MarshalAs(UnmanagedType.LPStruct)]
+        public Vector3_ pos;
+        public Vector3_ velocity;
         public int type;
     };
 
@@ -29,52 +42,93 @@ public class SimData : MonoBehaviour
 
     public Slider frameSlider;
 
+    private float lastFrameTime = 0;
+    private bool playing = false;
+    private float playbackFps = 30;
+
     void Start()
     {
-        var simFrames = File.ReadAllBytes(@"../spatial_cell_sim/results/frames.dat");
-        var br = new BinaryReader(new MemoryStream(simFrames));
-        simSize = br.ReadSingle();
-        particleBufferSize = br.ReadInt32();
-        frameBuffer = new ComputeBuffer(particleBufferSize, Marshal.SizeOf(new Particle()));
-        while(br.BaseStream.Position != br.BaseStream.Length)
-        //for (var j = 0; j < nFrames; j++)
+        using (var fs = File.OpenRead(@"../spatial_cell_sim/results/frames.dat"))
         {
-            var frame = new SimFrame();
-            frame.numParticles = br.ReadUInt32();
-            frame.particles = new Particle[frame.numParticles];
-            for (var i = 0; i < frame.numParticles; i++)
+            var br = new BinaryReader(fs);
+            simSize = br.ReadSingle();
+            particleBufferSize = br.ReadInt32();
+            var particleStructSize = Marshal.SizeOf(new Particle());
+            frameBuffer = new ComputeBuffer(particleBufferSize, particleStructSize);
+            while (br.BaseStream.Position != br.BaseStream.Length)
+            //for (var j = 0; j < nFrames; j++)
             {
-                var p = new Particle();
-                p.pos = new Vector3(
-                    br.ReadSingle(),
-                    br.ReadSingle(),
-                    br.ReadSingle()
-                );
-                p.velocity = new Vector3(
-                    br.ReadSingle(),
-                    br.ReadSingle(),
-                    br.ReadSingle()
-                );
-                p.type = br.ReadInt32();
-                frame.particles[i] = p;
-                //Debug.Log("pos " + pos.ToString("F4"));
-                //var sphere = Instantiate(spherePrefab, pos, Quaternion.identity);
-                //if(j == 0)
-                //    sphere.GetComponent<Renderer>().material.color = Color.red;
-                //else if (j == 1)
-                //    sphere.GetComponent<Renderer>().material.color = Color.green;
-                //else if (j == 2)
-                //    sphere.GetComponent<Renderer>().material.color = Color.blue;
+                var frame = new SimFrame();
+                frame.numParticles = br.ReadUInt32();
+                frame.particles = new Particle[frame.numParticles];
+                var bytes = br.ReadBytes((int)(particleStructSize * frame.numParticles));
+                //Marshal.Copy(, 0, (IntPtr)frame.particles, 0, (int)(particleStructSize * frame.numParticles));
+                for (var i = 0; i < frame.numParticles; i++)
+                    frame.particles[i] = Marshal.PtrToStructure<Particle>(Marshal.UnsafeAddrOfPinnedArrayElement(bytes, particleStructSize * i));
+                //for (var i = 0; i < frame.numParticles; i++)
+                //{
+                //    var p = new Particle();
+                //    p.pos = new Vector3(
+                //        br.ReadSingle(),
+                //        br.ReadSingle(),
+                //        br.ReadSingle()
+                //    );
+                //    p.velocity = new Vector3(
+                //        br.ReadSingle(),
+                //        br.ReadSingle(),
+                //        br.ReadSingle()
+                //    );
+                //    p.type = br.ReadInt32();
+                //    frame.particles[i] = p;
+                //    //Debug.Log("pos " + pos.ToString("F4"));
+                //    //var sphere = Instantiate(spherePrefab, pos, Quaternion.identity);
+                //    //if(j == 0)
+                //    //    sphere.GetComponent<Renderer>().material.color = Color.red;
+                //    //else if (j == 1)
+                //    //    sphere.GetComponent<Renderer>().material.color = Color.green;
+                //    //else if (j == 2)
+                //    //    sphere.GetComponent<Renderer>().material.color = Color.blue;
+                //}
+                frames.Add(frame);
             }
-            frames.Add(frame);
+            frameSlider.maxValue = frames.Count - 1;
+            frameBuffer.SetData(frames[0].particles);
         }
-        frameSlider.maxValue = frames.Count - 1;
-        frameBuffer.SetData(frames[0].particles);
     }
 
     void Update()
     {
-        //
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            this.playing = !playing;
+            this.lastFrameTime = Time.time;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            SetFrame(frameSlider.value - 1);
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            SetFrame(frameSlider.value + 1);
+        }
+
+        if (this.playing)
+        {
+            if(this.lastFrameTime + 1.0f / this.playbackFps <= Time.time)
+            {
+                this.lastFrameTime = Time.time;
+                SetFrame(frameSlider.value + 1);
+            }
+        }
+    }
+
+    void SetFrame(float frameNum)
+    {
+        if (frameNum < 0)
+            frameNum = this.frames.Count + frameNum;
+        else if (frameNum >= this.frames.Count)
+            frameNum = frameNum % this.frames.Count;
+        frameSlider.value = frameNum;
     }
 
     public void ChangeFrame(float frameNum)

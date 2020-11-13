@@ -66,7 +66,7 @@
       <CodeGeneration>compute_60,sm_60;compute_61,sm_61;compute_70,sm_70;compute_75,sm_75;compute_80,sm_80;compute_86,sm_86</CodeGeneration>
       <AdditionalOptions>-Xcompiler "/wd 4819" %(AdditionalOptions)</AdditionalOptions>
       <Include>./;C:\ProgramData\NVIDIA Corporation\CUDA Samples\v11.1\common\inc</Include>
-      <Defines>WIN32</Defines>
+      <Defines>WIN32;__i386</Defines>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
@@ -98,7 +98,7 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="main.cu" />
+    <CudaCompile Include="src\main.cu" />
   </ItemGroup>
   <ItemGroup>
     <None Include="spatial_cell_sim.ruleset" />
