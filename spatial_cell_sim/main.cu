@@ -39,14 +39,16 @@
 #define KERNEL_ARGS4(grid, block, sh_mem, stream)
 #endif
 
-#define SIM_SIZE 1.0f
-#define N_GRID_CELLS_BITS 7
+#define SIM_SIZE 0.1f
+#define N_GRID_CELLS_BITS 4
 #define N_GRID_CELLS (1 << N_GRID_CELLS_BITS)
 #define GRID_CELL_SIZE (SIM_SIZE / N_GRID_CELLS)
 #define GRID_SIZE (N_GRID_CELLS * N_GRID_CELLS * N_GRID_CELLS)
 
 struct Particle {
     float3 pos;
+    float3 velocity;
+    int type;
 };
 
 __device__ __inline__ unsigned int
@@ -128,12 +130,12 @@ move(curandState* rngState, const Particle *curParticles, Particle *nextParticle
 
     Particle p = curParticles[idx];
 
-    float maxDist = 0.005;
+    float maxDist = 0.007;
 
     float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
     constexpr float clipImpulse = 10.0f;
     constexpr float impulseScale = 0.0001f;
-    constexpr float distScale = 100.0f;
+    //constexpr float distScale = 100.0f;
 
     const int cgx = getGridIdx(p.pos.x),
         cgy = getGridIdx(p.pos.y),
@@ -159,22 +161,36 @@ move(curandState* rngState, const Particle *curParticles, Particle *nextParticle
                         || fabs(delta.y) > maxDist
                         || fabs(delta.y) > maxDist)
                         continue;
+
                     float dist = sqrt(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z);
-                    moveVec.x += -copysign(1.0, delta.x) * fmin(1 / (pow(dist * distScale, 2.0f) + 1e-6f), clipImpulse) * impulseScale;
-                    moveVec.y += -copysign(1.0, delta.y) * fmin(1 / (pow(dist * distScale, 2.0f) + 1e-6f), clipImpulse) * impulseScale;
-                    moveVec.z += -copysign(1.0, delta.z) * fmin(1 / (pow(dist * distScale, 2.0f) + 1e-6f), clipImpulse) * impulseScale;
+                    float repulsion = -fmin(1 / (pow(dist * 400.0f, 2.0f) + 1e-6f), clipImpulse) * impulseScale;
+                    float attraction = 0.0f;
+                    if (p.type == 0 && p.type == tp.type) {
+                        attraction = 0.7 * (exp(-pow(abs(dist) * 100.0f, 2.0f)) * impulseScale * 10 - fmin(1 / (pow(dist * 70.0f, 2.0f) + 1e-6f), clipImpulse) * impulseScale);
+                    }
+                    moveVec.x += copysign(1.0, delta.x) * (repulsion + attraction);
+                    moveVec.y += copysign(1.0, delta.y) * (repulsion + attraction);
+                    moveVec.z += copysign(1.0, delta.z) * (repulsion + attraction);
                 }
             }
         }
     }
-    float movementNoiseScale = 0.0005f;
+    float movementNoiseScale = 0.0001f;
     moveVec.x += (curand_normal(&rngState[idx]) - 0.0) * movementNoiseScale;
     moveVec.y += (curand_normal(&rngState[idx]) - 0.0) * movementNoiseScale;
     moveVec.z += (curand_normal(&rngState[idx]) - 0.0) * movementNoiseScale;
 
-    p.pos.x = fmin(fmax(p.pos.x + moveVec.x, 0.0f), SIM_SIZE);
-    p.pos.y = fmin(fmax(p.pos.y + moveVec.y, 0.0f), SIM_SIZE);
-    p.pos.z = fmin(fmax(p.pos.z + moveVec.z, 0.0f), SIM_SIZE);
+    const float velocityDecay = 0.7;
+    p.velocity.x *= velocityDecay;
+    p.velocity.y *= velocityDecay;
+    p.velocity.z *= velocityDecay;
+    p.velocity.x += moveVec.x;
+    p.velocity.y += moveVec.y;
+    p.velocity.z += moveVec.z;
+
+    p.pos.x = fmin(fmax(p.pos.x + p.velocity.x, 0.0f), SIM_SIZE);
+    p.pos.y = fmin(fmax(p.pos.y + p.velocity.y, 0.0f), SIM_SIZE);
+    p.pos.z = fmin(fmax(p.pos.z + p.velocity.z, 0.0f), SIM_SIZE);
     /*p.pos.x += moveVec.x;
     p.pos.y += moveVec.y;
     p.pos.z += moveVec.z;*/
@@ -246,7 +262,7 @@ main(void)
 
     srand(42);
 
-    int numParticles = 1 * 1024 * 1024;
+    int numParticles = 1 * 2 * 1024;
     size_t count = numParticles;
     size_t size = count * sizeof(Particle);
     printf("[Simulating %d particles]\n", numParticles);
@@ -273,14 +289,18 @@ main(void)
     cudaMalloc(&d_temp_storage, temp_storage_bytes);
     printf("temp_storage_bytes %d\n", temp_storage_bytes);
 
+    int numTypes = 3;
+
     // Initialize the host input vectors
     for (int i = 0; i < numParticles; i++)
     {
         h_Particles[i].pos = make_float3(
-            rand() / (float)RAND_MAX,
-            rand() / (float)RAND_MAX,
-            rand() / (float)RAND_MAX
+            rand() / (float)RAND_MAX * SIM_SIZE,
+            rand() / (float)RAND_MAX * SIM_SIZE,
+            rand() / (float)RAND_MAX * SIM_SIZE
         );
+        h_Particles[i].velocity = make_float3(0, 0, 0);
+        h_Particles[i].type = rand() / (float)RAND_MAX * numTypes;
     }
 
     // Copy the host input vectors A and B in host memory to the device input vectors in
@@ -305,11 +325,18 @@ main(void)
 
     std::ofstream fout;
     fout.open("./results/frames.dat", std::ios::binary | std::ios::out);
+    const float simSize = SIM_SIZE;
+    fout.write((char*)&simSize, sizeof(float));
+    // Particle buffer size
+    fout.write((char*)&numParticles, sizeof(unsigned int));
+
+    // Number of existing particles
+    fout.write((char*)&numParticles, sizeof(unsigned int));
     fout.write((char*)h_Particles, size);
     
     std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
-    constexpr int nIter = 100;
+    constexpr int nIter = 201;
     for (int i = 0; i < nIter; i++) {
         std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
         updateIndices KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (d_Particles, d_Indices, numParticles);
@@ -332,14 +359,17 @@ main(void)
         cudaDeviceSynchronize();
         std::chrono::high_resolution_clock::time_point t6 = std::chrono::high_resolution_clock::now();
 
-        printf("updateIndices %f, SortPairs %f, updateGridRanges %f, move %f\n",
-            (std::chrono::duration_cast<std::chrono::duration<double>>(t3 - t1)).count(),
-            (std::chrono::duration_cast<std::chrono::duration<double>>(t4 - t3)).count(),
-            (std::chrono::duration_cast<std::chrono::duration<double>>(t5 - t4)).count(),
-            (std::chrono::duration_cast<std::chrono::duration<double>>(t6 - t5)).count()
-        );
+        if (i % 10 == 0) {
+            printf("updateIndices %f, SortPairs %f, updateGridRanges %f, move %f\n",
+                (std::chrono::duration_cast<std::chrono::duration<double>>(t3 - t1)).count(),
+                (std::chrono::duration_cast<std::chrono::duration<double>>(t4 - t3)).count(),
+                (std::chrono::duration_cast<std::chrono::duration<double>>(t5 - t4)).count(),
+                (std::chrono::duration_cast<std::chrono::duration<double>>(t6 - t5)).count()
+            );
+        }
 
         cudaMemcpy(h_Particles, d_Particles, size, cudaMemcpyDeviceToHost);
+        fout.write((char*)&numParticles, sizeof(unsigned int));
         fout.write((char*)h_Particles, size);
     }
     cudaDeviceSynchronize();

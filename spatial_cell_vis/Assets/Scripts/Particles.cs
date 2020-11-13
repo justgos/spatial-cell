@@ -56,6 +56,7 @@ public class Particles : MonoBehaviour
         material.SetBuffer("quadUVs", quadUVs);
         material.SetBuffer("particles", simData.frameBuffer);
         material.SetFloat("scale", 10.0f);
+        material.SetFloat("simSize", simData.SimSize);
         material.SetPass(0);
         Graphics.DrawProceduralNow(MeshTopology.Triangles, 6, simData.frameBuffer.count);
         //Graphics.DrawProcedural(material, new Bounds(Vector3.zero, Vector3.one * 2), MeshTopology.Triangles, mesh.vertexCount, simData.frameBuffer.count / 3);

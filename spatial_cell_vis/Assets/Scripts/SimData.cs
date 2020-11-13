@@ -1,18 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SimData : MonoBehaviour
 {
     public GameObject spherePrefab;
+    public struct Particle
+    {
+        public Vector3 pos;
+        public Vector3 velocity;
+        public int type;
+    };
 
     public class SimFrame
     {
-        public Vector3[] positions;
+        public uint numParticles;
+        public Particle[] particles;
     }
 
+    private float simSize;
+    public float SimSize { get { return simSize; } }
+    private int particleBufferSize;
     private List<SimFrame> frames = new List<SimFrame>();
     public ComputeBuffer frameBuffer;
 
@@ -22,22 +33,30 @@ public class SimData : MonoBehaviour
     {
         var simFrames = File.ReadAllBytes(@"../spatial_cell_sim/results/frames.dat");
         var br = new BinaryReader(new MemoryStream(simFrames));
-        var nParticles = 1 * 1024 * 1024;
-        var nFrames = 101;
-        frameSlider.maxValue = nFrames - 1;
-        frameBuffer = new ComputeBuffer(nParticles, sizeof(float) * 3);
-        for (var j = 0; j < nFrames; j++)
+        simSize = br.ReadSingle();
+        particleBufferSize = br.ReadInt32();
+        frameBuffer = new ComputeBuffer(particleBufferSize, Marshal.SizeOf(new Particle()));
+        while(br.BaseStream.Position != br.BaseStream.Length)
+        //for (var j = 0; j < nFrames; j++)
         {
             var frame = new SimFrame();
-            frame.positions = new Vector3[nParticles];
-            for (var i = 0; i < nParticles; i++)
+            frame.numParticles = br.ReadUInt32();
+            frame.particles = new Particle[frame.numParticles];
+            for (var i = 0; i < frame.numParticles; i++)
             {
-                var pos = new Vector3(
+                var p = new Particle();
+                p.pos = new Vector3(
                     br.ReadSingle(),
                     br.ReadSingle(),
                     br.ReadSingle()
                 );
-                frame.positions[i] = pos;
+                p.velocity = new Vector3(
+                    br.ReadSingle(),
+                    br.ReadSingle(),
+                    br.ReadSingle()
+                );
+                p.type = br.ReadInt32();
+                frame.particles[i] = p;
                 //Debug.Log("pos " + pos.ToString("F4"));
                 //var sphere = Instantiate(spherePrefab, pos, Quaternion.identity);
                 //if(j == 0)
@@ -49,22 +68,18 @@ public class SimData : MonoBehaviour
             }
             frames.Add(frame);
         }
-        frameBuffer.SetData(frames[0].positions);
+        frameSlider.maxValue = frames.Count - 1;
+        frameBuffer.SetData(frames[0].particles);
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-            frameBuffer.SetData(frames[0].positions);
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            frameBuffer.SetData(frames[1].positions);
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-            frameBuffer.SetData(frames[2].positions);
+        //
     }
 
     public void ChangeFrame(float frameNum)
     {
-        frameBuffer.SetData(frames[(int)frameNum].positions);
+        frameBuffer.SetData(frames[(int)frameNum].particles);
     }
 
     //void OnDrawGizmosSelected()
