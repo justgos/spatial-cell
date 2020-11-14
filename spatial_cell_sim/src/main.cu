@@ -41,6 +41,7 @@
 #endif
 
 #define SIM_SIZE 0.1f
+// Grid size on each side will be 2^N_GRID_CELLS_BITS
 #define N_GRID_CELLS_BITS 4
 #define N_GRID_CELLS (1 << N_GRID_CELLS_BITS)
 #define GRID_CELL_SIZE (SIM_SIZE / N_GRID_CELLS)
@@ -134,6 +135,7 @@ move(curandState* rngState, const Particle *curParticles, Particle *nextParticle
     float maxDist = 0.007;
 
     float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
+    float3 attractionVec = make_float3(0.0f, 0.0f, 0.0f);
     constexpr float clipImpulse = 10.0f;
     constexpr float impulseScale = 0.0001f;
     //constexpr float distScale = 100.0f;
@@ -142,6 +144,7 @@ move(curandState* rngState, const Particle *curParticles, Particle *nextParticle
         cgy = getGridIdx(p.pos.y),
         cgz = getGridIdx(p.pos.z);
 
+    float nPartners = 0.0;
     for (int gx = max(cgx - 1, 0); gx <= min(cgx + 1, N_GRID_CELLS - 1); gx++) {
         for (int gy = max(cgy - 1, 0); gy <= min(cgy + 1, N_GRID_CELLS - 1); gy++) {
             for (int gz = max(cgz - 1, 0); gz <= min(cgz + 1, N_GRID_CELLS - 1); gz++) {
@@ -166,16 +169,31 @@ move(curandState* rngState, const Particle *curParticles, Particle *nextParticle
                     float dist = sqrt(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z);
                     float repulsion = -fmin(1 / (pow(dist * 400.0f, 2.0f) + 1e-6f), clipImpulse) * impulseScale;
                     float attraction = 0.0f;
+                    // Graph: https://www.desmos.com/calculator/wdnrfaaqps
                     if (p.type == 0 && p.type == tp.type) {
                         attraction = 0.7 * (exp(-pow(abs(dist) * 100.0f, 2.0f)) * impulseScale * 10 - fmin(1 / (pow(dist * 70.0f, 2.0f) + 1e-6f), clipImpulse) * impulseScale);
+                        attractionVec.x += copysign(1.0, delta.x) * (attraction);
+                        attractionVec.y += copysign(1.0, delta.y) * (attraction);
+                        attractionVec.z += copysign(1.0, delta.z) * (attraction);
                     }
-                    moveVec.x += copysign(1.0, delta.x) * (repulsion + attraction);
-                    moveVec.y += copysign(1.0, delta.y) * (repulsion + attraction);
-                    moveVec.z += copysign(1.0, delta.z) * (repulsion + attraction);
+                    moveVec.x += copysign(1.0, delta.x) * (repulsion);
+                    moveVec.y += copysign(1.0, delta.y) * (repulsion);
+                    moveVec.z += copysign(1.0, delta.z) * (repulsion);
+                    nPartners += 1.0;
                 }
             }
         }
     }
+
+    // Prevent attraction overkill for large aggregations
+    nPartners = pow(fmax(nPartners, 1.0f), 0.5f);
+    attractionVec.x /= nPartners;
+    attractionVec.y /= nPartners;
+    attractionVec.z /= nPartners;
+    moveVec.x += attractionVec.x;
+    moveVec.y += attractionVec.y;
+    moveVec.z += attractionVec.z;
+
     float movementNoiseScale = 0.0001f;
     moveVec.x += (curand_normal(&rngState[idx]) - 0.0) * movementNoiseScale;
     moveVec.y += (curand_normal(&rngState[idx]) - 0.0) * movementNoiseScale;

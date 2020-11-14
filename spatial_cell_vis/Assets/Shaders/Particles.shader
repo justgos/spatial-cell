@@ -23,6 +23,7 @@
 
 			//include useful shader functions
 			#include "UnityCG.cginc"
+			#include "Common.cginc"
 
 			//define vertex and fragment shader functions
 			#pragma vertex vert
@@ -30,12 +31,6 @@
 
 			//tint of the texture
 			fixed4 _Color;
-
-			struct Particle {
-				float3 pos;
-				float3 velocity;
-				int type;
-			};
 
 			sampler2D _MainTex;
 			uniform StructuredBuffer<Particle> particles;

@@ -9,23 +9,18 @@ public class Particles : MonoBehaviour
     public SimData simData;
 
     public Mesh mesh;
+    public Material instancedMaterial;
+
     public Material material;
 
-    //private ComputeBuffer meshVertices;
-    //private ComputeBuffer meshIndices;
     ComputeBuffer quadPoints;
     ComputeBuffer quadUVs;
 
+    uint[] drawArgs;
+    ComputeBuffer argsBuffer;
+
     void Start()
     {
-        //meshIndices = new ComputeBuffer(mesh.triangles.Length, sizeof(int));
-        //meshIndices.SetData(mesh.triangles);
-        //material.SetBuffer("indices", meshIndices);
-        //const float meshScale = 0.05f;
-        //Vector3[] positions = mesh.vertices.Select(p => p * meshScale).ToArray();
-        //meshVertices = new ComputeBuffer(positions.Length, sizeof(float) * 3);
-        //meshVertices.SetData(positions);
-        //material.SetBuffer("vertices", meshVertices);
         quadPoints = new ComputeBuffer(6, Marshal.SizeOf(new Vector3()));
         quadPoints.SetData(new[] {
                 new Vector3(-0.5f, 0.5f),
@@ -44,29 +39,50 @@ public class Particles : MonoBehaviour
                 new Vector2(1.0f, 0.0f),
                 new Vector2(0.0f, 0.0f),
                 new Vector2(0.0f, 1.0f),
-            });
+        });
+
+        // Argument buffer used by DrawMeshInstancedIndirect.
+        drawArgs = new uint[5] { 0, 0, 0, 0, 0 };
+        // Arguments for drawing mesh.
+        // 0 == number of triangle indices, 1 == population, others are only relevant if drawing submeshes.
+        drawArgs[0] = (uint)mesh.GetIndexCount(0);
+        drawArgs[1] = (uint)1;
+        drawArgs[2] = (uint)mesh.GetIndexStart(0);
+        drawArgs[3] = (uint)mesh.GetBaseVertex(0);
+        argsBuffer = new ComputeBuffer(1, drawArgs.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
+        argsBuffer.SetData(drawArgs);
+    }
+
+    void Update()
+    {
+        if(simData.NumParticles != drawArgs[1])
+        {
+            drawArgs[1] = (uint)simData.NumParticles;
+            argsBuffer.SetData(drawArgs);
+        }
+        instancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
+        instancedMaterial.SetFloat("scale", 10.0f);
+        instancedMaterial.SetFloat("simSize", simData.SimSize);
+        instancedMaterial.SetBuffer("particles", simData.frameBuffer);
+        Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.zero, Vector3.one * simData.SimSize * 10.0f), argsBuffer);
     }
 
     void OnRenderObject()
     {
-        //material.SetBuffer("indices", meshIndices);
-        //material.SetBuffer("vertices", meshVertices);
-        material.SetMatrix("baseTransform", Matrix4x4.identity);
-        material.SetBuffer("quadPoints", quadPoints);
-        material.SetBuffer("quadUVs", quadUVs);
-        material.SetBuffer("particles", simData.frameBuffer);
-        material.SetFloat("scale", 10.0f);
-        material.SetFloat("simSize", simData.SimSize);
-        material.SetPass(0);
-        Graphics.DrawProceduralNow(MeshTopology.Triangles, 6, simData.frameBuffer.count);
-        //Graphics.DrawProcedural(material, new Bounds(Vector3.zero, Vector3.one * 2), MeshTopology.Triangles, mesh.vertexCount, simData.frameBuffer.count / 3);
+        //material.SetMatrix("baseTransform", Matrix4x4.identity);
+        //material.SetBuffer("quadPoints", quadPoints);
+        //material.SetBuffer("quadUVs", quadUVs);
+        //material.SetBuffer("particles", simData.frameBuffer);
+        //material.SetFloat("scale", 10.0f);
+        //material.SetFloat("simSize", simData.SimSize);
+        //material.SetPass(0);
+        //Graphics.DrawProceduralNow(MeshTopology.Triangles, 6, simData.frameBuffer.count);
     }
 
     void OnDestroy()
     {
-        //meshIndices.Dispose();
-        //meshVertices.Dispose();
         quadPoints.Dispose();
         quadUVs.Dispose();
+        argsBuffer.Dispose();
     }
 }

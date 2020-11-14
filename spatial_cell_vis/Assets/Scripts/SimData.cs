@@ -38,6 +38,8 @@ public class SimData : MonoBehaviour
     public float SimSize { get { return simSize; } }
     private int particleBufferSize;
     private List<SimFrame> frames = new List<SimFrame>();
+    private int numParticles;
+    public int NumParticles { get { return numParticles; } }
     public ComputeBuffer frameBuffer;
 
     public Slider frameSlider;
@@ -93,6 +95,7 @@ public class SimData : MonoBehaviour
             }
             frameSlider.maxValue = frames.Count - 1;
             frameBuffer.SetData(frames[0].particles);
+            numParticles = frames[0].particles.Length;
         }
     }
 
@@ -134,6 +137,7 @@ public class SimData : MonoBehaviour
     public void ChangeFrame(float frameNum)
     {
         frameBuffer.SetData(frames[(int)frameNum].particles);
+        numParticles = frames[(int)frameNum].particles.Length;
     }
 
     //void OnDrawGizmosSelected()
