@@ -303,6 +303,12 @@ main(void)
     config.gridCellSize = config.simSize / config.nGridCells;
     config.gridSize = config.nGridCells * config.nGridCells * config.nGridCells;
 
+    printf("numParticles %d\n", config.numParticles);
+    printf("steps %d\n", config.steps);
+    printf("simSize %f\n", config.simSize);
+    printf("nGridCellsBits %d\n", config.nGridCellsBits);
+    printf("nGridCells %d\n", config.nGridCells);
+
     /*int sharedMemSize;
     cudaDeviceGetAttribute(&sharedMemSize, cudaDeviceAttr::cudaDevAttrMaxSharedMemoryPerBlock, 0);
     printf("sharedMemSize %d\n", sharedMemSize);
@@ -336,7 +342,13 @@ main(void)
     /*Config* d_Config = NULL;
     cudaAlloc(&d_Config, sizeof(Config));
     cudaMemcpy(d_Config, &config, sizeof(Config), cudaMemcpyHostToDevice);*/
-    cudaMemcpyToSymbol(&d_Config, &config, sizeof(Config));
+    err = cudaMemcpyToSymbol(d_Config, &config, sizeof(Config), 0, cudaMemcpyHostToDevice);
+
+    if (err != cudaSuccess)
+    {
+        fprintf(stderr, "Failed to copy config to the device (error code %s)!\n", cudaGetErrorString(err));
+        exit(EXIT_FAILURE);
+    }
 
     void* d_temp_storage = NULL;
     size_t temp_storage_bytes = 0;

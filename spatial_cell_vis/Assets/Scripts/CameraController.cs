@@ -5,10 +5,12 @@
  * For controller you have to setup axis names for controller
  * and paste the name into the Input.GetAxis("AxisName")
  * @Mukund Raj
+ * Ref: https://medium.com/@mukundraj46/unity-editor-like-moving-camera-with-wsad-and-right-clicking-the-mouse-4d14893d50dd
  */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class CameraController : MonoBehaviour
 {
     //getting the camera component
