@@ -24,9 +24,11 @@
 #include <helper_cuda.h>
 #include <curand.h>
 #include <curand_kernel.h>
-//#include <crt/math_functions.h>
+#include <crt/math_functions.h>
 #include <cub/cub.cuh>
 //#include <cub/device/device_radix_sort.cuh>
+
+#include <json/json.h>
 
 // nvcc does not seem to like variadic macros, so we have to define
 // one for each kernel parameter list:
@@ -40,12 +42,12 @@
 #define KERNEL_ARGS4(grid, block, sh_mem, stream)
 #endif
 
-#define SIM_SIZE 0.1f
-// Grid size on each side will be 2^N_GRID_CELLS_BITS
-#define N_GRID_CELLS_BITS 4
-#define N_GRID_CELLS (1 << N_GRID_CELLS_BITS)
-#define GRID_CELL_SIZE (SIM_SIZE / N_GRID_CELLS)
-#define GRID_SIZE (N_GRID_CELLS * N_GRID_CELLS * N_GRID_CELLS)
+//#define SIM_SIZE 0.1f
+//// Grid size on each side will be 2^N_GRID_CELLS_BITS
+//#define N_GRID_CELLS_BITS 4
+//#define N_GRID_CELLS (1 << N_GRID_CELLS_BITS)
+//#define GRID_CELL_SIZE (SIM_SIZE / N_GRID_CELLS)
+//#define GRID_SIZE (N_GRID_CELLS * N_GRID_CELLS * N_GRID_CELLS)
 
 struct Particle {
     float3 pos;
@@ -53,17 +55,29 @@ struct Particle {
     int type;
 };
 
+struct Config {
+    int numParticles;
+    int steps;
+    float simSize;
+    int nGridCellsBits;
+    int nGridCells;
+    float gridCellSize;
+    float gridSize;
+};
+
+__constant__ Config d_Config;
+
 __device__ __inline__ unsigned int
 getGridIdx(float coord)
 {
-    return (unsigned int)(coord / GRID_CELL_SIZE);
+    return (unsigned int)(coord / d_Config.gridCellSize);
 }
 
 __device__ __inline__ unsigned int
 makeIdx(unsigned int gridX, unsigned int gridY, unsigned int gridZ)
 {
-    return (gridX << (2 * N_GRID_CELLS_BITS))
-        | (gridY << N_GRID_CELLS_BITS)
+    return (gridX << (2 * d_Config.nGridCellsBits))
+        | (gridY << d_Config.nGridCellsBits)
         | (gridZ << 0);
 }
 
@@ -74,10 +88,10 @@ makeIdx(Particle p)
 }
 
 __global__ void
-setupKernel(curandState* rngState, int numElements) {
+setupKernel(curandState* rngState) {
 
     int idx = threadIdx.x + blockDim.x * blockIdx.x;
-    if (idx >= numElements)
+    if (idx >= d_Config.numParticles)
         return;
 
     /*curand_init(42, idx, 0, &rngState[idx]);*/
@@ -88,24 +102,24 @@ setupKernel(curandState* rngState, int numElements) {
 }
 
 __global__ void
-updateIndices(const Particle* curParticles, unsigned int* indices, int numElements)
+updateIndices(const Particle* curParticles, unsigned int* indices)
 {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
-    if (idx >= numElements)
+    if (idx >= d_Config.numParticles)
         return;
 
     indices[idx] = makeIdx(curParticles[idx]);
 }
 
 __global__ void
-updateGridRanges(const unsigned int* indices, unsigned int* gridRanges, int numElements)
+updateGridRanges(const unsigned int* indices, unsigned int* gridRanges)
 {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
-    if (idx >= GRID_SIZE)
+    if (idx >= d_Config.gridSize)
         return;
 
-    const int startIndex = idx * (long long)numElements / GRID_SIZE;
-    const int endIndex = min((idx + 1) * (long long)numElements / GRID_SIZE, (long long)numElements);
+    const int startIndex = idx * (long long)d_Config.numParticles / d_Config.gridSize;
+    const int endIndex = min((long long)((idx + 1) * d_Config.numParticles / d_Config.gridSize), (long long)d_Config.numParticles);
 
     int lastIdx = indices[startIndex];
     if (startIndex <= 0 || indices[startIndex - 1] != lastIdx)
@@ -119,15 +133,15 @@ updateGridRanges(const unsigned int* indices, unsigned int* gridRanges, int numE
             lastIdx = curIdx;
         }
     }
-    if(endIndex >= numElements || indices[endIndex] != lastIdx)
+    if(endIndex >= d_Config.numParticles || indices[endIndex] != lastIdx)
         gridRanges[lastIdx * 2 + 1] = endIndex;
 }
 
 __global__ void
-move(curandState* rngState, const Particle *curParticles, Particle *nextParticles, unsigned int* indices, unsigned int* gridRanges, int numElements)
+move(curandState* rngState, const Particle *curParticles, Particle *nextParticles, unsigned int* indices, unsigned int* gridRanges)
 {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
-    if (idx >= numElements)
+    if (idx >= d_Config.numParticles)
         return;
 
     Particle p = curParticles[idx];
@@ -145,9 +159,9 @@ move(curandState* rngState, const Particle *curParticles, Particle *nextParticle
         cgz = getGridIdx(p.pos.z);
 
     float nPartners = 0.0;
-    for (int gx = max(cgx - 1, 0); gx <= min(cgx + 1, N_GRID_CELLS - 1); gx++) {
-        for (int gy = max(cgy - 1, 0); gy <= min(cgy + 1, N_GRID_CELLS - 1); gy++) {
-            for (int gz = max(cgz - 1, 0); gz <= min(cgz + 1, N_GRID_CELLS - 1); gz++) {
+    for (int gx = max(cgx - 1, 0); gx <= min(cgx + 1, d_Config.nGridCells - 1); gx++) {
+        for (int gy = max(cgy - 1, 0); gy <= min(cgy + 1, d_Config.nGridCells - 1); gy++) {
+            for (int gz = max(cgz - 1, 0); gz <= min(cgz + 1, d_Config.nGridCells - 1); gz++) {
                 /*if (gx == cgx && gy == cgy && gz == cgz)
                     continue;*/
                 const unsigned int startIdx = gridRanges[makeIdx(gx, gy, gz) * 2];
@@ -207,9 +221,9 @@ move(curandState* rngState, const Particle *curParticles, Particle *nextParticle
     p.velocity.y += moveVec.y;
     p.velocity.z += moveVec.z;
 
-    p.pos.x = fmin(fmax(p.pos.x + p.velocity.x, 0.0f), SIM_SIZE);
-    p.pos.y = fmin(fmax(p.pos.y + p.velocity.y, 0.0f), SIM_SIZE);
-    p.pos.z = fmin(fmax(p.pos.z + p.velocity.z, 0.0f), SIM_SIZE);
+    p.pos.x = fmin(fmax(p.pos.x + p.velocity.x, 0.0f), d_Config.simSize);
+    p.pos.y = fmin(fmax(p.pos.y + p.velocity.y, 0.0f), d_Config.simSize);
+    p.pos.z = fmin(fmax(p.pos.z + p.velocity.z, 0.0f), d_Config.simSize);
     /*p.pos.x += moveVec.x;
     p.pos.y += moveVec.y;
     p.pos.z += moveVec.z;*/
@@ -276,16 +290,33 @@ printCUDAIntArray(unsigned int* a, unsigned int len) {
 int
 main(void)
 {
+    std::ifstream configFile("./config.json");
+    Json::Value configJson;
+    configFile >> configJson;
+
+    Config config;
+    config.numParticles = configJson["numParticles"].asInt();
+    config.steps = configJson["steps"].asInt();
+    config.simSize = configJson["simSize"].asFloat();
+    config.nGridCellsBits = configJson["nGridCellsBits"].asInt();
+    config.nGridCells = 1 << config.nGridCellsBits;
+    config.gridCellSize = config.simSize / config.nGridCells;
+    config.gridSize = config.nGridCells * config.nGridCells * config.nGridCells;
+
+    /*int sharedMemSize;
+    cudaDeviceGetAttribute(&sharedMemSize, cudaDeviceAttr::cudaDevAttrMaxSharedMemoryPerBlock, 0);
+    printf("sharedMemSize %d\n", sharedMemSize);
+    return;*/
+
     // Error code to check return values for CUDA calls
     cudaError_t err = cudaSuccess;
 
     std::mt19937 rngGen(42);
     std::uniform_real_distribution<double> rng(0.0, 1.0);
 
-    int numParticles = 1 * 2 * 1024;
-    size_t count = numParticles;
+    size_t count = config.numParticles;
     size_t size = count * sizeof(Particle);
-    printf("[Simulating %d particles]\n", numParticles);
+    printf("[Simulating %d particles]\n", config.numParticles);
 
     Particle *h_Particles, *h_NextParticles;
     Particle *d_Particles = NULL,
@@ -294,13 +325,18 @@ main(void)
     universalAlloc(&h_NextParticles, &d_NextParticles, count);
     unsigned int *d_Indices = NULL,
         *d_NextIndices = NULL,
-        *d_GridRanges;
+        *d_GridRanges = NULL;
     cudaAlloc(&d_Indices, count);
     cudaAlloc(&d_NextIndices, count);
-    cudaAlloc(&d_GridRanges, GRID_SIZE * 2);
+    cudaAlloc(&d_GridRanges, config.gridSize * 2);
 
     curandState* rngState;
     cudaAlloc(&rngState, count);
+
+    /*Config* d_Config = NULL;
+    cudaAlloc(&d_Config, sizeof(Config));
+    cudaMemcpy(d_Config, &config, sizeof(Config), cudaMemcpyHostToDevice);*/
+    cudaMemcpyToSymbol(&d_Config, &config, sizeof(Config));
 
     void* d_temp_storage = NULL;
     size_t temp_storage_bytes = 0;
@@ -312,12 +348,12 @@ main(void)
     int numTypes = 3;
 
     // Initialize the host input vectors
-    for (int i = 0; i < numParticles; i++)
+    for (int i = 0; i < config.numParticles; i++)
     {
         h_Particles[i].pos = make_float3(
-            rng(rngGen) * SIM_SIZE,
-            rng(rngGen) * SIM_SIZE,
-            rng(rngGen) * SIM_SIZE
+            rng(rngGen) * config.simSize,
+            rng(rngGen) * config.simSize,
+            rng(rngGen) * config.simSize
         );
         h_Particles[i].velocity = make_float3(0, 0, 0);
         h_Particles[i].type = rng(rngGen) * numTypes;
@@ -335,31 +371,29 @@ main(void)
     }
 
     int threadsPerBlock = 256;
-    int particleBlocksPerGrid =(numParticles + threadsPerBlock - 1) / threadsPerBlock;
+    int particleBlocksPerGrid = (config.numParticles + threadsPerBlock - 1) / threadsPerBlock;
     printf("Particle CUDA kernel with %d blocks of %d threads\n", particleBlocksPerGrid, threadsPerBlock);
 
-    int gridBlocksPerGrid = (GRID_SIZE + threadsPerBlock - 1) / threadsPerBlock;
+    int gridBlocksPerGrid = (config.gridSize + threadsPerBlock - 1) / threadsPerBlock;
     printf("Grid CUDA kernel with %d blocks of %d threads\n", gridBlocksPerGrid, threadsPerBlock);
 
-    setupKernel KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (rngState, numParticles);
+    setupKernel KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (rngState);
 
     std::ofstream fout;
     fout.open("./results/frames.dat", std::ios::binary | std::ios::out);
-    const float simSize = SIM_SIZE;
-    fout.write((char*)&simSize, sizeof(float));
+    fout.write((char*)&config.simSize, sizeof(float));
     // Particle buffer size
-    fout.write((char*)&numParticles, sizeof(unsigned int));
+    fout.write((char*)&config.numParticles, sizeof(unsigned int));
 
     // Number of existing particles
-    fout.write((char*)&numParticles, sizeof(unsigned int));
+    fout.write((char*)&config.numParticles, sizeof(unsigned int));
     fout.write((char*)h_Particles, size);
     
     std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
-    constexpr int nIter = 101;
-    for (int i = 0; i < nIter; i++) {
+    for (int i = 0; i < config.steps; i++) {
         std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-        updateIndices KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (d_Particles, d_Indices, numParticles);
+        updateIndices KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (d_Particles, d_Indices);
         cudaDeviceSynchronize();
         std::chrono::high_resolution_clock::time_point t3 = std::chrono::high_resolution_clock::now();
         cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
@@ -369,12 +403,12 @@ main(void)
         swapBuffers(&d_Particles, &d_NextParticles);
         swapBuffers(&d_Indices, &d_NextIndices);
         //printCUDAIntArray(d_Indices, numParticles);
-        cudaMemset(d_GridRanges, 0, GRID_SIZE * 2 * sizeof(unsigned int));
-        updateGridRanges KERNEL_ARGS2(gridBlocksPerGrid, threadsPerBlock) (d_Indices, d_GridRanges, numParticles);
+        cudaMemset(d_GridRanges, 0, config.gridSize * 2 * sizeof(unsigned int));
+        updateGridRanges KERNEL_ARGS2(gridBlocksPerGrid, threadsPerBlock) (d_Indices, d_GridRanges);
         cudaDeviceSynchronize();
         std::chrono::high_resolution_clock::time_point t5 = std::chrono::high_resolution_clock::now();
         //printCUDAIntArray(d_GridRanges, GRID_SIZE * 2);
-        move KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (rngState, d_Particles, d_NextParticles, d_Indices, d_GridRanges, numParticles);
+        move KERNEL_ARGS2(particleBlocksPerGrid, threadsPerBlock) (rngState, d_Particles, d_NextParticles, d_Indices, d_GridRanges);
         swapBuffers(&d_Particles, &d_NextParticles);
         cudaDeviceSynchronize();
         std::chrono::high_resolution_clock::time_point t6 = std::chrono::high_resolution_clock::now();
@@ -389,7 +423,7 @@ main(void)
         }
 
         cudaMemcpy(h_Particles, d_Particles, size, cudaMemcpyDeviceToHost);
-        fout.write((char*)&numParticles, sizeof(unsigned int));
+        fout.write((char*)&config.numParticles, sizeof(unsigned int));
         fout.write((char*)h_Particles, size);
     }
     cudaDeviceSynchronize();
@@ -418,7 +452,7 @@ main(void)
     }
 
     float minX = 0.5;
-    for (int i = 0; i < numParticles; i++) {
+    for (int i = 0; i < config.numParticles; i++) {
         minX = fmin(minX, h_Particles[i].pos.x);
     }
     printf("minX, %f\n", minX);

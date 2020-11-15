@@ -1,0 +1,6 @@
+{
+  "numParticles": 2048,
+  "steps": 101,
+  "simSize": 0.1,
+  "nGridCellsBits": 4
+}
