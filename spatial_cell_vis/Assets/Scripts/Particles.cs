@@ -8,7 +8,9 @@ public class Particles : MonoBehaviour
 {
     public SimData simData;
 
-    public Mesh mesh;
+    public GameObject model;
+    private Mesh mesh;
+    private float meshScale;
     public Material instancedMaterial;
 
     public Material material;
@@ -45,6 +47,8 @@ public class Particles : MonoBehaviour
         drawArgs = new uint[5] { 0, 0, 0, 0, 0 };
         // Arguments for drawing mesh.
         // 0 == number of triangle indices, 1 == population, others are only relevant if drawing submeshes.
+        mesh = model.GetComponent<MeshFilter>().sharedMesh;
+        meshScale = model.transform.localScale.x;
         drawArgs[0] = (uint)mesh.GetIndexCount(0);
         drawArgs[1] = (uint)1;
         drawArgs[2] = (uint)mesh.GetIndexStart(0);
@@ -62,6 +66,7 @@ public class Particles : MonoBehaviour
         }
         instancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
         instancedMaterial.SetFloat("scale", 10.0f);
+        instancedMaterial.SetFloat("meshScale", meshScale);
         instancedMaterial.SetFloat("simSize", simData.SimSize);
         instancedMaterial.SetBuffer("particles", simData.frameBuffer);
         Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.zero, Vector3.one * simData.SimSize * 10.0f), argsBuffer);

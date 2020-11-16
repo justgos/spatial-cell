@@ -48,9 +48,11 @@
 //#define N_GRID_CELLS (1 << N_GRID_CELLS_BITS)
 //#define GRID_CELL_SIZE (SIM_SIZE / N_GRID_CELLS)
 //#define GRID_SIZE (N_GRID_CELLS * N_GRID_CELLS * N_GRID_CELLS)
+#define PI 3.1415926535f
 
 struct Particle {
     float3 pos;
+    float4 rot;
     float3 velocity;
     int type;
 };
@@ -60,12 +62,130 @@ struct Config {
     int steps;
     float simSize;
     int nGridCellsBits;
+
+    // Computed
     int nGridCells;
     float gridCellSize;
     float gridSize;
+
+    float movementNoiseScale;
+    float rotationNoiseScale;
+    float velocityDecay;
 };
 
 __constant__ Config d_Config;
+
+__device__ __inline__ float
+dot(float3 a, float3 b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+__device__ __inline__ float
+dot(float4 a, float4 b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+}
+
+__device__ __inline__ float3
+cross(float3 a, float3 b) {
+    return make_float3(
+        a.y * b.z - a.z * b.y,
+        a.z * b.x - a.x * b.z,
+        a.x * b.y - a.y * b.x
+    );
+}
+
+__device__ __inline__ float3
+add(float3 a, float3 b) {
+    return make_float3(
+        a.x + b.x,
+        a.y + b.y,
+        a.z + b.z
+    );
+}
+
+__device__ __inline__ float3
+mul(float3 a, float b) {
+    return make_float3(
+        a.x * b,
+        a.y * b,
+        a.z * b
+    );
+}
+
+__device__ __inline__ float4
+mul(float4 a, float4 b) {
+    return make_float4(
+        a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z,
+        a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y,
+        a.w * b.y + a.y * b.w + a.z * b.x - a.x * b.z,
+        a.w * b.z + a.z * b.w + a.x * b.y - a.y * b.x
+    );
+}
+
+__device__ __inline__ float4
+lepr(float4 a, float4 b, float amount) {
+    float t = amount;
+    float t1 = 1.0f - t;
+
+    float4 r;
+
+    float dot = a.x * b.x + a.y * b.y +
+        a.z * b.z + a.w * b.w;
+
+    if (dot >= 0.0f)
+    {
+        r.x = t1 * a.x + t * b.x;
+        r.y = t1 * a.y + t * b.y;
+        r.z = t1 * a.z + t * b.z;
+        r.w = t1 * a.w + t * b.w;
+    }
+    else
+    {
+        r.x = t1 * a.x - t * b.x;
+        r.y = t1 * a.y - t * b.y;
+        r.z = t1 * a.z - t * b.z;
+        r.w = t1 * a.w - t * b.w;
+    }
+
+    // Normalize it.
+    float ls = r.x * r.x + r.y * r.y + r.z * r.z + r.w * r.w;
+    float invNorm = 1.0f / (float)sqrt((double)ls);
+
+    r.x *= invNorm;
+    r.y *= invNorm;
+    r.z *= invNorm;
+    r.w *= invNorm;
+
+    return r;
+}
+
+__device__ __inline__ float4
+random_rotation(curandState* rngState) {
+    float u = curand_uniform(rngState),
+        v = curand_uniform(rngState),
+        w = curand_uniform(rngState);
+    float su = sqrt(u),
+        su1 = sqrt(1 - u);
+    return make_float4(
+        su1 * sin(2 * PI * v),
+        su1 * cos(2 * PI * v),
+        su * sin(2 * PI * w),
+        su * cos(2 * PI * w)
+    );
+}
+
+__device__ __inline__ float3
+transform_vector(float3 a, float4 q) {
+    float3 u = make_float3(q.x, q.y, q.z);
+    float s = q.w;
+    return add(
+        mul(u, dot(u, a) * 2),
+        add(
+            mul(a, s * s - dot(u, u)),
+            mul(cross(u, a), s * 2)
+        )
+    );
+}
 
 __device__ __inline__ unsigned int
 getGridIdx(float coord)
@@ -208,15 +328,14 @@ move(curandState* rngState, const Particle *curParticles, Particle *nextParticle
     moveVec.y += attractionVec.y;
     moveVec.z += attractionVec.z;
 
-    float movementNoiseScale = 0.0001f;
-    moveVec.x += (curand_normal(&rngState[idx]) - 0.0) * movementNoiseScale;
-    moveVec.y += (curand_normal(&rngState[idx]) - 0.0) * movementNoiseScale;
-    moveVec.z += (curand_normal(&rngState[idx]) - 0.0) * movementNoiseScale;
+    moveVec.x += (curand_normal(&rngState[idx]) - 0.0) * d_Config.movementNoiseScale;
+    moveVec.y += (curand_normal(&rngState[idx]) - 0.0) * d_Config.movementNoiseScale;
+    moveVec.z += (curand_normal(&rngState[idx]) - 0.0) * d_Config.movementNoiseScale;
 
-    const float velocityDecay = 0.7;
-    p.velocity.x *= velocityDecay;
-    p.velocity.y *= velocityDecay;
-    p.velocity.z *= velocityDecay;
+    p.velocity.x *= d_Config.velocityDecay;
+    p.velocity.y *= d_Config.velocityDecay;
+    p.velocity.z *= d_Config.velocityDecay;
+    p.rot = lepr(p.rot, random_rotation(&rngState[idx]), d_Config.rotationNoiseScale);
     p.velocity.x += moveVec.x;
     p.velocity.y += moveVec.y;
     p.velocity.z += moveVec.z;
@@ -302,12 +421,20 @@ main(void)
     config.nGridCells = 1 << config.nGridCellsBits;
     config.gridCellSize = config.simSize / config.nGridCells;
     config.gridSize = config.nGridCells * config.nGridCells * config.nGridCells;
+    config.movementNoiseScale = configJson["movementNoiseScale"].asFloat();
+    config.rotationNoiseScale = configJson["rotationNoiseScale"].asFloat();
+    config.velocityDecay = configJson["velocityDecay"].asFloat();
 
+    printf("[Config]\n");
     printf("numParticles %d\n", config.numParticles);
     printf("steps %d\n", config.steps);
     printf("simSize %f\n", config.simSize);
     printf("nGridCellsBits %d\n", config.nGridCellsBits);
     printf("nGridCells %d\n", config.nGridCells);
+    printf("movementNoiseScale %f\n", config.movementNoiseScale);
+    printf("rotationNoiseScale %f\n", config.rotationNoiseScale);
+    printf("velocityDecay %f\n", config.velocityDecay);
+    printf("\n");
 
     /*int sharedMemSize;
     cudaDeviceGetAttribute(&sharedMemSize, cudaDeviceAttr::cudaDevAttrMaxSharedMemoryPerBlock, 0);
@@ -322,7 +449,11 @@ main(void)
 
     size_t count = config.numParticles;
     size_t size = count * sizeof(Particle);
-    printf("[Simulating %d particles]\n", config.numParticles);
+
+    printf("[Memory structure]\n");
+    printf("Particle size: %d\n", sizeof(Particle));
+    printf("Offsets: pos %d, rot %d, velocity %d, type %d\n", offsetof(Particle, pos), offsetof(Particle, rot), offsetof(Particle, velocity), offsetof(Particle, type));
+    printf("\n");
 
     Particle *h_Particles, *h_NextParticles;
     Particle *d_Particles = NULL,
@@ -367,13 +498,15 @@ main(void)
             rng(rngGen) * config.simSize,
             rng(rngGen) * config.simSize
         );
+        h_Particles[i].rot = make_float4(
+            0, 0, 0, 1
+        );
         h_Particles[i].velocity = make_float3(0, 0, 0);
         h_Particles[i].type = rng(rngGen) * numTypes;
     }
 
     // Copy the host input vectors A and B in host memory to the device input vectors in
     // device memory
-    printf("Copy input data from the host memory to the CUDA device\n");
     err = cudaMemcpy(d_Particles, h_Particles, size, cudaMemcpyHostToDevice);
 
     if (err != cudaSuccess)
@@ -400,6 +533,9 @@ main(void)
     // Number of existing particles
     fout.write((char*)&config.numParticles, sizeof(unsigned int));
     fout.write((char*)h_Particles, size);
+
+    printf("\n");
+    printf("[Simulating...]\n");
     
     std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
@@ -454,7 +590,6 @@ main(void)
 
     // Copy the device result vector in device memory to the host result vector
     // in host memory.
-    printf("Copy output data from the CUDA device to the host memory\n");
     err = cudaMemcpy(h_Particles, d_Particles, size, cudaMemcpyDeviceToHost);
 
     if (err != cudaSuccess)

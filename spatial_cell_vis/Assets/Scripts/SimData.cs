@@ -20,12 +20,22 @@ public class SimData : MonoBehaviour
     };
 
     [StructLayout(LayoutKind.Sequential)]
+    public struct Vector4_
+    {
+        public float x;
+        public float y;
+        public float z;
+        public float w;
+    };
+
+    [StructLayout(LayoutKind.Explicit, Size = 48)]
     public struct Particle
     {
         //[MarshalAs(UnmanagedType.LPStruct)]
-        public Vector3_ pos;
-        public Vector3_ velocity;
-        public int type;
+        [FieldOffset(0)]  public Vector3_ pos;
+        [FieldOffset(16)] public Vector4_ rot;
+        [FieldOffset(32)] public Vector3_ velocity;
+        [FieldOffset(44)] public int type;
     };
 
     public class SimFrame
@@ -56,12 +66,14 @@ public class SimData : MonoBehaviour
             simSize = br.ReadSingle();
             particleBufferSize = br.ReadInt32();
             var particleStructSize = Marshal.SizeOf(new Particle());
+            Debug.Log("particleStructSize " +  particleStructSize);
             frameBuffer = new ComputeBuffer(particleBufferSize, particleStructSize);
             while (br.BaseStream.Position != br.BaseStream.Length)
             //for (var j = 0; j < nFrames; j++)
             {
                 var frame = new SimFrame();
                 frame.numParticles = br.ReadUInt32();
+                //Debug.Log("frame.numParticles " + frame.numParticles);
                 frame.particles = new Particle[frame.numParticles];
                 var bytes = br.ReadBytes((int)(particleStructSize * frame.numParticles));
                 //Marshal.Copy(, 0, (IntPtr)frame.particles, 0, (int)(particleStructSize * frame.numParticles));
