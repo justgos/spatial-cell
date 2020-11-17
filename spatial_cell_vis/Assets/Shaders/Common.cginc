@@ -1,9 +1,13 @@
-﻿struct Particle {
+﻿#define PARTICLE_FLAG_ACTIVE 0x0001
+
+struct Particle {
 	float3 pos;
     float __padding1;
 	float4 rot;
 	float3 velocity;
 	int type;
+    int flags;
+    float3 __padding2;
 };
 
 float3

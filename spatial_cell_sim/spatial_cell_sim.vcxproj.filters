@@ -7,4 +7,14 @@
   <ItemGroup>
     <CudaCompile Include="src\main.cu" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\constants.cuh" />
+    <ClCompile Include="src\types.cuh" />
+    <ClCompile Include="src\macros.cuh" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\math.cuh" />
+    <ClInclude Include="src\grid.cuh" />
+    <ClInclude Include="src\memory.cuh" />
+  </ItemGroup>
 </Project>

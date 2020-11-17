@@ -2,8 +2,8 @@
   "numParticles": 2048,
   "steps": 101,
   "simSize": 0.1,
-  "nGridCellsBits": 4,
   "interactionDistance": 0.007,
+  "nGridCellsBits": 3,
   "movementNoiseScale": 0.0001,
   "rotationNoiseScale": 0.05,
   "velocityDecay": 0.7

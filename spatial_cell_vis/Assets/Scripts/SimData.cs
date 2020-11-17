@@ -28,7 +28,7 @@ public class SimData : MonoBehaviour
         public float w;
     };
 
-    [StructLayout(LayoutKind.Explicit, Size = 48)]
+    [StructLayout(LayoutKind.Explicit, Size = 64)]
     public struct Particle
     {
         //[MarshalAs(UnmanagedType.LPStruct)]
@@ -36,6 +36,7 @@ public class SimData : MonoBehaviour
         [FieldOffset(16)] public Vector4_ rot;
         [FieldOffset(32)] public Vector3_ velocity;
         [FieldOffset(44)] public int type;
+        [FieldOffset(48)] public int flags;
     };
 
     public class SimFrame

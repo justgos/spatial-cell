@@ -89,6 +89,12 @@
 
             o.col = float4((float)(p.type % 2), 1, 1, 1);
             o.col.rgb /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
+
+
+            if (!(p.flags & PARTICLE_FLAG_ACTIVE)) {
+                //v.vertex = 0;
+                o.col = float4(1, 0, 0, 1);
+            }
 #endif
         }
 

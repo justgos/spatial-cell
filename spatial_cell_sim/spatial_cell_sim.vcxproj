@@ -114,6 +114,16 @@
     <None Include="config.json" />
     <None Include="spatial_cell_sim.ruleset" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\constants.cuh" />
+    <ClCompile Include="src\macros.cuh" />
+    <ClCompile Include="src\types.cuh" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\grid.cuh" />
+    <ClInclude Include="src\math.cuh" />
+    <ClInclude Include="src\memory.cuh" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(CUDAPropsPath)\CUDA 11.1.targets" />
