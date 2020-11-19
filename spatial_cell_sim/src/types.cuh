@@ -1,6 +1,13 @@
 #pragma once
 
+#include <ctime>
+#include <ratio>
+#include <chrono>
+
 #include <cuda_runtime.h>
+
+
+typedef std::chrono::high_resolution_clock::time_point time_point;
 
 struct Particle {
     float3 pos;

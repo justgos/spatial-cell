@@ -16,5 +16,7 @@
     <ClInclude Include="src\math.cuh" />
     <ClInclude Include="src\grid.cuh" />
     <ClInclude Include="src\memory.cuh" />
+    <ClInclude Include="src\dynamics.cuh" />
+    <ClInclude Include="src\time.cuh" />
   </ItemGroup>
 </Project>

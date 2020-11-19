@@ -8,6 +8,31 @@
 
 
 __device__ __inline__ float
+normsq(float3 a) {
+    return a.x * a.x + a.y * a.y + a.z * a.z;
+}
+
+__device__ __inline__ float
+normsq(float4 a) {
+    return a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w;
+}
+
+__device__ __inline__ float
+norm(float3 a) {
+    return sqrt(normsq(a));
+}
+
+__device__ __inline__ float3
+normalized(float3 a) {
+    float n = norm(a);
+    return make_float3(
+        a.x / n,
+        a.y / n,
+        a.z / n
+    );
+}
+
+__device__ __inline__ float
 dot(float3 a, float3 b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
 }
@@ -46,11 +71,65 @@ mul(float3 a, float b) {
 
 __device__ __inline__ float4
 mul(float4 a, float4 b) {
+    float cx = a.y * b.z - a.z * b.y;
+    float cy = a.z * b.x - a.x * b.z;
+    float cz = a.x * b.y - a.y * b.x;
+
+    float dot = a.x * b.x + a.y * b.y + a.z * b.z;
+
     return make_float4(
-        a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z,
-        a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y,
-        a.w * b.y + a.y * b.w + a.z * b.x - a.x * b.z,
-        a.w * b.z + a.z * b.w + a.x * b.y - a.y * b.x
+        a.x * b.w + b.x * a.w + cx,
+        a.y * b.w + b.y * a.w + cy,
+        a.z * b.w + b.z * a.w + cz,
+        a.w * b.w - dot
+    );
+}
+
+__device__ __inline__ float
+angle(float3 a, float3 b) {
+    return acos(dot(a, b) / (norm(a) * norm(b)));
+}
+
+__device__ __inline__ float
+angle(float4 a) {
+    return 2.0f * acos(a.w);
+}
+
+__device__ __inline__ float4
+quaternion(float3 axis, float angle) {
+    float sinAngle = sin(angle * 0.5);
+    float cosAngle = cos(angle * 0.5);
+    return make_float4(
+        axis.x * sinAngle,
+        axis.y * sinAngle,
+        axis.z * sinAngle,
+        cosAngle
+    );
+}
+
+__device__ __inline__ float4
+quaternionFromTo(float3 a, float3 b) {
+    return quaternion(cross(a, b), angle(a, b));
+}
+
+__device__ __inline__ float3
+negate(float3 a) {
+    return make_float3(
+        -a.x,
+        -a.y,
+        -a.z
+    );
+}
+
+__device__ __inline__ float4
+inverse(float4 a) {
+    float invNorm = 1.0f / normsq(a);
+
+    return make_float4(
+        -a.x * invNorm,
+        -a.y * invNorm,
+        -a.z * invNorm,
+        a.w * invNorm
     );
 }
 
@@ -106,9 +185,24 @@ random_rotation(curandState* rngState) {
     );
 }
 
+float4
+random_rotation_host(std::uniform_real_distribution<double> rng, std::mt19937 rngGen) {
+    float u = rng(rngGen),
+        v = rng(rngGen),
+        w = rng(rngGen);
+    float su = sqrt(u),
+        su1 = sqrt(1 - u);
+    return make_float4(
+        su1 * sin(2 * PI * v),
+        su1 * cos(2 * PI * v),
+        su * sin(2 * PI * w),
+        su * cos(2 * PI * w)
+    );
+}
+
 __device__ __inline__ float3
 transform_vector(float3 a, float4 q) {
-    float3 u = make_float3(q.x, q.y, q.z);
+    /*float3 u = make_float3(q.x, q.y, q.z);
     float s = q.w;
     return add(
         mul(u, dot(u, a) * 2),
@@ -116,5 +210,24 @@ transform_vector(float3 a, float4 q) {
             mul(a, s * s - dot(u, u)),
             mul(cross(u, a), s * 2)
         )
+    );*/
+    float x2 = q.x + q.x;
+    float y2 = q.y + q.y;
+    float z2 = q.z + q.z;
+
+    float wx2 = q.w * x2;
+    float wy2 = q.w * y2;
+    float wz2 = q.w * z2;
+    float xx2 = q.x * x2;
+    float xy2 = q.x * y2;
+    float xz2 = q.x * z2;
+    float yy2 = q.y * y2;
+    float yz2 = q.y * z2;
+    float zz2 = q.z * z2;
+
+    return make_float3(
+        a.x * (1.0f - yy2 - zz2) + a.y * (xy2 - wz2) + a.z * (xz2 + wy2),
+        a.x * (xy2 + wz2) + a.y * (1.0f - xx2 - zz2) + a.z * (yz2 - wx2),
+        a.x * (xz2 - wy2) + a.y * (yz2 + wx2) + a.z * (1.0f - xx2 - yy2)
     );
 }

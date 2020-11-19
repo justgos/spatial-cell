@@ -42,10 +42,11 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        MoveThecamera();
+
         if (Input.GetButton("Fire2"))
         {
             SetRotation();
-            MoveThecamera();
         }
     }
 
@@ -61,14 +62,15 @@ public class CameraController : MonoBehaviour
     }
     void MoveThecamera()
     {
+        float scrollSensitivity = 0.1f;
         //taking horizpontal input into the horizontal variable
-        horizontal = Input.GetAxis("Horizontal");
+        horizontal = Input.GetAxis("Horizontal") + Input.mouseScrollDelta.x * scrollSensitivity;
         //changing the parent position based on the camera’s transform.right
         //transform.right also consider rotation too
         //so that it can move in the ‘right’ direction
         cam.transform.position += cam.transform.right * horizontal * Cam_speed * Time.deltaTime;
         //taking vertical axis into vertical variable
-        vertical = Input.GetAxis("Vertical");
+        vertical = Input.GetAxis("Vertical") + Input.mouseScrollDelta.y * scrollSensitivity;
         //changing the parent position based on the camera’s        transform.forward
         //transform is also 0,0,1 but it also consider rotation too
         //so that it can move in the forward direction considering the  rotation too

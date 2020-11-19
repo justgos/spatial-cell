@@ -14,7 +14,7 @@
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Lambert vertex:vert
+        #pragma surface surf Lambert noshadow vertex:vert
         #pragma instancing_options procedural:setup
         #pragma target 3.0
 
@@ -87,14 +87,17 @@
                 );
             float3 cameraDist = pos - clippedCameraPos;
 
-            o.col = float4((float)(p.type % 2), 1, 1, 1);
+            o.col = colormap[p.type % colormapLength];
+            //o.col = float4(1, 1, 1, 1);
             o.col.rgb /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
 
 
             if (!(p.flags & PARTICLE_FLAG_ACTIVE)) {
-                //v.vertex = 0;
+                v.vertex = 0;
                 o.col = float4(1, 0, 0, 1);
             }
+#else
+            o.col = float4(1, 1, 1, 1);
 #endif
         }
 

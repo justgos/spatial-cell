@@ -54,6 +54,7 @@ public class SimData : MonoBehaviour
     public ComputeBuffer frameBuffer;
 
     public Slider frameSlider;
+    public Text frameNumberText;
 
     private float lastFrameTime = 0;
     private bool playing = false;
@@ -107,6 +108,7 @@ public class SimData : MonoBehaviour
                 frames.Add(frame);
             }
             frameSlider.maxValue = frames.Count - 1;
+            frameNumberText.text = frameSlider.value.ToString();
             frameBuffer.SetData(frames[0].particles);
             numParticles = frames[0].particles.Length;
         }
@@ -121,11 +123,11 @@ public class SimData : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            SetFrame(frameSlider.value - 1);
+            SetFrame(frameSlider.value - (Input.GetKey(KeyCode.LeftShift) ? 5 : 1));
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            SetFrame(frameSlider.value + 1);
+            SetFrame(frameSlider.value + (Input.GetKey(KeyCode.LeftShift) ? 5 : 1));
         }
 
         if (this.playing)
@@ -151,6 +153,7 @@ public class SimData : MonoBehaviour
     {
         frameBuffer.SetData(frames[(int)frameNum].particles);
         numParticles = frames[(int)frameNum].particles.Length;
+        frameNumberText.text = frameSlider.value.ToString();
     }
 
     //void OnDrawGizmosSelected()

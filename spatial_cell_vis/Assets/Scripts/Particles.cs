@@ -69,7 +69,7 @@ public class Particles : MonoBehaviour
         instancedMaterial.SetFloat("meshScale", meshScale);
         instancedMaterial.SetFloat("simSize", simData.SimSize);
         instancedMaterial.SetBuffer("particles", simData.frameBuffer);
-        Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.zero, Vector3.one * simData.SimSize * 10.0f), argsBuffer);
+        Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), argsBuffer);
     }
 
     void OnRenderObject()

@@ -1,10 +1,10 @@
 {
-  "numParticles": 2048,
-  "steps": 101,
+  "numParticles": 4096,
+  "steps": 301,
   "simSize": 0.1,
   "interactionDistance": 0.007,
   "nGridCellsBits": 3,
-  "movementNoiseScale": 0.0001,
+  "movementNoiseScale": 0.0002,
   "rotationNoiseScale": 0.05,
   "velocityDecay": 0.7
 }
