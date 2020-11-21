@@ -60,8 +60,10 @@
     <Compile Include="Assets\Scripts\Particles.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\MeshCombiner\Scripts\MeshCombiner.cs" />
+    <Compile Include="Assets\Scripts\MathDebug.cs" />
   </ItemGroup>
   <ItemGroup>
+     <None Include="Assets\Shaders\InstancedDebugVector.shader" />
      <None Include="Assets\Shaders\Particles.shader" />
      <None Include="Assets\Shaders\Common.cginc" />
      <None Include="Assets\Shaders\InstancedParticles.shader" />

@@ -28,15 +28,28 @@ public class SimData : MonoBehaviour
         public float w;
     };
 
-    [StructLayout(LayoutKind.Explicit, Size = 64)]
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ParticleInteraction
+    {
+        public int type;
+        public int partnerId;
+    };
+
+    [StructLayout(LayoutKind.Explicit, Size = 112)]
     public struct Particle
     {
-        //[MarshalAs(UnmanagedType.LPStruct)]
-        [FieldOffset(0)]  public Vector3_ pos;
-        [FieldOffset(16)] public Vector4_ rot;
-        [FieldOffset(32)] public Vector3_ velocity;
-        [FieldOffset(44)] public int type;
-        [FieldOffset(48)] public int flags;
+        [FieldOffset(0)]  public int id;
+        [FieldOffset(4)]  public int type;
+        [FieldOffset(8)]  public int flags;
+        [FieldOffset(12)] public Vector3_ pos;
+        [FieldOffset(32)] public Vector4_ rot;
+        [FieldOffset(48)] public Vector3_ velocity;
+        [FieldOffset(60)] public int nActiveInteractions;
+        [FieldOffset(64)] public ParticleInteraction interaction1;
+        [FieldOffset(72)] public ParticleInteraction interaction2;
+        [FieldOffset(80)] public ParticleInteraction interaction3;
+        [FieldOffset(88)] public ParticleInteraction interaction4;
+        [FieldOffset(96)] public Vector4_ debugVector;
     };
 
     public class SimFrame

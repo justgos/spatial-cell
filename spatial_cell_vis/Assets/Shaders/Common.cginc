@@ -2,15 +2,46 @@
 // Upgrade NOTE: excluded shader from DX11, OpenGL ES 2.0 because it uses unsized arrays
 #pragma exclude_renderers d3d11 gles
 
+struct ParticleInteraction {
+    int type;
+    int partnerId;
+};
+
 struct Particle {
+    int id;
+    int type;
+    int flags;
 	float3 pos;
-    float __padding1;
+    float2 __padding1;
 	float4 rot;
 	float3 velocity;
-	int type;
-    int flags;
-    float3 __padding2;
+    int nActiveInteractions;
+    ParticleInteraction interactions[4];
+    float4 debugVector;
 };
+
+
+float
+angle(float3 a, float3 b) {
+    return acos(dot(a, b) / (length(a) * length(b)));
+}
+
+float4
+quaternion(float3 axis, float angle) {
+    float sinAngle = sin(angle * 0.5);
+    float cosAngle = cos(angle * 0.5);
+    return float4(
+        axis.x * sinAngle,
+        axis.y * sinAngle,
+        axis.z * sinAngle,
+        cosAngle
+    );
+}
+
+float4
+quaternionFromTo(float3 a, float3 b) {
+    return quaternion(cross(a, b), angle(a, b));
+}
 
 float3
 transform_vector(float3 a, float4 q) {

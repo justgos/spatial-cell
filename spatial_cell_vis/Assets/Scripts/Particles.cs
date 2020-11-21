@@ -12,14 +12,22 @@ public class Particles : MonoBehaviour
     private Mesh mesh;
     private float meshScale;
     public Material instancedMaterial;
-
     public Material material;
+
+    public GameObject debugVectorModel;
+    private Mesh debugVectorMesh;
+    private float debugVectorMeshScale;
+    private float debugVectorMeshHeight;
+    public Material debugVectorInstancedMaterial;
 
     ComputeBuffer quadPoints;
     ComputeBuffer quadUVs;
 
     uint[] drawArgs;
     ComputeBuffer argsBuffer;
+
+    uint[] debugVectorDrawArgs;
+    ComputeBuffer debugVectorArgsBuffer;
 
     void Start()
     {
@@ -43,18 +51,30 @@ public class Particles : MonoBehaviour
                 new Vector2(0.0f, 1.0f),
         });
 
-        // Argument buffer used by DrawMeshInstancedIndirect.
-        drawArgs = new uint[5] { 0, 0, 0, 0, 0 };
-        // Arguments for drawing mesh.
-        // 0 == number of triangle indices, 1 == population, others are only relevant if drawing submeshes.
         mesh = model.GetComponent<MeshFilter>().sharedMesh;
         meshScale = model.transform.localScale.x;
+        // Argument buffer used by DrawMeshInstancedIndirect.
+        // Arguments for drawing mesh.
+        // 0 == number of triangle indices, 1 == population, others are only relevant if drawing submeshes.
+        drawArgs = new uint[5] { 0, 0, 0, 0, 0 };
         drawArgs[0] = (uint)mesh.GetIndexCount(0);
         drawArgs[1] = (uint)1;
         drawArgs[2] = (uint)mesh.GetIndexStart(0);
         drawArgs[3] = (uint)mesh.GetBaseVertex(0);
         argsBuffer = new ComputeBuffer(1, drawArgs.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
         argsBuffer.SetData(drawArgs);
+
+        debugVectorMesh = debugVectorModel.GetComponent<MeshFilter>().sharedMesh;
+        debugVectorMeshScale = debugVectorModel.transform.localScale.y;
+        debugVectorMeshHeight = (debugVectorMesh.bounds.center.y + debugVectorMesh.bounds.extents.y) * debugVectorMeshScale;
+
+        debugVectorDrawArgs = new uint[5] { 0, 0, 0, 0, 0 };
+        debugVectorDrawArgs[0] = (uint)debugVectorMesh.GetIndexCount(0);
+        debugVectorDrawArgs[1] = (uint)1;
+        debugVectorDrawArgs[2] = (uint)debugVectorMesh.GetIndexStart(0);
+        debugVectorDrawArgs[3] = (uint)debugVectorMesh.GetBaseVertex(0);
+        debugVectorArgsBuffer = new ComputeBuffer(1, debugVectorDrawArgs.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
+        debugVectorArgsBuffer.SetData(debugVectorDrawArgs);
     }
 
     void Update()
@@ -63,6 +83,8 @@ public class Particles : MonoBehaviour
         {
             drawArgs[1] = (uint)simData.NumParticles;
             argsBuffer.SetData(drawArgs);
+            debugVectorDrawArgs[1] = (uint)simData.NumParticles;
+            debugVectorArgsBuffer.SetData(debugVectorDrawArgs);
         }
         instancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
         instancedMaterial.SetFloat("scale", 10.0f);
@@ -70,6 +92,14 @@ public class Particles : MonoBehaviour
         instancedMaterial.SetFloat("simSize", simData.SimSize);
         instancedMaterial.SetBuffer("particles", simData.frameBuffer);
         Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), argsBuffer);
+
+        debugVectorInstancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
+        debugVectorInstancedMaterial.SetFloat("scale", 10.0f);
+        debugVectorInstancedMaterial.SetFloat("meshScale", debugVectorMeshScale);
+        debugVectorInstancedMaterial.SetFloat("meshHeight", debugVectorMeshHeight);
+        debugVectorInstancedMaterial.SetFloat("simSize", simData.SimSize);
+        debugVectorInstancedMaterial.SetBuffer("particles", simData.frameBuffer);
+        Graphics.DrawMeshInstancedIndirect(debugVectorMesh, 0, debugVectorInstancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), debugVectorArgsBuffer);
     }
 
     void OnRenderObject()
@@ -89,5 +119,6 @@ public class Particles : MonoBehaviour
         quadPoints.Dispose();
         quadUVs.Dispose();
         argsBuffer.Dispose();
+        debugVectorArgsBuffer.Dispose();
     }
 }

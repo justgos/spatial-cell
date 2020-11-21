@@ -77,6 +77,7 @@
                 float4(transform_vector(p.pos, p.rot) * scale, 1)
             );*/
             v.vertex.xyz = transform_vector(v.vertex.xyz, p.rot);
+            v.normal.xyz = transform_vector(v.normal.xyz, p.rot);
             float4 pos = mul(baseTransform,
                 float4(p.pos * scale, 1)
             );
@@ -88,6 +89,8 @@
             float3 cameraDist = pos - clippedCameraPos;
 
             o.col = colormap[p.type % colormapLength];
+            if(p.type == 0)
+                o.col = float4(0.2, 0.2, 0.2, 1);
             //o.col = float4(1, 1, 1, 1);
             o.col.rgb /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
 

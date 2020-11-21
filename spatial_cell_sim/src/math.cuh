@@ -134,7 +134,7 @@ inverse(float4 a) {
 }
 
 __device__ __inline__ float4
-lepr(float4 a, float4 b, float amount) {
+lerp(float4 a, float4 b, float amount) {
     float t = amount;
     float t1 = 1.0f - t;
 
@@ -168,6 +168,50 @@ lepr(float4 a, float4 b, float amount) {
     r.w *= invNorm;
 
     return r;
+}
+
+__device__ __inline__ float4
+slerp(float4 a, float4 b, float amount) {
+    const float epsilon = 1e-6f;
+
+    float t = amount;
+
+    float cosOmega = a.x * b.x + a.y * b.y +
+        a.z * b.z + a.w * b.w;
+
+    bool flip = false;
+
+    if (cosOmega < 0.0f)
+    {
+        flip = true;
+        cosOmega = -cosOmega;
+    }
+
+    float s1, s2;
+
+    if (cosOmega > (1.0f - epsilon))
+    {
+        // Too close, do straight linear interpolation.
+        s1 = 1.0f - t;
+        s2 = (flip) ? -t : t;
+    }
+    else
+    {
+        float omega = acos(cosOmega);
+        float invSinOmega = (1 / sin(omega));
+
+        s1 = sin((1.0f - t) * omega) * invSinOmega;
+        s2 = (flip)
+            ? -sin(t * omega) * invSinOmega
+            : sin(t * omega) * invSinOmega;
+    }
+
+    return make_float4(
+        s1 * a.x + s2 * b.x,
+        s1 * a.y + s2 * b.y,
+        s1 * a.z + s2 * b.z,
+        s1 * a.w + s2 * b.w
+    );
 }
 
 __device__ __inline__ float4
