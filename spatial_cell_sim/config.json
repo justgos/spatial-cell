@@ -1,6 +1,6 @@
 {
   "numParticles": 512,
-  "steps": 201,
+  "steps": 501,
   "simSize": 0.1,
   "interactionDistance": 0.01,
   "nGridCellsBits": 3,

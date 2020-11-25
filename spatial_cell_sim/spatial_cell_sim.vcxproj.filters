@@ -18,5 +18,6 @@
     <ClInclude Include="src\memory.cuh" />
     <ClInclude Include="src\dynamics.cuh" />
     <ClInclude Include="src\time.cuh" />
+    <ClInclude Include="src\interactions.cuh" />
   </ItemGroup>
 </Project>

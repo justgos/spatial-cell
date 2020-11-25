@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.UI;
 
 public class SimData : MonoBehaviour
@@ -55,7 +57,8 @@ public class SimData : MonoBehaviour
     public class SimFrame
     {
         public uint numParticles;
-        public Particle[] particles;
+        //public Particle[] particles;
+        public NativeArray<Particle> particles;
     }
 
     private float simSize;
@@ -89,35 +92,34 @@ public class SimData : MonoBehaviour
                 var frame = new SimFrame();
                 frame.numParticles = br.ReadUInt32();
                 //Debug.Log("frame.numParticles " + frame.numParticles);
-                frame.particles = new Particle[frame.numParticles];
+                //frame.particles = new Particle[frame.numParticles];
+                frame.particles = new NativeArray<Particle>((int)frame.numParticles, Allocator.Persistent);
                 var bytes = br.ReadBytes((int)(particleStructSize * frame.numParticles));
                 //Marshal.Copy(, 0, (IntPtr)frame.particles, 0, (int)(particleStructSize * frame.numParticles));
-                for (var i = 0; i < frame.numParticles; i++)
-                    frame.particles[i] = Marshal.PtrToStructure<Particle>(Marshal.UnsafeAddrOfPinnedArrayElement(bytes, particleStructSize * i));
-                //for (var i = 0; i < frame.numParticles; i++)
+
+                //Debug.Log("flags " + bytes[8] + bytes[9] + bytes[10] + bytes[11]);
+
+                unsafe
+                {
+                    fixed (void* bytesPointer = bytes)
+                    {
+                        //UnsafeUtility.CopyStructureToPtr((byte*)bytes[0], frame.particles.GetUnsafePtr());
+                        UnsafeUtility.MemCpy(frame.particles.GetUnsafePtr(), bytesPointer, UnsafeUtility.SizeOf<Particle>() * frame.numParticles);
+                    }
+                }
+                //if(frames.Count == 0)
                 //{
-                //    var p = new Particle();
-                //    p.pos = new Vector3(
-                //        br.ReadSingle(),
-                //        br.ReadSingle(),
-                //        br.ReadSingle()
-                //    );
-                //    p.velocity = new Vector3(
-                //        br.ReadSingle(),
-                //        br.ReadSingle(),
-                //        br.ReadSingle()
-                //    );
-                //    p.type = br.ReadInt32();
-                //    frame.particles[i] = p;
-                //    //Debug.Log("pos " + pos.ToString("F4"));
-                //    //var sphere = Instantiate(spherePrefab, pos, Quaternion.identity);
-                //    //if(j == 0)
-                //    //    sphere.GetComponent<Renderer>().material.color = Color.red;
-                //    //else if (j == 1)
-                //    //    sphere.GetComponent<Renderer>().material.color = Color.green;
-                //    //else if (j == 2)
-                //    //    sphere.GetComponent<Renderer>().material.color = Color.blue;
+                //    Debug.Log("id " + frame.particles[0].id + ", " + bytes[0]);
+                //    Debug.Log("type " + frame.particles[0].type + ", " + bytes[4]);
+                //    Debug.Log("flags " + frame.particles[0].flags + ", " + bytes[8] + bytes[9] + bytes[10] + bytes[11]);
+                //    Debug.Log("pos.x " + frame.particles[0].pos.x);
                 //}
+
+                //UnsafeUtility.
+                //NativeArray.
+                //for (var i = 0; i < frame.numParticles; i++)
+                //    frame.particles[i] = Marshal.PtrToStructure<Particle>(Marshal.UnsafeAddrOfPinnedArrayElement(bytes, particleStructSize * i));
+
                 frames.Add(frame);
             }
             frameSlider.maxValue = frames.Count - 1;
@@ -193,5 +195,6 @@ public class SimData : MonoBehaviour
     void OnDestroy()
     {
         frameBuffer.Dispose();
+        frames.ForEach(f => f.particles.Dispose());
     }
 }
