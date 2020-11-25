@@ -1,7 +1,7 @@
 {
-  "numParticles": 512,
-  "steps": 501,
-  "simSize": 0.1,
+  "numParticles": 2048,
+  "steps": 5001,
+  "simSize": 0.2,
   "interactionDistance": 0.01,
   "nGridCellsBits": 3,
   "movementNoiseScale": 0.0002,

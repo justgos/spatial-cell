@@ -203,7 +203,7 @@ main(void)
             rng(rngGen) * config.simSize,
             rng(rngGen) * config.simSize
         );
-        h_Particles[i].type = rng(rngGen) < 0.1 ? 1 : 0;  //rng(rngGen) * numTypes;
+        h_Particles[i].type = rng(rngGen) < 0.05 ? 1 : 0;  //rng(rngGen) * numTypes;
         h_Particles[i].flags = PARTICLE_FLAG_ACTIVE;
         h_Particles[i].rot = random_rotation_host(rng, rngGen);
         h_Particles[i].velocity = VECTOR_ZERO;
@@ -228,7 +228,7 @@ main(void)
                 h_Particles[i].nActiveInteractions++;
             }
             else {
-                h_Particles[i].pos = make_float3(config.simSize / 3, config.simSize / 3, config.simSize / 3);
+                h_Particles[i].pos = make_float3(config.simSize / 4, config.simSize / 4, config.simSize / 4);
             }
             lastType1ParticleIdx = i;
         }

@@ -78,6 +78,8 @@ public class SimData : MonoBehaviour
 
     void Start()
     {
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
         using (var fs = File.OpenRead(@"../spatial_cell_sim/results/frames.dat"))
         {
             var br = new BinaryReader(fs);
@@ -127,6 +129,8 @@ public class SimData : MonoBehaviour
             frameBuffer.SetData(frames[0].particles);
             numParticles = frames[0].particles.Length;
         }
+        sw.Stop();
+        Debug.Log("Frames loaded in " + ((double)sw.ElapsedTicks / System.Diagnostics.Stopwatch.Frequency) + "s");
     }
 
     void Update()

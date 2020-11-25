@@ -311,14 +311,22 @@ relax(
                                 // Align relative orientation
                                 float4 targetRelativeOrientationDelta = quaternion(VECTOR_RIGHT, 0);
                                 constexpr float relativeOrientationRelaxationSpeed = 0.05f;
+                                float targetRelativePositionAngle = PI / 2;
+
                                 p.rot = slerp(
                                     p.rot,
                                     getTargetRelativeOrientation(p, tp, targetRelativeOrientationDelta),
                                     relativeOrientationRelaxationSpeed
                                 );
 
+                                p.rot = slerp(
+                                    p.rot,
+                                    mul(p.rot, quaternion(cross(up, normalizedDelta), targetRelativePositionAngle - angle(quaternionFromTo(up, normalizedDelta)))),
+                                    //getTargetRelativeOrientation(p, tp, targetRelativeOrientationDelta),
+                                    relativeOrientationRelaxationSpeed
+                                );
+
                                 // Align relative position
-                                float targetRelativePositionAngle = PI / 2;
                                 constexpr float relativePositionRelaxationSpeed = 0.1f;
                                 //float4 targetRelativePositionRotation = quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle);
                                 float3 relaxedRelativePosition = transform_vector(tup, quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle));
