@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include <cuda_runtime.h>
 #include <curand.h>
 #include <curand_kernel.h>
@@ -7,22 +9,22 @@
 #include "constants.cuh"
 
 
-__device__ __inline__ float
+__device__ __host__ __inline__ float
 normsq(float3 a) {
     return a.x * a.x + a.y * a.y + a.z * a.z;
 }
 
-__device__ __inline__ float
+__device__ __host__ __inline__ float
 normsq(float4 a) {
     return a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w;
 }
 
-__device__ __inline__ float
+__device__ __host__ __inline__ float
 norm(float3 a) {
     return sqrt(normsq(a));
 }
 
-__device__ __inline__ float3
+__device__ __host__ __inline__ float3
 normalized(float3 a) {
     float n = norm(a);
     return make_float3(
@@ -32,17 +34,17 @@ normalized(float3 a) {
     );
 }
 
-__device__ __inline__ float
+__device__ __host__ __inline__ float
 dot(float3 a, float3 b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
-__device__ __inline__ float
+__device__ __host__ __inline__ float
 dot(float4 a, float4 b) {
     return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 }
 
-__device__ __inline__ float3
+__device__ __host__ __inline__ float3
 cross(float3 a, float3 b) {
     return make_float3(
         a.y * b.z - a.z * b.y,
@@ -51,7 +53,7 @@ cross(float3 a, float3 b) {
     );
 }
 
-__device__ __inline__ float3
+__device__ __host__ __inline__ float3
 add(float3 a, float3 b) {
     return make_float3(
         a.x + b.x,
@@ -60,7 +62,7 @@ add(float3 a, float3 b) {
     );
 }
 
-__device__ __inline__ float3
+__device__ __host__ __inline__ float3
 mul(float3 a, float b) {
     return make_float3(
         a.x * b,
@@ -69,7 +71,7 @@ mul(float3 a, float b) {
     );
 }
 
-__device__ __inline__ float4
+__device__ __host__ __inline__ float4
 mul(float4 a, float4 b) {
     float cx = a.y * b.z - a.z * b.y;
     float cy = a.z * b.x - a.x * b.z;
@@ -85,17 +87,17 @@ mul(float4 a, float4 b) {
     );
 }
 
-__device__ __inline__ float
+__device__ __host__ __inline__ float
 angle(float3 a, float3 b) {
     return acos(dot(a, b) / (norm(a) * norm(b)));
 }
 
-__device__ __inline__ float
+__device__ __host__ __inline__ float
 angle(float4 a) {
     return 2.0f * acos(a.w);
 }
 
-__device__ __inline__ float4
+__device__ __host__ __inline__ float4
 quaternion(float3 axis, float angle) {
     float sinAngle = sin(angle * 0.5);
     float cosAngle = cos(angle * 0.5);
@@ -107,12 +109,12 @@ quaternion(float3 axis, float angle) {
     );
 }
 
-__device__ __inline__ float4
+__device__ __host__ __inline__ float4
 quaternionFromTo(float3 a, float3 b) {
     return quaternion(cross(a, b), angle(a, b));
 }
 
-__device__ __inline__ float3
+__device__ __host__ __inline__ float3
 negate(float3 a) {
     return make_float3(
         -a.x,
@@ -121,7 +123,7 @@ negate(float3 a) {
     );
 }
 
-__device__ __inline__ float4
+__device__ __host__ __inline__ float4
 inverse(float4 a) {
     float invNorm = 1.0f / normsq(a);
 
@@ -133,7 +135,7 @@ inverse(float4 a) {
     );
 }
 
-__device__ __inline__ float4
+__device__ __host__ __inline__ float4
 lerp(float4 a, float4 b, float amount) {
     float t = amount;
     float t1 = 1.0f - t;
@@ -170,7 +172,7 @@ lerp(float4 a, float4 b, float amount) {
     return r;
 }
 
-__device__ __inline__ float4
+__device__ __host__ __inline__ float4
 slerp(float4 a, float4 b, float amount) {
     const float epsilon = 1e-6f;
 
@@ -230,10 +232,10 @@ random_rotation(curandState* rngState) {
 }
 
 float4
-random_rotation_host(std::uniform_real_distribution<double> rng, std::mt19937 rngGen) {
-    float u = rng(rngGen),
-        v = rng(rngGen),
-        w = rng(rngGen);
+random_rotation_host(std::function<double()> rng) {
+    float u = rng(),
+        v = rng(),
+        w = rng();
     float su = sqrt(u),
         su1 = sqrt(1 - u);
     return make_float4(
@@ -244,7 +246,7 @@ random_rotation_host(std::uniform_real_distribution<double> rng, std::mt19937 rn
     );
 }
 
-__device__ __inline__ float3
+__device__ __host__ __inline__ float3
 transform_vector(float3 a, float4 q) {
     /*float3 u = make_float3(q.x, q.y, q.z);
     float s = q.w;

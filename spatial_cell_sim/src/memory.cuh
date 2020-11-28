@@ -83,8 +83,8 @@ copyToHost(void* dst, const void* src, size_t count) {
 
 template <typename T>
 void
-swapBuffers(T* a, T* b) {
-    T t = *a;
+swapBuffers(T** a, T** b) {
+    T* t = *a;
     *a = *b;
     *b = t;
 }
@@ -97,3 +97,103 @@ cudaUnalloc(void *ptr) {
         fprintf(stderr, "Failed to free device buffer (error code %s)!\n", cudaGetErrorString(err));
     }
 }
+
+
+template <typename T>
+class SingleBuffer {
+public:
+    T* h_Current;
+    T* d_Current;
+    size_t size;
+
+    SingleBuffer(size_t count)
+        : size(count * sizeof(T))
+    {
+        universalAlloc(&h_Current, &d_Current, count);
+        memset(h_Current, 0, size);
+    }
+
+    void
+        copyToDevice() {
+        ::copyToDevice(d_Current, h_Current, size);
+    }
+
+    void
+        copyToHost() {
+        ::copyToHost(h_Current, d_Current, size);
+    }
+
+    ~SingleBuffer() {
+        cudaUnalloc(d_Current);
+        free(h_Current);
+    }
+};
+
+template <typename T>
+class DoubleBuffer : public SingleBuffer<T> {
+public:
+    T* d_Next;
+
+    DoubleBuffer(size_t count)
+        : SingleBuffer(count)
+    {
+        cudaAlloc(&d_Next, count);
+    }
+
+    void
+    swap() {
+        swapBuffers(&d_Current, &d_Next);
+    }
+
+    void
+    clearNextOnDevice() {
+        cudaMemset(d_Next, 0, size);
+    }
+
+    ~DoubleBuffer() {
+        cudaUnalloc(d_Next);
+    }
+};
+
+template <typename T>
+class DeviceOnlySingleBuffer {
+public:
+    T* d_Current;
+    size_t size;
+
+    DeviceOnlySingleBuffer(size_t count)
+        : size(count * sizeof(T))
+    {
+        cudaAlloc(&d_Current, count);
+    }
+
+    void
+    clear() {
+        cudaMemset(d_Current, 0, size);
+    }
+
+    ~DeviceOnlySingleBuffer() {
+        cudaUnalloc(d_Current);
+    }
+};
+
+template <typename T>
+class DeviceOnlyDoubleBuffer : public DeviceOnlySingleBuffer<T> {
+public:
+    T* d_Next;
+
+    DeviceOnlyDoubleBuffer(size_t count)
+        : DeviceOnlySingleBuffer(count)
+    {
+        cudaAlloc(&d_Next, count);
+    }
+
+    void
+    swap() {
+        swapBuffers(&d_Current, &d_Next);
+    }
+
+    ~DeviceOnlyDoubleBuffer() {
+        cudaUnalloc(d_Next);
+    }
+};

@@ -125,6 +125,8 @@
     <ClInclude Include="src\interactions.cuh" />
     <ClInclude Include="src\math.cuh" />
     <ClInclude Include="src\memory.cuh" />
+    <ClInclude Include="src\setup\interaction_setup.cuh" />
+    <ClInclude Include="src\setup\particle_setup.cuh" />
     <ClInclude Include="src\time.cuh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

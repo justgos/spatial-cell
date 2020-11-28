@@ -12,7 +12,7 @@ struct Particle {
     int type;
     int flags;
 	float3 pos;
-    float2 __padding1;
+    float __padding1[2];
 	float4 rot;
 	float3 velocity;
     int nActiveInteractions;

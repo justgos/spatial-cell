@@ -19,6 +19,8 @@
 #include <ctime>
 #include <ratio>
 #include <chrono>
+#include <functional>
+//#include <windows.h>
 
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
@@ -38,6 +40,8 @@
 #include "grid.cuh"
 #include "memory.cuh"
 #include "dynamics.cuh"
+#include "setup/particle_setup.cuh"
+#include "setup/interaction_setup.cuh"
 
 
 __global__ void
@@ -128,7 +132,8 @@ main(void)
 
     // Setup the random generator for the host
     std::mt19937 rngGen(42);
-    std::uniform_real_distribution<double> rng(0.0, 1.0);
+    std::uniform_real_distribution<double> rngDist(0.0, 1.0);
+    std::function<double()> rng = [&rngDist, &rngGen]() { return rngDist(rngGen); };
 
     size_t count = config.numParticles;
     size_t size = count * sizeof(Particle);
@@ -148,28 +153,71 @@ main(void)
     printf(", debugVector %d", offsetof(Particle, debugVector));
     printf("\n\n");
 
+
+    //HANDLE hMapFile;
+    //LPCTSTR pBuf;
+    //std::string memBufName = "spatial_cell_buf";
+    //unsigned int memBufSize = 2 * 1024 * 1024 * 1024;
+
+    //hMapFile = CreateFileMapping(
+    //    INVALID_HANDLE_VALUE,    // use paging file
+    //    NULL,                    // default security
+    //    PAGE_READWRITE,          // read/write access
+    //    0,                       // maximum object size (high-order DWORD)
+    //    memBufSize,                // maximum object size (low-order DWORD)
+    //    memBufName.c_str()                 // name of mapping object
+    //);
+
+    //if (hMapFile == NULL)
+    //{
+    //    printf(TEXT("Could not create file mapping object (%d).\n"),
+    //        GetLastError());
+    //    return 1;
+    //}
+    //pBuf = (LPTSTR)MapViewOfFile(hMapFile,   // handle to map object
+    //    FILE_MAP_ALL_ACCESS, // read/write permission
+    //    0,
+    //    0,
+    //    memBufSize
+    //);
+
+    //if (pBuf == NULL)
+    //{
+    //    printf(TEXT("Could not map view of file (%d).\n"),
+    //        GetLastError());
+
+    //    CloseHandle(hMapFile);
+
+    //    return 1;
+    //}
+
+    //FillMemory((PVOID)pBuf, 0, memBufSize);
+
     // Allocate the host & device variables
-    Particle *h_Particles, *h_NextParticles;
-    Particle *d_Particles = NULL,
-        *d_NextParticles = NULL;
-    universalAlloc(&h_Particles, &d_Particles, count);
-    universalAlloc(&h_NextParticles, &d_NextParticles, count);
-    int nInactiveParticles = 40;
-    int *h_nActiveParticles = new int[] { config.numParticles - nInactiveParticles },
-        *h_lastActiveParticle = new int[] { h_nActiveParticles[0]-1 },
-        *h_nextParticleId = new int[] { h_nActiveParticles[0] };
-    int *d_nActiveParticles = NULL,
-        *d_lastActiveParticle = NULL,
-        *d_nextParticleId = NULL;
-    cudaAlloc(&d_nActiveParticles, 1, h_nActiveParticles);
-    cudaAlloc(&d_lastActiveParticle, 1, h_lastActiveParticle);
-    cudaAlloc(&d_nextParticleId, 1, h_nextParticleId);
-    unsigned int *d_Indices = NULL,
+    DoubleBuffer<Particle> particles(count);
+    DeviceOnlyDoubleBuffer<unsigned int> indices(count);
+    DeviceOnlySingleBuffer<unsigned int> gridRanges(config.gridSize * 2);
+    /*Particle *h_Particles, *h_NextParticles;
+    Particle *particles.d_Current = NULL,
+        *particles.d_Next = NULL;
+    universalAlloc(&h_Particles, &particles.d_Current, count);
+    universalAlloc(&h_NextParticles, &particles.d_Next, count);*/
+    //int nInactiveParticles = 40;
+    SingleBuffer<int> nActiveParticles(1);
+    SingleBuffer<int> lastActiveParticle(1);
+    SingleBuffer<int> nextParticleId(1);
+    /*int *nActiveParticles.h_Current = new int[] { 0 },
+        *h_lastActiveParticle = new int[] { -1 },
+        *h_nextParticleId = new int[] { 0 };
+    int *nActiveParticles.d_Current = NULL,
+        *lastActiveParticle.d_Current = NULL,
+        *d_nextParticleId = NULL;*/
+    /*unsigned int *d_Indices = NULL,
         *d_NextIndices = NULL,
         *d_GridRanges = NULL;
     cudaAlloc(&d_Indices, count);
     cudaAlloc(&d_NextIndices, count);
-    cudaAlloc(&d_GridRanges, config.gridSize * 2);
+    cudaAlloc(&d_GridRanges, config.gridSize * 2);*/
 
     curandState* rngState;
     cudaAlloc(&rngState, count);
@@ -186,7 +234,7 @@ main(void)
     * reduce the number of threads per blocks from 512 to 384, in the `Policy700`, line 788 - the first of "Downsweep policies"
     */
     cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
-        d_Indices, d_NextIndices, d_Particles, d_NextParticles, count);
+        indices.d_Current, indices.d_Next, particles.d_Current, particles.d_Next, count);
     cudaMalloc(&d_temp_storage, temp_storage_bytes);
     printf("temp_storage_bytes %d\n", temp_storage_bytes);
 
@@ -194,48 +242,36 @@ main(void)
     int lastType1ParticleIdx = -1;
 
     // Initialize the particles
-    memset(h_Particles, 0, size);
-    for (int i = 0; i < h_nActiveParticles[0]; i++)
-    {
-        h_Particles[i].id = i;
-        h_Particles[i].pos = make_float3(
-            rng(rngGen) * config.simSize,
-            rng(rngGen) * config.simSize,
-            rng(rngGen) * config.simSize
-        );
-        h_Particles[i].type = rng(rngGen) < 0.05 ? 1 : 0;  //rng(rngGen) * numTypes;
-        h_Particles[i].flags = PARTICLE_FLAG_ACTIVE;
-        h_Particles[i].rot = random_rotation_host(rng, rngGen);
-        h_Particles[i].velocity = VECTOR_ZERO;
-        h_Particles[i].nActiveInteractions = 0;
+    fillParticlesUniform(
+        config.numParticles * 0.8,
+        0,
+        particles.h_Current, nActiveParticles.h_Current, &config, rng
+    );
 
-        if (h_Particles[i].type == 1) {
-            if (lastType1ParticleIdx >= 0) {
-                Particle *interactionPartner = &h_Particles[lastType1ParticleIdx];
-                // Position it near the partner particle
-                h_Particles[i].pos = make_float3(
-                    min(max(interactionPartner->pos.x + 0.0015, 0.0f), 1.0f),
-                    min(max(interactionPartner->pos.y + 0.0015, 0.0f), 1.0f),
-                    min(max(interactionPartner->pos.z + 0.0015, 0.0f), 1.0f)
-                );
-                // Add interaction for the partner
-                interactionPartner->interactions[interactionPartner->nActiveInteractions].type = 0;
-                interactionPartner->interactions[interactionPartner->nActiveInteractions].partnerId = i;
-                interactionPartner->nActiveInteractions++;
-                // Add interaction for the current particle
-                h_Particles[i].interactions[h_Particles[i].nActiveInteractions].type = 0;
-                h_Particles[i].interactions[h_Particles[i].nActiveInteractions].partnerId = lastType1ParticleIdx;
-                h_Particles[i].nActiveInteractions++;
-            }
-            else {
-                h_Particles[i].pos = make_float3(config.simSize / 4, config.simSize / 4, config.simSize / 4);
-            }
-            lastType1ParticleIdx = i;
-        }
+    int lineStartIdx = nActiveParticles.h_Current[0];
+    fillParticlesStraightLine(
+        config.numParticles * 0.05,
+        1,
+        make_float3(config.simSize / 4, config.simSize / 4, config.simSize / 4),
+        make_float3(0.0015, 0.0015, 0.0015),
+        particles.h_Current, nActiveParticles.h_Current, &config, rng
+    );
+    printf("rot %f, %f, %f\n", particles.h_Current[lineStartIdx].rot.x, particles.h_Current[lineStartIdx].rot.y, particles.h_Current[lineStartIdx].rot.z);
+    printf("rot %f, %f, %f\n", particles.h_Current[lineStartIdx + 1].rot.x, particles.h_Current[lineStartIdx + 1].rot.y, particles.h_Current[lineStartIdx + 1].rot.z);
+    int lineEndIdx = nActiveParticles.h_Current[0];
+    linkParticlesSerially(
+        lineStartIdx,
+        lineEndIdx,
+        particles.h_Current, &config, rng
+    );
+    particles.copyToDevice();
 
-        h_Particles[i].debugVector = make_float4(0, 0, 0, 0);
-    }
-    copyToDevice(d_Particles, h_Particles, size);
+    // Set the reference particle numbers/indices
+    lastActiveParticle.h_Current[0] = nActiveParticles.h_Current[0] - 1;
+    nextParticleId.h_Current[0] = nActiveParticles.h_Current[0];
+    nActiveParticles.copyToDevice();
+    lastActiveParticle.copyToDevice();
+    nextParticleId.copyToDevice();
 
     printf("Particle CUDA kernel with %d blocks of %d threads\n", numCudaBlocks(config.numParticles), threadsPerBlock);
 
@@ -251,7 +287,18 @@ main(void)
 
     // Number of existing particles
     fout.write((char*)&config.numParticles, sizeof(unsigned int));
-    fout.write((char*)h_Particles, size);
+    fout.write((char*)particles.h_Current, size);
+
+    /*char *memBufPtr = (char*)pBuf;
+    CopyMemory((PVOID)memBufPtr, (char*)&config.simSize, sizeof(float));
+    memBufPtr += sizeof(float);
+    CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
+    memBufPtr += sizeof(unsigned int);
+
+    CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
+    memBufPtr += sizeof(unsigned int);
+    CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
+    memBufPtr += size;*/
 
     printf("\n");
     printf("[Simulating...]\n");
@@ -261,58 +308,90 @@ main(void)
     for (int i = 0; i < config.steps; i++) {
         // Order particles by their grid positions
         time_point t1 = now();
-        updateIndices KERNEL_ARGS2(numCudaBlocks(config.numParticles), threadsPerBlock) (d_Particles, d_Indices);
+        updateIndices KERNEL_ARGS2(numCudaBlocks(config.numParticles), threadsPerBlock) (particles.d_Current, indices.d_Current);
         cudaDeviceSynchronize();
         time_point t3 = now();
         cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
-            d_Indices, d_NextIndices, d_Particles, d_NextParticles, count);
+            indices.d_Current, indices.d_Next, particles.d_Current, particles.d_Next, count);
         cudaDeviceSynchronize();
-        swapBuffers(&d_Particles, &d_NextParticles);
-        swapBuffers(&d_Indices, &d_NextIndices);
+        particles.swap();
+        indices.swap();
         //printCUDAIntArray(d_Indices, config.numParticles);
         time_point t4 = now();
-        cudaMemset(d_GridRanges, 0, config.gridSize * 2 * sizeof(unsigned int));
-        updateGridRanges KERNEL_ARGS2(numCudaBlocks(config.gridSize), threadsPerBlock) (d_Indices, d_GridRanges);
+        gridRanges.clear();
+        updateGridRanges KERNEL_ARGS2(numCudaBlocks(config.gridSize), threadsPerBlock) (indices.d_Current, gridRanges.d_Current);
         cudaDeviceSynchronize();
-        //printCUDAIntArray(d_GridRanges, config.gridSize * 2);
+        //printCUDAIntArray(gridRanges.d_Current, config.gridSize * 2);
 
-        copyToHost(h_nActiveParticles, d_nActiveParticles, sizeof(int));
-        h_lastActiveParticle[0] = h_nActiveParticles[0];
-        copyToDevice(d_lastActiveParticle, h_lastActiveParticle, sizeof(int));
+        nActiveParticles.copyToHost();
+        lastActiveParticle.h_Current[0] = nActiveParticles.h_Current[0];
+        lastActiveParticle.copyToDevice();
 
         // Simulate the dynamics
         time_point t5 = now();
-        cudaMemset(d_NextParticles, 0, size);
-        move KERNEL_ARGS2(numCudaBlocks(h_nActiveParticles[0]), threadsPerBlock) (i, rngState, d_Particles, d_NextParticles, h_nActiveParticles[0], d_nActiveParticles, d_lastActiveParticle, d_nextParticleId, d_Indices, d_GridRanges);
-        swapBuffers(&d_Particles, &d_NextParticles);
+
+        particles.clearNextOnDevice();
+        move KERNEL_ARGS2(numCudaBlocks(nActiveParticles.h_Current[0]), threadsPerBlock) (
+            i,
+            rngState,
+            particles.d_Current,
+            particles.d_Next,
+            nActiveParticles.h_Current[0],
+            nActiveParticles.d_Current,
+            lastActiveParticle.d_Current,
+            nextParticleId.d_Current,
+            indices.d_Current,
+            gridRanges.d_Current
+        );
+        particles.swap();
         cudaDeviceSynchronize();
-        copyToHost(h_nActiveParticles, d_nActiveParticles, sizeof(int));
+        copyToHost(nActiveParticles.h_Current, nActiveParticles.d_Current, sizeof(int));
         time_point t6 = now();
 
         for (int j = 0; j < config.relaxationSteps; j++) {
             // Relax the accumulated tensions
-            cudaMemset(d_NextParticles, 0, size);
-            relax KERNEL_ARGS2(numCudaBlocks(h_nActiveParticles[0]), threadsPerBlock) (i, rngState, d_Particles, d_NextParticles, h_nActiveParticles[0], d_Indices, d_GridRanges);
-            swapBuffers(&d_Particles, &d_NextParticles);
+            cudaMemset(particles.d_Next, 0, size);
+            relax KERNEL_ARGS2(numCudaBlocks(nActiveParticles.h_Current[0]), threadsPerBlock) (
+                i,
+                rngState,
+                particles.d_Current,
+                particles.d_Next,
+                nActiveParticles.h_Current[0],
+                indices.d_Current,
+                gridRanges.d_Current
+            );
+            particles.swap();
             cudaDeviceSynchronize();
         }
         time_point t7 = now();
 
+        particles.copyToHost();
+
+        time_point t8 = now();
+
+        fout.write((char*)&config.numParticles, sizeof(unsigned int));
+        fout.write((char*)particles.h_Current, size);
+
+        /*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
+        memBufPtr += sizeof(unsigned int);
+        CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
+        memBufPtr += size;*/
+
+        time_point t9 = now();
+
         if (i % 10 == 0) {
-            printf("step %d, nActiveParticles %d, updateIndices %f, SortPairs %f, updateGridRanges %f, move %f, relax %f\n",
+            printf("step %d, nActiveParticles %d, updateIndices %f, SortPairs %f, updateGridRanges %f, move %f, relax %f, cudaMemcpy %f, fout.write %f\n",
                 i,
-                h_nActiveParticles[0],
+                nActiveParticles.h_Current[0],
                 getDuration(t1, t3),
                 getDuration(t3, t4),
                 getDuration(t4, t5),
                 getDuration(t5, t6),
-                getDuration(t6, t7)
+                getDuration(t6, t7),
+                getDuration(t7, t8),
+                getDuration(t8, t9)
             );
         }
-
-        cudaMemcpy(h_Particles, d_Particles, size, cudaMemcpyDeviceToHost);
-        fout.write((char*)&config.numParticles, sizeof(unsigned int));
-        fout.write((char*)h_Particles, size);
     }
     cudaDeviceSynchronize();
     fout.close();
@@ -326,22 +405,28 @@ main(void)
         exit(EXIT_FAILURE);
     }
 
-    cudaUnalloc(d_Particles);
-    cudaUnalloc(d_NextParticles);
-    cudaUnalloc(d_Indices);
-    cudaUnalloc(d_NextIndices);
-    cudaUnalloc(d_GridRanges);
-    cudaUnalloc(d_nActiveParticles);
-    cudaUnalloc(d_lastActiveParticle);
-    cudaUnalloc(d_nextParticleId);
+    /*printf("Press any key to exit...\n");
+    getchar();
+
+    UnmapViewOfFile(pBuf);
+    CloseHandle(hMapFile);*/
+
+    /*cudaUnalloc(particles.d_Current);
+    cudaUnalloc(particles.d_Next);*/
+    /*cudaUnalloc(d_Indices);
+    cudaUnalloc(d_NextIndices);*/
+    /*cudaUnalloc(d_GridRanges);
+    cudaUnalloc(nActiveParticles.d_Current);
+    cudaUnalloc(lastActiveParticle.d_Current);
+    cudaUnalloc(d_nextParticleId);*/
     cudaUnalloc(d_temp_storage);
 
     // Free host memory
-    free(h_Particles);
-    free(h_NextParticles);
-    delete h_nActiveParticles;
+    /*free(h_Particles);
+    free(h_NextParticles);*/
+    /*delete nActiveParticles.h_Current;
     delete h_lastActiveParticle;
-    delete h_nextParticleId;
+    delete h_nextParticleId;*/
 
     printf("Done\n");
     return 0;

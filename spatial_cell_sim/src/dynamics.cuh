@@ -119,18 +119,17 @@ move(
                             int newIdx = atomicAdd(lastActiveParticle, 1);
                             if (newIdx < d_Config.numParticles) {
                                 int newId = atomicAdd(nextParticleId, 1);
-                                Particle np = Particle();
-                                np.id = newId;
-                                np.type = 2;
-                                np.flags = PARTICLE_FLAG_ACTIVE;
-                                np.pos = make_float3(
-                                    p.pos.x + delta.x / 2,
-                                    p.pos.y + delta.y / 2,
-                                    p.pos.z + delta.z / 2
+                                Particle np = Particle(
+                                    newId,
+                                    2,
+                                    0,
+                                    make_float3(
+                                        p.pos.x + delta.x / 2,
+                                        p.pos.y + delta.y / 2,
+                                        p.pos.z + delta.z / 2
+                                    ),
+                                    random_rotation(&rngState[idx])
                                 );
-                                np.rot = random_rotation(&rngState[idx]);
-                                np.velocity = VECTOR_ZERO;
-                                np.nActiveInteractions = 0;
                                 nextParticles[newIdx] = np;
                                 atomicAdd(nActiveParticles, 1);
                             }

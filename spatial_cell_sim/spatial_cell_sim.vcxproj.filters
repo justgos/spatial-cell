@@ -19,5 +19,7 @@
     <ClInclude Include="src\dynamics.cuh" />
     <ClInclude Include="src\time.cuh" />
     <ClInclude Include="src\interactions.cuh" />
+    <ClInclude Include="src\setup\particle_setup.cuh" />
+    <ClInclude Include="src\setup\interaction_setup.cuh" />
   </ItemGroup>
 </Project>

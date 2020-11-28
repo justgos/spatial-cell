@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using Unity.Collections;
@@ -38,12 +39,13 @@ public class SimData : MonoBehaviour
     };
 
     [StructLayout(LayoutKind.Explicit, Size = 112)]
-    public struct Particle
+    unsafe public struct Particle
     {
         [FieldOffset(0)]  public int id;
         [FieldOffset(4)]  public int type;
         [FieldOffset(8)]  public int flags;
         [FieldOffset(12)] public Vector3_ pos;
+        [FieldOffset(24)] public fixed float __padding1[2];
         [FieldOffset(32)] public Vector4_ rot;
         [FieldOffset(48)] public Vector3_ velocity;
         [FieldOffset(60)] public int nActiveInteractions;
@@ -80,54 +82,81 @@ public class SimData : MonoBehaviour
     {
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
         sw.Start();
+
+
+        //using (var mmf = MemoryMappedFile.OpenExisting("spatial_cell_buf"))
+        //{
+        //    mmf.CreateViewStream();
+        //    using (var accessor = mmf.CreateViewAccessor(0, 2 * 1024 * 1024 * 1023))
+        //    {
+        //        int colorSize = Marshal.SizeOf(typeof(MyColor));
+        //        MyColor color;
+
+        //        // Make changes to the view.
+        //        for (long i = 0; i < 1500000; i += colorSize)
+        //        {
+        //            accessor.Read(i, out color);
+        //            color.Brighten(20);
+        //            accessor.Write(i, ref color);
+        //        }
+        //    }
+        //}
+
         using (var fs = File.OpenRead(@"../spatial_cell_sim/results/frames.dat"))
+        //using (var mmf = MemoryMappedFile.OpenExisting("spatial_cell_buf"))
         {
-            var br = new BinaryReader(fs);
-            simSize = br.ReadSingle();
-            particleBufferSize = br.ReadInt32();
-            var particleStructSize = Marshal.SizeOf(new Particle());
-            Debug.Log("particleStructSize " +  particleStructSize);
-            frameBuffer = new ComputeBuffer(particleBufferSize, particleStructSize);
-            while (br.BaseStream.Position != br.BaseStream.Length)
-            //for (var j = 0; j < nFrames; j++)
-            {
-                var frame = new SimFrame();
-                frame.numParticles = br.ReadUInt32();
-                //Debug.Log("frame.numParticles " + frame.numParticles);
-                //frame.particles = new Particle[frame.numParticles];
-                frame.particles = new NativeArray<Particle>((int)frame.numParticles, Allocator.Persistent);
-                var bytes = br.ReadBytes((int)(particleStructSize * frame.numParticles));
-                //Marshal.Copy(, 0, (IntPtr)frame.particles, 0, (int)(particleStructSize * frame.numParticles));
-
-                //Debug.Log("flags " + bytes[8] + bytes[9] + bytes[10] + bytes[11]);
-
-                unsafe
+            //using (var accessor = mmf.CreateViewAccessor(0, 2 * 1024 * 1024 * 1023))
+            //{
+                //var br = new BinaryReader(fs);
+                //var memStream = mmf.CreateViewStream();
+                var br = new BinaryReader(fs);
+                simSize = br.ReadSingle();
+                particleBufferSize = br.ReadInt32();
+                var particleStructSize = Marshal.SizeOf(new Particle());
+                Debug.Log("particleStructSize " + particleStructSize);
+                frameBuffer = new ComputeBuffer(particleBufferSize, particleStructSize);
+                while (br.BaseStream.Position != br.BaseStream.Length)
+                //for (var j = 0; j < nFrames; j++)
                 {
-                    fixed (void* bytesPointer = bytes)
+                    var frame = new SimFrame();
+                    frame.numParticles = br.ReadUInt32();
+                    if (frame.numParticles < 1)
+                        break;
+                    //Debug.Log("frame.numParticles " + frame.numParticles);
+                    //frame.particles = new Particle[frame.numParticles];
+                    frame.particles = new NativeArray<Particle>((int)frame.numParticles, Allocator.Persistent);
+                    int frameSize = (int)(particleStructSize * frame.numParticles);
+                    var bytes = br.ReadBytes(frameSize);
+                    //Marshal.Copy(, 0, (IntPtr)frame.particles, 0, (int)(particleStructSize * frame.numParticles));
+
+                    //Debug.Log("flags " + bytes[8] + bytes[9] + bytes[10] + bytes[11]);
+
+                    unsafe
                     {
-                        //UnsafeUtility.CopyStructureToPtr((byte*)bytes[0], frame.particles.GetUnsafePtr());
-                        UnsafeUtility.MemCpy(frame.particles.GetUnsafePtr(), bytesPointer, UnsafeUtility.SizeOf<Particle>() * frame.numParticles);
+                        //byte* ptr = (byte*)0;
+                        //accessor.SafeMemoryMappedViewHandle.AcquirePointer(ref ptr);
+                        fixed (void* bytesPointer = bytes)
+                        {
+                            //UnsafeUtility.CopyStructureToPtr((byte*)bytes[0], frame.particles.GetUnsafePtr());
+                            UnsafeUtility.MemCpy(frame.particles.GetUnsafePtr(), bytesPointer, UnsafeUtility.SizeOf<Particle>() * frame.numParticles);
+                            //UnsafeUtility.MemCpy(frame.particles.GetUnsafePtr(), ptr + br.BaseStream.Position, UnsafeUtility.SizeOf<Particle>() * frame.numParticles);
+                        }
+                        //accessor.SafeMemoryMappedViewHandle.ReleasePointer();
                     }
+                    //br.BaseStream.Position += frameSize;
+
+                    //UnsafeUtility.
+                    //NativeArray.
+                    //for (var i = 0; i < frame.numParticles; i++)
+                    //    frame.particles[i] = Marshal.PtrToStructure<Particle>(Marshal.UnsafeAddrOfPinnedArrayElement(bytes, particleStructSize * i));
+
+                    frames.Add(frame);
                 }
-                //if(frames.Count == 0)
-                //{
-                //    Debug.Log("id " + frame.particles[0].id + ", " + bytes[0]);
-                //    Debug.Log("type " + frame.particles[0].type + ", " + bytes[4]);
-                //    Debug.Log("flags " + frame.particles[0].flags + ", " + bytes[8] + bytes[9] + bytes[10] + bytes[11]);
-                //    Debug.Log("pos.x " + frame.particles[0].pos.x);
-                //}
-
-                //UnsafeUtility.
-                //NativeArray.
-                //for (var i = 0; i < frame.numParticles; i++)
-                //    frame.particles[i] = Marshal.PtrToStructure<Particle>(Marshal.UnsafeAddrOfPinnedArrayElement(bytes, particleStructSize * i));
-
-                frames.Add(frame);
-            }
-            frameSlider.maxValue = frames.Count - 1;
-            frameNumberText.text = frameSlider.value.ToString();
-            frameBuffer.SetData(frames[0].particles);
-            numParticles = frames[0].particles.Length;
+                frameSlider.maxValue = frames.Count - 1;
+                frameNumberText.text = frameSlider.value.ToString();
+                frameBuffer.SetData(frames[0].particles);
+                numParticles = frames[0].particles.Length;
+            //}
         }
         sw.Stop();
         Debug.Log("Frames loaded in " + ((double)sw.ElapsedTicks / System.Diagnostics.Stopwatch.Frequency) + "s");
