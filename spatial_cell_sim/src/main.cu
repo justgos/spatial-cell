@@ -27,8 +27,6 @@
 #include <curand.h>
 #include <curand_kernel.h>
 #include <crt/math_functions.h>
-#include <cub/cub.cuh>
-//#include <cub/device/device_radix_sort.cuh>
 
 #include <json/json.h>
 
@@ -185,21 +183,10 @@ main(void)
     SingleBuffer<int> nextParticleId(1);
     DeviceOnlySingleBuffer<curandState> rngState(count);
 
+    RadixSortPairs<Particle> particleSort(&indices, &particles);
+
     // Copy the config into the device constant memory
     cudaMemcpyToSymbol(d_Config, &config, sizeof(Config), 0, cudaMemcpyHostToDevice);
-
-    // Allocate the temporary buffer for sorting
-    void* d_temp_storage = NULL;
-    size_t temp_storage_bytes = 0;
-    /*
-    * The fix for "uses too much shared data" is to change
-    * C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\include\cub\device\dispatch\dispatch_radix_sort.cuh
-    * reduce the number of threads per blocks from 512 to 384, in the `Policy700`, line 788 - the first of "Downsweep policies"
-    */
-    cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
-        indices.d_Current, indices.d_Next, particles.d_Current, particles.d_Next, count);
-    cudaMalloc(&d_temp_storage, temp_storage_bytes);
-    printf("temp_storage_bytes %d\n", temp_storage_bytes);
 
     int numTypes = 2;
     int lastType1ParticleIdx = -1;
@@ -267,8 +254,7 @@ main(void)
         updateIndices KERNEL_ARGS2(numCudaBlocks(config.numParticles), threadsPerBlock) (particles.d_Current, indices.d_Current);
         cudaDeviceSynchronize();
         time_point t3 = now();
-        cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
-            indices.d_Current, indices.d_Next, particles.d_Current, particles.d_Next, count);
+        particleSort.sort(&indices, &particles);
         cudaDeviceSynchronize();
         particles.swap();
         indices.swap();
@@ -364,8 +350,6 @@ main(void)
 
     UnmapViewOfFile(pBuf);
     CloseHandle(hMapFile);*/
-
-    cudaUnalloc(d_temp_storage);
 
     printf("Done\n");
     return 0;

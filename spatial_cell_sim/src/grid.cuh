@@ -3,8 +3,11 @@
 #include <cuda_runtime.h>
 #include <curand.h>
 #include <curand_kernel.h>
+#include <cub/cub.cuh>
+//#include <cub/device/device_radix_sort.cuh>
 
 #include "constants.cuh"
+#include "memory.cuh"
 
 __device__ __inline__ unsigned int
 getGridIdx(float coord)
@@ -62,3 +65,38 @@ updateGridRanges(const unsigned int* indices, unsigned int* gridRanges)
     if (endIndex >= d_Config.numParticles || indices[endIndex] != lastIdx)
         gridRanges[lastIdx * 2 + 1] = endIndex;
 }
+
+
+template <typename T>
+class RadixSortPairs {
+public:
+    void* d_temp_storage = NULL;
+    size_t temp_storage_bytes = 0;
+
+    RadixSortPairs(
+        DeviceOnlyDoubleBuffer<unsigned int> *indices,
+        DoubleBuffer<T> *items
+    ) {
+        /*
+         * The fix for "uses too much shared data" is to change
+         * C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\include\cub\device\dispatch\dispatch_radix_sort.cuh
+         * reduce the number of threads per blocks from 512 to 384, in the `Policy700`, line 788 - the first of "Downsweep policies"
+        */
+        cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
+            indices->d_Current, indices->d_Next, items->d_Current, items->d_Next, indices->count);
+        cudaMalloc(&d_temp_storage, temp_storage_bytes);
+        printf("Allocated %d bytes as temporary storage for RadixSortPairs\n", temp_storage_bytes);
+    }
+
+    void sort(
+        DeviceOnlyDoubleBuffer<unsigned int>* indices,
+        DoubleBuffer<T>* items
+    ) {
+        cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
+            indices->d_Current, indices->d_Next, items->d_Current, items->d_Next, indices->count);
+    }
+
+    ~RadixSortPairs() {
+        cudaUnalloc(d_temp_storage);
+    }
+};
