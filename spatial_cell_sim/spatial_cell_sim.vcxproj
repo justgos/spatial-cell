@@ -127,6 +127,7 @@
     <ClInclude Include="src\memory.cuh" />
     <ClInclude Include="src\setup\interaction_setup.cuh" />
     <ClInclude Include="src\setup\particle_setup.cuh" />
+    <ClInclude Include="src\storage.cuh" />
     <ClInclude Include="src\time.cuh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

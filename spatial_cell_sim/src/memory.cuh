@@ -62,8 +62,8 @@ universalAlloc(T** hostVar, T** deviceVar, size_t count) {
 //}
 
 void
-copyToDevice(void* dst, const void* src, size_t count) {
-    cudaError_t err = cudaMemcpy(dst, src, count, cudaMemcpyHostToDevice);
+copyToDevice(void* dst, const void* src, size_t size) {
+    cudaError_t err = cudaMemcpy(dst, src, size, cudaMemcpyHostToDevice);
     if (err != cudaSuccess)
     {
         fprintf(stderr, "Failed to copy a buffer from host to device (error code %s)!\n", cudaGetErrorString(err));
@@ -72,8 +72,8 @@ copyToDevice(void* dst, const void* src, size_t count) {
 }
 
 void
-copyToHost(void* dst, const void* src, size_t count) {
-    cudaError_t err = cudaMemcpy(dst, src, count, cudaMemcpyDeviceToHost);
+copyToHost(void* dst, const void* src, size_t size) {
+    cudaError_t err = cudaMemcpy(dst, src, size, cudaMemcpyDeviceToHost);
     if (err != cudaSuccess)
     {
         fprintf(stderr, "Failed to copy a buffer from device to host (error code %s)!\n", cudaGetErrorString(err));
@@ -102,24 +102,25 @@ cudaUnalloc(void *ptr) {
 template <typename T>
 class SingleBuffer {
 public:
-    T* h_Current;
-    T* d_Current;
+    T* h_Current = NULL;
+    T* d_Current = NULL;
+    size_t count;
     size_t size;
 
     SingleBuffer(size_t count)
-        : size(count * sizeof(T))
+        : count(count), size(count * sizeof(T))
     {
         universalAlloc(&h_Current, &d_Current, count);
         memset(h_Current, 0, size);
     }
 
     void
-        copyToDevice() {
+    copyToDevice() {
         ::copyToDevice(d_Current, h_Current, size);
     }
 
     void
-        copyToHost() {
+    copyToHost() {
         ::copyToHost(h_Current, d_Current, size);
     }
 
@@ -132,7 +133,7 @@ public:
 template <typename T>
 class DoubleBuffer : public SingleBuffer<T> {
 public:
-    T* d_Next;
+    T* d_Next = NULL;
 
     DoubleBuffer(size_t count)
         : SingleBuffer(count)
@@ -158,11 +159,12 @@ public:
 template <typename T>
 class DeviceOnlySingleBuffer {
 public:
-    T* d_Current;
+    T* d_Current = NULL;
+    size_t count;
     size_t size;
 
     DeviceOnlySingleBuffer(size_t count)
-        : size(count * sizeof(T))
+        : count(count), size(count * sizeof(T))
     {
         cudaAlloc(&d_Current, count);
     }
@@ -180,7 +182,7 @@ public:
 template <typename T>
 class DeviceOnlyDoubleBuffer : public DeviceOnlySingleBuffer<T> {
 public:
-    T* d_Next;
+    T* d_Next = NULL;
 
     DeviceOnlyDoubleBuffer(size_t count)
         : DeviceOnlySingleBuffer(count)

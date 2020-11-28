@@ -39,6 +39,7 @@
 #include "math.cuh"
 #include "grid.cuh"
 #include "memory.cuh"
+#include "storage.cuh"
 #include "dynamics.cuh"
 #include "setup/particle_setup.cuh"
 #include "setup/interaction_setup.cuh"
@@ -88,35 +89,8 @@ main(void)
     configFile >> configJson;
 
     // Load the config values
-    Config config;
-    config.numParticles = configJson["numParticles"].asInt();
-    config.steps = configJson["steps"].asInt();
-    config.simSize = configJson["simSize"].asFloat();
-    config.interactionDistance = configJson["interactionDistance"].asFloat();
-    config.nGridCellsBits = configJson["nGridCellsBits"].asInt();
-    config.movementNoiseScale = configJson["movementNoiseScale"].asFloat();
-    config.rotationNoiseScale = configJson["rotationNoiseScale"].asFloat();
-    config.velocityDecay = configJson["velocityDecay"].asFloat();
-    config.relaxationSteps = configJson["relaxationSteps"].asInt();
-
-    // Calculate the derived config values
-    config.nGridCells = 1 << config.nGridCellsBits;
-    config.gridCellSize = config.simSize / config.nGridCells;
-    config.gridSize = config.nGridCells * config.nGridCells * config.nGridCells;
-
-    printf("[Config]\n");
-    printf("numParticles %d\n", config.numParticles);
-    printf("steps %d\n", config.steps);
-    printf("simSize %f\n", config.simSize);
-    printf("interactionDistance %f\n", config.interactionDistance);
-    printf("nGridCellsBits %d\n", config.nGridCellsBits);
-    printf("nGridCells %d\n", config.nGridCells);
-    printf("gridCellSize %f\n", config.gridCellSize);
-    printf("movementNoiseScale %f\n", config.movementNoiseScale);
-    printf("rotationNoiseScale %f\n", config.rotationNoiseScale);
-    printf("velocityDecay %f\n", config.velocityDecay);
-    printf("relaxationSteps %d\n", config.relaxationSteps);
-    printf("\n");
+    Config config(configJson);
+    config.print();
 
     if (config.gridSize < config.interactionDistance) {
         printf("WARNING! The interactionDistance (%f) is less than gridCellSize (%f).\nNot all interactions may play out as intended\n", config.interactionDistance, config.gridCellSize);
@@ -140,7 +114,7 @@ main(void)
 
     // Print out the Particle struct's alignment
     printf("[Memory structure]\n");
-    printf("Particle size: %d\n", sizeof(Particle));
+    printf("----- Particle size: %d\n", sizeof(Particle));
     printf("Offsets:");
     printf(" id %d", offsetof(Particle, id));
     printf(", type %d", offsetof(Particle, type));
@@ -151,9 +125,18 @@ main(void)
     printf(", nActiveInteractions %d", offsetof(Particle, nActiveInteractions));
     printf(", interactions %d", offsetof(Particle, interactions));
     printf(", debugVector %d", offsetof(Particle, debugVector));
+    printf("\n");
+    printf("----- MetabolicParticle size: %d\n", sizeof(MetabolicParticle));
+    printf("Offsets:");
+    printf(" metabolites %d", offsetof(MetabolicParticle, metabolites));
     printf("\n\n");
 
+    std::string storageFileName = "./results/frames.dat";
+    FileStorage storage(storageFileName, &config);
 
+
+    // TODO: implement using boost's shared memory: https://www.boost.org/doc/libs/1_74_0/doc/html/interprocess/quick_guide.html
+    
     //HANDLE hMapFile;
     //LPCTSTR pBuf;
     //std::string memBufName = "spatial_cell_buf";
@@ -197,30 +180,10 @@ main(void)
     DoubleBuffer<Particle> particles(count);
     DeviceOnlyDoubleBuffer<unsigned int> indices(count);
     DeviceOnlySingleBuffer<unsigned int> gridRanges(config.gridSize * 2);
-    /*Particle *h_Particles, *h_NextParticles;
-    Particle *particles.d_Current = NULL,
-        *particles.d_Next = NULL;
-    universalAlloc(&h_Particles, &particles.d_Current, count);
-    universalAlloc(&h_NextParticles, &particles.d_Next, count);*/
-    //int nInactiveParticles = 40;
     SingleBuffer<int> nActiveParticles(1);
     SingleBuffer<int> lastActiveParticle(1);
     SingleBuffer<int> nextParticleId(1);
-    /*int *nActiveParticles.h_Current = new int[] { 0 },
-        *h_lastActiveParticle = new int[] { -1 },
-        *h_nextParticleId = new int[] { 0 };
-    int *nActiveParticles.d_Current = NULL,
-        *lastActiveParticle.d_Current = NULL,
-        *d_nextParticleId = NULL;*/
-    /*unsigned int *d_Indices = NULL,
-        *d_NextIndices = NULL,
-        *d_GridRanges = NULL;
-    cudaAlloc(&d_Indices, count);
-    cudaAlloc(&d_NextIndices, count);
-    cudaAlloc(&d_GridRanges, config.gridSize * 2);*/
-
-    curandState* rngState;
-    cudaAlloc(&rngState, count);
+    DeviceOnlySingleBuffer<curandState> rngState(count);
 
     // Copy the config into the device constant memory
     cudaMemcpyToSymbol(d_Config, &config, sizeof(Config), 0, cudaMemcpyHostToDevice);
@@ -256,8 +219,6 @@ main(void)
         make_float3(0.0015, 0.0015, 0.0015),
         particles.h_Current, nActiveParticles.h_Current, &config, rng
     );
-    printf("rot %f, %f, %f\n", particles.h_Current[lineStartIdx].rot.x, particles.h_Current[lineStartIdx].rot.y, particles.h_Current[lineStartIdx].rot.z);
-    printf("rot %f, %f, %f\n", particles.h_Current[lineStartIdx + 1].rot.x, particles.h_Current[lineStartIdx + 1].rot.y, particles.h_Current[lineStartIdx + 1].rot.z);
     int lineEndIdx = nActiveParticles.h_Current[0];
     linkParticlesSerially(
         lineStartIdx,
@@ -276,18 +237,13 @@ main(void)
     printf("Particle CUDA kernel with %d blocks of %d threads\n", numCudaBlocks(config.numParticles), threadsPerBlock);
 
     // Initialize the device-side variables
-    setupKernel KERNEL_ARGS2(numCudaBlocks(config.numParticles), threadsPerBlock) (rngState);
+    setupKernel KERNEL_ARGS2(numCudaBlocks(config.numParticles), threadsPerBlock) (rngState.d_Current);
 
     // Write the frames file header
-    std::ofstream fout;
-    fout.open("./results/frames.dat", std::ios::binary | std::ios::out);
-    fout.write((char*)&config.simSize, sizeof(float));
-    // Particle buffer size
-    fout.write((char*)&config.numParticles, sizeof(unsigned int));
+    storage.writeHeader();
 
-    // Number of existing particles
-    fout.write((char*)&config.numParticles, sizeof(unsigned int));
-    fout.write((char*)particles.h_Current, size);
+    // Write the first frame
+    storage.writeFrame(&particles);
 
     /*char *memBufPtr = (char*)pBuf;
     CopyMemory((PVOID)memBufPtr, (char*)&config.simSize, sizeof(float));
@@ -333,7 +289,7 @@ main(void)
         particles.clearNextOnDevice();
         move KERNEL_ARGS2(numCudaBlocks(nActiveParticles.h_Current[0]), threadsPerBlock) (
             i,
-            rngState,
+            rngState.d_Current,
             particles.d_Current,
             particles.d_Next,
             nActiveParticles.h_Current[0],
@@ -345,7 +301,7 @@ main(void)
         );
         particles.swap();
         cudaDeviceSynchronize();
-        copyToHost(nActiveParticles.h_Current, nActiveParticles.d_Current, sizeof(int));
+        nActiveParticles.copyToHost();
         time_point t6 = now();
 
         for (int j = 0; j < config.relaxationSteps; j++) {
@@ -353,7 +309,7 @@ main(void)
             cudaMemset(particles.d_Next, 0, size);
             relax KERNEL_ARGS2(numCudaBlocks(nActiveParticles.h_Current[0]), threadsPerBlock) (
                 i,
-                rngState,
+                rngState.d_Current,
                 particles.d_Current,
                 particles.d_Next,
                 nActiveParticles.h_Current[0],
@@ -369,8 +325,7 @@ main(void)
 
         time_point t8 = now();
 
-        fout.write((char*)&config.numParticles, sizeof(unsigned int));
-        fout.write((char*)particles.h_Current, size);
+        storage.writeFrame(&particles);
 
         /*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
         memBufPtr += sizeof(unsigned int);
@@ -394,7 +349,6 @@ main(void)
         }
     }
     cudaDeviceSynchronize();
-    fout.close();
     time_point t2 = now();
     printf("time %f\n", getDuration(t0, t2));
 
@@ -411,22 +365,7 @@ main(void)
     UnmapViewOfFile(pBuf);
     CloseHandle(hMapFile);*/
 
-    /*cudaUnalloc(particles.d_Current);
-    cudaUnalloc(particles.d_Next);*/
-    /*cudaUnalloc(d_Indices);
-    cudaUnalloc(d_NextIndices);*/
-    /*cudaUnalloc(d_GridRanges);
-    cudaUnalloc(nActiveParticles.d_Current);
-    cudaUnalloc(lastActiveParticle.d_Current);
-    cudaUnalloc(d_nextParticleId);*/
     cudaUnalloc(d_temp_storage);
-
-    // Free host memory
-    /*free(h_Particles);
-    free(h_NextParticles);*/
-    /*delete nActiveParticles.h_Current;
-    delete h_lastActiveParticle;
-    delete h_nextParticleId;*/
 
     printf("Done\n");
     return 0;

@@ -21,5 +21,6 @@
     <ClInclude Include="src\interactions.cuh" />
     <ClInclude Include="src\setup\particle_setup.cuh" />
     <ClInclude Include="src\setup\interaction_setup.cuh" />
+    <ClInclude Include="src\storage.cuh" />
   </ItemGroup>
 </Project>
