@@ -52,7 +52,7 @@ public class SimData : MonoBehaviour
         public int partnerId;
     };
 
-    [StructLayout(LayoutKind.Explicit, Size = 112)]
+    [StructLayout(LayoutKind.Explicit, Size = 144)]
     unsafe public struct Particle
     {
         [FieldOffset(0)]  public int id;
@@ -62,15 +62,16 @@ public class SimData : MonoBehaviour
         [FieldOffset(24)] public fixed float __padding1[2];
         [FieldOffset(32)] public Vector4_ rot;
         [FieldOffset(48)] public Vector3_ velocity;
-        [FieldOffset(60)] public int nActiveInteractions;
-        [FieldOffset(64)] public ParticleInteraction interaction1;
-        [FieldOffset(72)] public ParticleInteraction interaction2;
-        [FieldOffset(80)] public ParticleInteraction interaction3;
-        [FieldOffset(88)] public ParticleInteraction interaction4;
-        [FieldOffset(96)] public Vector4_ debugVector;
+        [FieldOffset(64)] public Vector4_ angularVelocity;
+        [FieldOffset(80)] public int nActiveInteractions;
+        [FieldOffset(84)] public ParticleInteraction interaction1;
+        [FieldOffset(92)] public ParticleInteraction interaction2;
+        [FieldOffset(100)] public ParticleInteraction interaction3;
+        [FieldOffset(108)] public ParticleInteraction interaction4;
+        [FieldOffset(128)] public Vector4_ debugVector;
     };
 
-    [StructLayout(LayoutKind.Explicit, Size = 512)]
+    [StructLayout(LayoutKind.Explicit, Size = 352)]
     unsafe public struct MetabolicParticle
     {
         [FieldOffset(0)] public int id;
@@ -80,13 +81,14 @@ public class SimData : MonoBehaviour
         [FieldOffset(24)] public fixed float __padding1[2];
         [FieldOffset(32)] public Vector4_ rot;
         [FieldOffset(48)] public Vector3_ velocity;
-        [FieldOffset(60)] public int nActiveInteractions;
-        [FieldOffset(64)] public ParticleInteraction interaction1;
-        [FieldOffset(72)] public ParticleInteraction interaction2;
-        [FieldOffset(80)] public ParticleInteraction interaction3;
-        [FieldOffset(88)] public ParticleInteraction interaction4;
-        [FieldOffset(96)] public Vector4_ debugVector;
-        [FieldOffset(112)] public fixed float metabolites[100];
+        [FieldOffset(64)] public Vector4_ angularVelocity;
+        [FieldOffset(80)] public int nActiveInteractions;
+        [FieldOffset(84)] public ParticleInteraction interaction1;
+        [FieldOffset(92)] public ParticleInteraction interaction2;
+        [FieldOffset(100)] public ParticleInteraction interaction3;
+        [FieldOffset(108)] public ParticleInteraction interaction4;
+        [FieldOffset(128)] public Vector4_ debugVector;
+        [FieldOffset(144)] public fixed float metabolites[50];
     };
 
     public class SimFrame

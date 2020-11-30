@@ -25,6 +25,7 @@ struct Particle {
     float3 pos;
     float4 rot;
     float3 velocity;
+    float4 angularVelocity;
     int nActiveInteractions;
     ParticleInteraction interactions[4];
     float4 debugVector;
@@ -33,15 +34,17 @@ struct Particle {
         int id = 0,
         int type = 0,
         int flags = 0,
-        float3 pos = make_float3(0, 0, 0),
-        float4 rot = make_float4(0, 0, 0, 1),
-        float3 velocity = make_float3(0, 0, 0)
+        float3 pos = VECTOR_ZERO,
+        float4 rot = QUATERNION_IDENTITY,
+        float3 velocity = VECTOR_ZERO,
+        float4 angularVelocity = QUATERNION_IDENTITY
     ) : id(id),
         type(type),
         flags(flags | PARTICLE_FLAG_ACTIVE),
         pos(pos),
         rot(rot),
         velocity(velocity),
+        angularVelocity(angularVelocity),
         nActiveInteractions(0),
         interactions(),
         debugVector(make_float4(0, 0, 0, 0))
@@ -58,10 +61,11 @@ struct MetabolicParticle : Particle {
         int id = 0,
         int type = 0,
         int flags = 0,
-        float3 pos = make_float3(0, 0, 0),
-        float4 rot = make_float4(0, 0, 0, 1),
-        float3 velocity = make_float3(0, 0, 0)
-    ) : Particle(id, type, flags, pos, rot, velocity)
+        float3 pos = VECTOR_ZERO,
+        float4 rot = QUATERNION_IDENTITY,
+        float3 velocity = VECTOR_ZERO,
+        float4 angularVelocity = QUATERNION_IDENTITY
+    ) : Particle(id, type, flags, pos, rot, velocity, angularVelocity)
     {
         memset(metabolites, 0, NUM_METABOLITES * sizeof(float));
     }
@@ -85,6 +89,7 @@ struct Config {
     float rotationNoiseScale;
     float metaboliteMovementNoiseScale;
     float velocityDecay;
+    float angularVelocityDecay;
     int relaxationSteps;
 
     Config() {
@@ -102,6 +107,7 @@ struct Config {
           rotationNoiseScale(configJson["rotationNoiseScale"].asFloat()),
           metaboliteMovementNoiseScale(configJson["metaboliteMovementNoiseScale"].asFloat()),
           velocityDecay(configJson["velocityDecay"].asFloat()),
+          angularVelocityDecay(configJson["angularVelocityDecay"].asFloat()),
           relaxationSteps(configJson["relaxationSteps"].asInt())
     {
         // Calculate the derived values
@@ -124,6 +130,7 @@ struct Config {
         printf("movementNoiseScale %f\n", movementNoiseScale);
         printf("rotationNoiseScale %f\n", rotationNoiseScale);
         printf("velocityDecay %f\n", velocityDecay);
+        printf("angularVelocityDecay %f\n", angularVelocityDecay);
         printf("relaxationSteps %d\n", relaxationSteps);
         printf("\n");
     }

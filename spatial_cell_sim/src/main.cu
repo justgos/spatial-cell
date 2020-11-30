@@ -112,6 +112,7 @@ main(void)
     printf(", pos %d", offsetof(Particle, pos));
     printf(", rot %d", offsetof(Particle, rot));
     printf(", velocity %d", offsetof(Particle, velocity));
+    printf(", angularVelocity %d", offsetof(Particle, angularVelocity));
     printf(", nActiveInteractions %d", offsetof(Particle, nActiveInteractions));
     printf(", interactions %d", offsetof(Particle, interactions));
     printf(", debugVector %d", offsetof(Particle, debugVector));
@@ -336,6 +337,14 @@ main(void)
             gridRanges.d_Current
         );
         particles.swap();
+
+        brownianMovementAndRotation KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            i,
+            rngState.d_Current,
+            particles.d_Current,
+            nActiveParticles.h_Current[0]
+        );
+
         cudaDeviceSynchronize();
         nActiveParticles.copyToHost();
 
@@ -354,9 +363,19 @@ main(void)
         //nActiveParticles.copyToHost();
 
         time_point t6_1 = now();
+        float stepFraction = 1.0f / config.relaxationSteps;
         for (int j = 0; j < config.relaxationSteps; j++) {
             // Relax the accumulated tensions
             particles.clearNextOnDevice();
+
+            applyVelocities KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                i,
+                rngState.d_Current,
+                particles.d_Current,
+                nActiveParticles.h_Current[0],
+                stepFraction
+            );
+
             relax KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
                 i,
                 rngState.d_Current,

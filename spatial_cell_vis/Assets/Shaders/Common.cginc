@@ -1,4 +1,4 @@
-﻿#define NUM_METABOLITES 100
+﻿#define NUM_METABOLITES 50
 
 #define PARTICLE_FLAG_ACTIVE 0x0001
 
@@ -18,8 +18,11 @@ struct Particle {
     float __padding1[2];
 	float4 rot;
 	float3 velocity;
+    float __padding2[1];
+    float4 angularVelocity;
     int nActiveInteractions;
     ParticleInteraction interactions[4];
+    float __padding3[3];
     float4 debugVector;
 };
 
@@ -31,10 +34,14 @@ struct MetabolicParticle {
     float __padding1[2];
     float4 rot;
     float3 velocity;
+    float __padding2[1];
+    float4 angularVelocity;
     int nActiveInteractions;
     ParticleInteraction interactions[4];
+    float __padding3[3];
     float4 debugVector;
     float metabolites[NUM_METABOLITES];
+    float __padding4[2];
 };
 
 

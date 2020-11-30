@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI.Extensions;
 using Unity.Collections.LowLevel.Unsafe;
 
@@ -12,6 +13,9 @@ public class ParticlePicker : MonoBehaviour
     public RangeSlider particleVisibleRangeXSlider;
     public RangeSlider particleVisibleRangeYSlider;
     public RangeSlider particleVisibleRangeZSlider;
+
+    private Particles targetParticleRenderer = null;
+    private Nullable<SimData.Particle> targetParticle = null;
 
     void Start()
     {
@@ -42,12 +46,12 @@ public class ParticlePicker : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
+        if (Input.GetButtonDown("Fire1") && !EventSystem.current.IsPointerOverGameObject())
+        { 
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-            Particles targetParticleRenderer = null;
+            targetParticleRenderer = null;
+            targetParticle = null;
             int targetParticleIdx = -1;
-            Nullable<SimData.Particle> targetParticle = null;
             float targetParticleDist = float.MaxValue;
             var particleRenderers = GameObject.FindObjectsOfType<Particles>();
             foreach (var particleRenderer in particleRenderers)
@@ -96,12 +100,48 @@ public class ParticlePicker : MonoBehaviour
 
             if(targetParticle != null)
             {
-                SimData.Particle p = (SimData.Particle)targetParticle;
-                Debug.Log("Target particle " + p.id);
+                SimData.Particle tp = (SimData.Particle)targetParticle;
+                Debug.Log("Target particle " + tp.id);
 
                 foreach (var particleRenderer in particleRenderers)
                 {
-                    particleRenderer.TargetParticleId = p.id;
+                    particleRenderer.TargetParticleId = tp.id;
+                }
+            } else {
+                foreach (var particleRenderer in particleRenderers)
+                {
+                    particleRenderer.TargetParticleId = -1;
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (targetParticle != null)
+            {
+                SimData.Particle tp = (SimData.Particle)targetParticle;
+
+                var particleRenderers = GameObject.FindObjectsOfType<Particles>();
+                foreach (var particleRenderer in particleRenderers)
+                {
+                    if (!particleRenderer.gameObject.activeSelf)
+                        continue;
+                    unsafe
+                    {
+                        for (var i = 0; i < particleRenderer.frameData.Frame.particles.Length; i++)
+                        {
+                            var p = UnsafeUtility.ReadArrayElement<SimData.Particle>(particleRenderer.frameData.Frame.particles.GetUnsafeReadOnlyPtr(), i);
+
+                            if(p.id == tp.id)
+                            {
+                                Debug.Log(string.Format("Target particle (id {0}), pos {1}, rot {2}",
+                                    p.id,
+                                    p.pos.UnityVector().ToString("F4"),
+                                    p.rot.UnityQuaternion().ToString("F4")
+                                ));
+                            }
+                        }
+                    }
                 }
             }
         }

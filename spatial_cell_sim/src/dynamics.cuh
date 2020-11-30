@@ -37,10 +37,10 @@ move(
         return;
     }
 
-    float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
-    float3 attractionVec = make_float3(0.0f, 0.0f, 0.0f);
+    //float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
+    /*float3 attractionVec = make_float3(0.0f, 0.0f, 0.0f);
     constexpr float clipImpulse = 10.0f;
-    constexpr float impulseScale = 0.0001f;
+    constexpr float impulseScale = 0.0001f;*/
 
     // Grid cell index of the current particle
     const int cgx = getGridIdx(p.pos.x),
@@ -171,35 +171,122 @@ move(
         atomicAdd(nActiveParticles, -1);
     }
 
-    //// Prevent attraction overkill for large aggregations
-    //nPartners = pow(fmax(nPartners, 1.0f), 0.5f);
-    //attractionVec.x /= nPartners;
-    //attractionVec.y /= nPartners;
-    //attractionVec.z /= nPartners;
-    //moveVec.x += attractionVec.x;
-    //moveVec.y += attractionVec.y;
-    //moveVec.z += attractionVec.z;
+    ////// Prevent attraction overkill for large aggregations
+    ////nPartners = pow(fmax(nPartners, 1.0f), 0.5f);
+    ////attractionVec.x /= nPartners;
+    ////attractionVec.y /= nPartners;
+    ////attractionVec.z /= nPartners;
+    ////moveVec.x += attractionVec.x;
+    ////moveVec.y += attractionVec.y;
+    ////moveVec.z += attractionVec.z;
 
-    // Brownian motion
-    moveVec.x += (curand_normal(&rngState[idx]) - 0.0) * d_Config.movementNoiseScale;
-    moveVec.y += (curand_normal(&rngState[idx]) - 0.0) * d_Config.movementNoiseScale;
-    moveVec.z += (curand_normal(&rngState[idx]) - 0.0) * d_Config.movementNoiseScale;
+    //// Brownian motion
+    //moveVec = add(
+    //    moveVec,
+    //    mul(
+    //        transform_vector(VECTOR_UP, random_rotation(&rngState[idx])),
+    //        d_Config.movementNoiseScale
+    //    )
+    //);
+    ///*moveVec.x += (curand_normal(&rngState[idx]) - 0.0) * d_Config.movementNoiseScale;
+    //moveVec.y += (curand_normal(&rngState[idx]) - 0.0) * d_Config.movementNoiseScale;
+    //moveVec.z += (curand_normal(&rngState[idx]) - 0.0) * d_Config.movementNoiseScale;*/
 
-    // Apply the velocity changes
-    p.velocity = add(
-        mul(p.velocity, d_Config.velocityDecay),
-        moveVec
-    );
+    //// Apply the velocity changes
+    //p.velocity = add(
+    //    mul(p.velocity, d_Config.velocityDecay),
+    //    moveVec
+    //);
 
-    // Brownian rotation
-    p.rot = slerp(p.rot, random_rotation(&rngState[idx]), d_Config.rotationNoiseScale);
+    //// Brownian rotation
+    //p.angularVelocity = slerp(
+    //    p.angularVelocity,
+    //    random_rotation(&rngState[idx]),
+    //    d_Config.rotationNoiseScale
+    //);
+    ////p.rot = slerp(p.rot, random_rotation(&rngState[idx]), d_Config.rotationNoiseScale);
 
-    // Move the particle
-    p.pos = clamp(add(p.pos, p.velocity), 0, d_Config.simSize);
+    ////// Move the particle
+    ////p.pos = clamp(add(p.pos, p.velocity), 0, d_Config.simSize);
 
     nextParticles[idx] = p;
 }
 
+__global__ void
+brownianMovementAndRotation(
+    const int step,
+    curandState* rngState,
+    Particle* particles,
+    int stepStart_nActiveParticles
+) {
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx >= stepStart_nActiveParticles)
+        return;
+
+    Particle p = particles[idx];
+
+    if (!(p.flags & PARTICLE_FLAG_ACTIVE)) {
+        return;
+    }
+
+    // Brownian motion
+    p.velocity = add(
+        mul(p.velocity, d_Config.velocityDecay),
+        mul(
+            transform_vector(VECTOR_UP, random_rotation(&rngState[idx])),
+            d_Config.movementNoiseScale
+        )
+    );
+
+    // Brownian rotation
+    p.angularVelocity = slerp(
+        slerp(p.angularVelocity, QUATERNION_IDENTITY, d_Config.angularVelocityDecay),
+        random_rotation(&rngState[idx]),
+        d_Config.rotationNoiseScale
+    );
+    
+    particles[idx] = p;
+}
+
+__global__ void
+applyVelocities(
+    const int step,
+    curandState* rngState,
+    Particle* particles,
+    int stepStart_nActiveParticles,
+    float stepFraction
+) {
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx >= stepStart_nActiveParticles)
+        return;
+
+    Particle p = particles[idx];
+
+    if (!(p.flags & PARTICLE_FLAG_ACTIVE)) {
+        return;
+    }
+
+    // Move the particle
+    p.pos = clamp(
+        add(
+            p.pos,
+            mul(p.velocity, stepFraction)
+        ),
+        0, d_Config.simSize
+    );
+
+    // Rotate the particle
+    p.rot = mul(
+        p.rot,
+        slerp(QUATERNION_IDENTITY, p.angularVelocity, stepFraction)
+    );
+
+    if (isnan(p.rot.x) || isinf(p.rot.x) || fabs(p.rot.x) > 100.0f) {
+        p.rot.x += 0.0f;
+    }\
+
+    particles[idx] = p;
+}
 
 __global__ void
 relax(
@@ -270,26 +357,26 @@ relax(
                     // Up direction of the other particle
                     float3 tup = transform_vector(VECTOR_UP, tp.rot);
 
-                    if (dist <= collisionDist) {
-                        float distRatio = (collisionDist - dist) / (dist + 1e-6);
+                    if (dist < collisionDist) {
+                        float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
                         constexpr float collisionRelaxationSpeed = 0.25f;
                         moveVec = add(
                             moveVec,
                             mul(
-                                negate(delta),
-                                distRatio * collisionRelaxationSpeed
+                                normalizedDelta,
+                                deltaCollisionDist * collisionRelaxationSpeed
                             )
                         );
                     }
 
                     if (p.type == PARTICLE_TYPE_LIPID && p.type == tp.type && dist <= 0.007) {
-                        float distRatio = (interactionDistance - dist);
-                        constexpr float distanceRelaxationSpeed = 0.25f;
+                        float deltaInteractionDist = -(interactionDistance - dist);
+                        constexpr float distanceRelaxationSpeed = 0.05f;
                         moveVec = add(
                             moveVec,
                             mul(
-                                delta,
-                                distRatio * distanceRelaxationSpeed
+                                normalizedDelta,
+                                deltaInteractionDist * distanceRelaxationSpeed
                             )
                         );
 
@@ -314,14 +401,6 @@ relax(
                                 float4 targetRelativeOrientationDelta = quaternion(VECTOR_RIGHT, 0);
                                 constexpr float relativeOrientationRelaxationSpeed = 0.05f;
                                 float targetRelativePositionAngle = PI / 2;
-
-                                float4 trot = slerp(
-                                    p.rot,
-                                    mul(quaternionFromTo(up, dot(up, tup) > 0 ? tup : negate(tup)), tp.rot),
-                                    //dot(up, tup) > 0 ? tp.rot : mul(tp.rot, quaternion(VECTOR_RIGHT, PI)),
-                                    //getTargetRelativeOrientation(p, tp, targetRelativeOrientationDelta),
-                                    relativeOrientationRelaxationSpeed
-                                );
 
                                 p.rot = slerp(
                                     p.rot,
@@ -421,6 +500,13 @@ relax(
     }
 
     // Move the particle
+    /*p.pos = clamp(
+        add(
+            p.pos,
+            moveVec
+        ),
+        0.0f, d_Config.simSize
+    );*/
     p.pos.x = fmin(fmax(p.pos.x + moveVec.x, 0.0f), d_Config.simSize);
     p.pos.y = fmin(fmax(p.pos.y + moveVec.y, 0.0f), d_Config.simSize);
     p.pos.z = fmin(fmax(p.pos.z + moveVec.z, 0.0f), d_Config.simSize);
