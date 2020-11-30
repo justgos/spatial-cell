@@ -24,6 +24,11 @@ norm(float3 a) {
     return sqrt(normsq(a));
 }
 
+__device__ __host__ __inline__ float
+norm(float4 a) {
+    return sqrt(normsq(a));
+}
+
 __device__ __host__ __inline__ float3
 normalized(float3 a) {
     float n = norm(a);
@@ -31,6 +36,32 @@ normalized(float3 a) {
         a.x / n,
         a.y / n,
         a.z / n
+    );
+}
+
+__device__ __host__ __inline__ float4
+normalized(float4 a) {
+    float invNorm = 1.0f / norm(a);
+
+    return make_float4(
+        a.x * invNorm,
+        a.y * invNorm,
+        a.z * invNorm,
+        a.w * invNorm
+    );
+}
+
+__device__ __host__ __inline__ float
+clamp(float a, float minVal, float maxVal) {
+    return fmin(fmax(a, minVal), maxVal);
+}
+
+__device__ __host__ __inline__ float3
+clamp(float3 a, float minVal, float maxVal) {
+    return make_float3(
+        fmin(fmax(a.x, minVal), maxVal),
+        fmin(fmax(a.y, minVal), maxVal),
+        fmin(fmax(a.z, minVal), maxVal)
     );
 }
 
@@ -46,11 +77,11 @@ dot(float4 a, float4 b) {
 
 __device__ __host__ __inline__ float3
 cross(float3 a, float3 b) {
-    return make_float3(
+    return normalized(make_float3(
         a.y * b.z - a.z * b.y,
         a.z * b.x - a.x * b.z,
         a.x * b.y - a.y * b.x
-    );
+    ));
 }
 
 __device__ __host__ __inline__ float3
@@ -89,7 +120,7 @@ mul(float4 a, float4 b) {
 
 __device__ __host__ __inline__ float
 angle(float3 a, float3 b) {
-    return acos(dot(a, b) / (norm(a) * norm(b)));
+    return acos(clamp(dot(a, b) / (norm(a) * norm(b)), -1.0, 1.0));
 }
 
 __device__ __host__ __inline__ float

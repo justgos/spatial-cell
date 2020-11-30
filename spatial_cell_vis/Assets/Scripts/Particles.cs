@@ -7,6 +7,7 @@ using UnityEngine;
 public class Particles : MonoBehaviour
 {
     public SimData simData;
+    public FrameData frameData;
 
     public GameObject model;
     private Mesh mesh;
@@ -19,6 +20,9 @@ public class Particles : MonoBehaviour
     private float debugVectorMeshScale;
     private float debugVectorMeshHeight;
     public Material debugVectorInstancedMaterial;
+
+    private int targetParticleId = -1;
+    public int TargetParticleId { set { targetParticleId = value; } }
 
     ComputeBuffer quadPoints;
     ComputeBuffer quadUVs;
@@ -79,18 +83,19 @@ public class Particles : MonoBehaviour
 
     void Update()
     {
-        if(simData.NumParticles != drawArgs[1])
+        if(frameData.NumParticles != drawArgs[1])
         {
-            drawArgs[1] = (uint)simData.NumParticles;
+            drawArgs[1] = (uint)frameData.NumParticles;
             argsBuffer.SetData(drawArgs);
-            debugVectorDrawArgs[1] = (uint)simData.NumParticles;
+            debugVectorDrawArgs[1] = (uint)frameData.NumParticles;
             debugVectorArgsBuffer.SetData(debugVectorDrawArgs);
         }
         instancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
         instancedMaterial.SetFloat("scale", 10.0f);
         instancedMaterial.SetFloat("meshScale", meshScale);
         instancedMaterial.SetFloat("simSize", simData.SimSize);
-        instancedMaterial.SetBuffer("particles", simData.frameBuffer);
+        instancedMaterial.SetInt("targetParticleId", targetParticleId);
+        instancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
         Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), argsBuffer);
 
         debugVectorInstancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
@@ -98,7 +103,7 @@ public class Particles : MonoBehaviour
         debugVectorInstancedMaterial.SetFloat("meshScale", debugVectorMeshScale);
         debugVectorInstancedMaterial.SetFloat("meshHeight", debugVectorMeshHeight);
         debugVectorInstancedMaterial.SetFloat("simSize", simData.SimSize);
-        debugVectorInstancedMaterial.SetBuffer("particles", simData.frameBuffer);
+        debugVectorInstancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
         Graphics.DrawMeshInstancedIndirect(debugVectorMesh, 0, debugVectorInstancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), debugVectorArgsBuffer);
     }
 

@@ -61,11 +61,15 @@
     <Compile Include="Assets\Scripts\Particles.cs" />
     <Compile Include="Assets\Scripts\MathDebug.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\FrameData.cs" />
+    <Compile Include="Assets\Scripts\ParticlePicker.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Shaders\InstancedDebugVector.shader" />
      <None Include="Assets\Shaders\Particles.shader" />
      <None Include="Assets\Shaders\Common.cginc" />
+     <None Include="Assets\Shaders\InstancedMetabolicParticles.shader" />
+     <None Include="Assets\Shaders\InstancedMetabolicDebugVector.shader" />
      <None Include="Assets\Shaders\InstancedParticles.shader" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.1.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>

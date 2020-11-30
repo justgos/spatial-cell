@@ -9,6 +9,7 @@ using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.UI;
 
+
 public class SimData : MonoBehaviour
 {
     public GameObject spherePrefab;
@@ -20,6 +21,11 @@ public class SimData : MonoBehaviour
         public float x;
         public float y;
         public float z;
+
+        public Vector3 UnityVector()
+        {
+            return new Vector3(x, y, z);
+        }
     };
 
     [StructLayout(LayoutKind.Sequential)]
@@ -29,6 +35,11 @@ public class SimData : MonoBehaviour
         public float y;
         public float z;
         public float w;
+
+        public Quaternion UnityQuaternion()
+        {
+            return new Quaternion(x, y, z, w);
+        }
     };
 
     [StructLayout(LayoutKind.Sequential)]
@@ -56,20 +67,40 @@ public class SimData : MonoBehaviour
         [FieldOffset(96)] public Vector4_ debugVector;
     };
 
+    [StructLayout(LayoutKind.Explicit, Size = 512)]
+    unsafe public struct MetabolicParticle
+    {
+        [FieldOffset(0)] public int id;
+        [FieldOffset(4)] public int type;
+        [FieldOffset(8)] public int flags;
+        [FieldOffset(12)] public Vector3_ pos;
+        [FieldOffset(24)] public fixed float __padding1[2];
+        [FieldOffset(32)] public Vector4_ rot;
+        [FieldOffset(48)] public Vector3_ velocity;
+        [FieldOffset(60)] public int nActiveInteractions;
+        [FieldOffset(64)] public ParticleInteraction interaction1;
+        [FieldOffset(72)] public ParticleInteraction interaction2;
+        [FieldOffset(80)] public ParticleInteraction interaction3;
+        [FieldOffset(88)] public ParticleInteraction interaction4;
+        [FieldOffset(96)] public Vector4_ debugVector;
+        [FieldOffset(112)] public fixed float metabolites[100];
+    };
+
     public class SimFrame
     {
         public uint numParticles;
         //public Particle[] particles;
         public NativeArray<Particle> particles;
+        public uint numMetabolicParticles;
+        public NativeArray<MetabolicParticle> metabolicParticles;
     }
 
     private float simSize;
     public float SimSize { get { return simSize; } }
-    private int particleBufferSize;
     private List<SimFrame> frames = new List<SimFrame>();
-    private int numParticles;
-    public int NumParticles { get { return numParticles; } }
-    public ComputeBuffer frameBuffer;
+
+    public FrameData particleFrameData;
+    public FrameData metabolicParticleFrameData;
 
     public Slider frameSlider;
     public Text frameNumberText;
@@ -111,10 +142,16 @@ public class SimData : MonoBehaviour
                 //var memStream = mmf.CreateViewStream();
                 var br = new BinaryReader(fs);
                 simSize = br.ReadSingle();
-                particleBufferSize = br.ReadInt32();
+                int particleBufferSize = br.ReadInt32();
                 var particleStructSize = Marshal.SizeOf(new Particle());
+                Debug.Log("numParticles " + particleBufferSize);
                 Debug.Log("particleStructSize " + particleStructSize);
-                frameBuffer = new ComputeBuffer(particleBufferSize, particleStructSize);
+                particleFrameData.Init(particleBufferSize, particleStructSize);
+                int metabolicParticleBufferSize = br.ReadInt32();
+                var metabolicParticleStructSize = Marshal.SizeOf(new MetabolicParticle());
+                Debug.Log("numMetabolicParticles " + metabolicParticleBufferSize);
+                Debug.Log("metabolicParticleStructSize " + metabolicParticleStructSize);
+                metabolicParticleFrameData.Init(metabolicParticleBufferSize, metabolicParticleStructSize);
                 while (br.BaseStream.Position != br.BaseStream.Length)
                 //for (var j = 0; j < nFrames; j++)
                 {
@@ -145,17 +182,39 @@ public class SimData : MonoBehaviour
                     }
                     //br.BaseStream.Position += frameSize;
 
+                    frame.numMetabolicParticles = br.ReadUInt32();
+                    frame.metabolicParticles = new NativeArray<MetabolicParticle>((int)frame.numMetabolicParticles, Allocator.Persistent);
+                    frameSize = (int)(metabolicParticleStructSize * frame.numMetabolicParticles);
+                    bytes = br.ReadBytes(frameSize);
+
+                    unsafe
+                    {
+                        fixed (void* bytesPointer = bytes)
+                        {
+                            UnsafeUtility.MemCpy(frame.metabolicParticles.GetUnsafePtr(), bytesPointer, UnsafeUtility.SizeOf<MetabolicParticle>() * frame.numMetabolicParticles);
+                        }
+                    }
+
                     //UnsafeUtility.
                     //NativeArray.
                     //for (var i = 0; i < frame.numParticles; i++)
                     //    frame.particles[i] = Marshal.PtrToStructure<Particle>(Marshal.UnsafeAddrOfPinnedArrayElement(bytes, particleStructSize * i));
 
                     frames.Add(frame);
+
+                    //unsafe
+                    //{
+                    //    fixed (float* m = frame.metabolicParticles.ToArray()[0].metabolites)
+                    //    {
+                    //        Debug.Log("frame.metabolicParticles " + m[0] + ", " + m[1] + ", " + m[2] + ", " + m[3]);
+                    //    }
+                    //}
+                    //return;
                 }
                 frameSlider.maxValue = frames.Count - 1;
                 frameNumberText.text = frameSlider.value.ToString();
-                frameBuffer.SetData(frames[0].particles);
-                numParticles = frames[0].particles.Length;
+                particleFrameData.SetData(frames[0].particles, frames[0].particles.Length, frames[0]);
+                metabolicParticleFrameData.SetData(frames[0].metabolicParticles, frames[0].metabolicParticles.Length, frames[0]);
             //}
         }
         sw.Stop();
@@ -199,8 +258,8 @@ public class SimData : MonoBehaviour
 
     public void ChangeFrame(float frameNum)
     {
-        frameBuffer.SetData(frames[(int)frameNum].particles);
-        numParticles = frames[(int)frameNum].particles.Length;
+        particleFrameData.SetData(frames[(int)frameNum].particles, frames[(int)frameNum].particles.Length, frames[(int)frameNum]);
+        metabolicParticleFrameData.SetData(frames[(int)frameNum].metabolicParticles, frames[(int)frameNum].metabolicParticles.Length, frames[(int)frameNum]);
         frameNumberText.text = frameSlider.value.ToString();
     }
 
@@ -227,7 +286,9 @@ public class SimData : MonoBehaviour
 
     void OnDestroy()
     {
-        frameBuffer.Dispose();
-        frames.ForEach(f => f.particles.Dispose());
+        frames.ForEach(f => {
+            f.particles.Dispose();
+            f.metabolicParticles.Dispose();
+        });
     }
 }

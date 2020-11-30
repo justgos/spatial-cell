@@ -35,6 +35,7 @@
         uniform float meshScale;
         uniform float scale;
         uniform float simSize;
+        uniform int targetParticleId;
 #endif
         half _Glossiness;
         half _Metallic;
@@ -92,8 +93,11 @@
             if(p.type == 0)
                 o.col = float4(0.2, 0.2, 0.2, 1);
             //o.col = float4(1, 1, 1, 1);
+            //o.col.rgb = abs(p.rot.xyz);
             o.col.rgb /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
 
+            if(targetParticleId == p.id)
+                o.col = float4(1, 0, 0, 1);
 
             if (!(p.flags & PARTICLE_FLAG_ACTIVE)) {
                 v.vertex = 0;

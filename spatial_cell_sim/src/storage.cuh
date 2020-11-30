@@ -23,14 +23,18 @@ public:
 	writeHeader() {
 		fout.write((char*)&config->simSize, sizeof(float));
 		fout.write((char*)&config->numParticles, sizeof(unsigned int));
+		fout.write((char*)&config->numMetabolicParticles, sizeof(unsigned int));
 	}
 
 	void
 	writeFrame(
-		const DoubleBuffer<Particle> *particles
+		const DoubleBuffer<Particle> *particles,
+		const DoubleBuffer<MetabolicParticle> *metabolicParticles
 	) {
 		fout.write((char*)&config->numParticles, sizeof(unsigned int));
 		fout.write((char*)particles->h_Current, particles->size);
+		fout.write((char*)&config->numMetabolicParticles, sizeof(unsigned int));
+		fout.write((char*)metabolicParticles->h_Current, metabolicParticles->size);
 	}
 
 	~FileStorage() {

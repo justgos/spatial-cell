@@ -51,13 +51,25 @@ struct Particle {
 };
 
 struct MetabolicParticle : Particle {
-    float metabolites[1000];
+    float metabolites[NUM_METABOLITES];
 
-    using Particle::Particle;
+    //using Particle::Particle;
+    __device__ __host__ MetabolicParticle(
+        int id = 0,
+        int type = 0,
+        int flags = 0,
+        float3 pos = make_float3(0, 0, 0),
+        float4 rot = make_float4(0, 0, 0, 1),
+        float3 velocity = make_float3(0, 0, 0)
+    ) : Particle(id, type, flags, pos, rot, velocity)
+    {
+        memset(metabolites, 0, NUM_METABOLITES * sizeof(float));
+    }
 };
 
 struct Config {
     int numParticles;
+    int numMetabolicParticles;
     int steps;
     float simSize;
     float interactionDistance;
@@ -71,6 +83,7 @@ struct Config {
 
     float movementNoiseScale;
     float rotationNoiseScale;
+    float metaboliteMovementNoiseScale;
     float velocityDecay;
     int relaxationSteps;
 
@@ -80,12 +93,14 @@ struct Config {
 
     Config(Json::Value configJson)
         : numParticles(configJson["numParticles"].asInt()),
+          numMetabolicParticles(configJson["numMetabolicParticles"].asInt()),
           steps(configJson["steps"].asInt()),
           simSize(configJson["simSize"].asFloat()),
           interactionDistance(configJson["interactionDistance"].asFloat()),
           nGridCellsBits(configJson["nGridCellsBits"].asInt()),
           movementNoiseScale(configJson["movementNoiseScale"].asFloat()),
           rotationNoiseScale(configJson["rotationNoiseScale"].asFloat()),
+          metaboliteMovementNoiseScale(configJson["metaboliteMovementNoiseScale"].asFloat()),
           velocityDecay(configJson["velocityDecay"].asFloat()),
           relaxationSteps(configJson["relaxationSteps"].asInt())
     {
@@ -99,6 +114,7 @@ struct Config {
     print() {
         printf("[Config]\n");
         printf("numParticles %d\n", numParticles);
+        printf("numMetabolicParticles %d\n", numMetabolicParticles);
         printf("steps %d\n", steps);
         printf("simSize %f\n", simSize);
         printf("interactionDistance %f\n", interactionDistance);

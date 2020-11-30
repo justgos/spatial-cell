@@ -64,7 +64,7 @@
     </Link>
     <CudaCompile>
       <CodeGeneration>compute_75,sm_75</CodeGeneration>
-      <AdditionalOptions>-Xcompiler "/wd 4819" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Xcompiler "/wd 4819 /wd 4244 /wd 4477" %(AdditionalOptions)</AdditionalOptions>
       <Include>./;C:\ProgramData\NVIDIA Corporation\CUDA Samples\v11.1\common\inc;C:\_code\vcpkg\packages\jsoncpp_x64-windows\include</Include>
       <Defines>WIN32;__CUDA_INCLUDE_COMPILER_INTERNAL_HEADERS__</Defines>
     </CudaCompile>
@@ -125,7 +125,10 @@
     <ClInclude Include="src\interactions.cuh" />
     <ClInclude Include="src\math.cuh" />
     <ClInclude Include="src\memory.cuh" />
+    <ClInclude Include="src\metabolites.cuh" />
+    <ClInclude Include="src\random.cuh" />
     <ClInclude Include="src\setup\interaction_setup.cuh" />
+    <ClInclude Include="src\setup\metabolite_setup.cuh" />
     <ClInclude Include="src\setup\particle_setup.cuh" />
     <ClInclude Include="src\storage.cuh" />
     <ClInclude Include="src\time.cuh" />

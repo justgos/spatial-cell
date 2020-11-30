@@ -10,17 +10,17 @@
 #include "../math.cuh"
 
 
-void
+template <typename T> void
 linkParticlesSerially(
 	int start,
 	int end,
-	Particle* h_Particles,
+	T* h_Particles,
 	const Config* config,
 	std::function<double()> rng
 ) {
 	for (int i = start + 1; i < end; i++) {
-		Particle* p = &h_Particles[i];
-		Particle* interactionPartner = &h_Particles[i - 1];
+		T* p = &h_Particles[i];
+		T* interactionPartner = &h_Particles[i - 1];
 
 		// Add interaction for the partner
 		interactionPartner->interactions[interactionPartner->nActiveInteractions].type = 0;

@@ -39,15 +39,17 @@
 #include "memory.cuh"
 #include "storage.cuh"
 #include "dynamics.cuh"
+#include "metabolites.cuh"
 #include "setup/particle_setup.cuh"
 #include "setup/interaction_setup.cuh"
+#include "setup/metabolite_setup.cuh"
 
 
 __global__ void
-setupKernel(curandState* rngState) {
+setupRandomDevice(curandState* rngState, int numItems) {
 
     int idx = threadIdx.x + blockDim.x * blockIdx.x;
-    if (idx >= d_Config.numParticles)
+    if (idx >= numItems)
         return;
 
     // Setup the random generators
@@ -67,13 +69,6 @@ printCUDAIntArray(unsigned int* a, unsigned int len) {
     }
     printf(" ]\n");
     free(host_a);
-}
-
-constexpr int threadsPerBlock = 256;
-
-int
-numCudaBlocks(int nItems) {
-    return (nItems + threadsPerBlock - 1) / threadsPerBlock;
 }
 
 /**
@@ -106,9 +101,6 @@ main(void)
     std::mt19937 rngGen(42);
     std::uniform_real_distribution<double> rngDist(0.0, 1.0);
     std::function<double()> rng = [&rngDist, &rngGen]() { return rngDist(rngGen); };
-
-    size_t count = config.numParticles;
-    size_t size = count * sizeof(Particle);
 
     // Print out the Particle struct's alignment
     printf("[Memory structure]\n");
@@ -175,15 +167,22 @@ main(void)
     //FillMemory((PVOID)pBuf, 0, memBufSize);
 
     // Allocate the host & device variables
-    DoubleBuffer<Particle> particles(count);
-    DeviceOnlyDoubleBuffer<unsigned int> indices(count);
+    DoubleBuffer<Particle> particles(config.numParticles);
+    DeviceOnlyDoubleBuffer<unsigned int> indices(config.numParticles);
     DeviceOnlySingleBuffer<unsigned int> gridRanges(config.gridSize * 2);
     SingleBuffer<int> nActiveParticles(1);
     SingleBuffer<int> lastActiveParticle(1);
     SingleBuffer<int> nextParticleId(1);
-    DeviceOnlySingleBuffer<curandState> rngState(count);
-
     RadixSortPairs<Particle> particleSort(&indices, &particles);
+
+    DoubleBuffer<MetabolicParticle> metabolicParticles(config.numMetabolicParticles);
+    DeviceOnlyDoubleBuffer<unsigned int> metabolicParticleIndices(config.numMetabolicParticles);
+    DeviceOnlySingleBuffer<unsigned int> metabolicParticleGridRanges(config.gridSize * 2);
+    SingleBuffer<int> nActiveMetabolicParticles(1);
+    RadixSortPairs<MetabolicParticle> metabolicParticleSort(&metabolicParticleIndices, &metabolicParticles);
+
+    DeviceOnlySingleBuffer<curandState> rngState(config.numParticles);
+    DeviceOnlySingleBuffer<curandState> metabolicParticleRngState(config.numMetabolicParticles);
 
     // Copy the config into the device constant memory
     cudaMemcpyToSymbol(d_Config, &config, sizeof(Config), 0, cudaMemcpyHostToDevice);
@@ -192,27 +191,53 @@ main(void)
     int lastType1ParticleIdx = -1;
 
     // Initialize the particles
-    fillParticlesUniform(
-        config.numParticles * 0.8,
-        0,
+    /*fillParticlesUniform<Particle>(
+        config.numParticles * 0.5,
+        PARTICLE_TYPE_LIPID,
         particles.h_Current, nActiveParticles.h_Current, &config, rng
-    );
-
-    int lineStartIdx = nActiveParticles.h_Current[0];
-    fillParticlesStraightLine(
+    );*/
+    /*int lineStartIdx = nActiveParticles.h_Current[0];
+    fillParticlesStraightLine<Particle>(
         config.numParticles * 0.05,
-        1,
+        PARTICLE_TYPE_DNA,
         make_float3(config.simSize / 4, config.simSize / 4, config.simSize / 4),
         make_float3(0.0015, 0.0015, 0.0015),
         particles.h_Current, nActiveParticles.h_Current, &config, rng
     );
     int lineEndIdx = nActiveParticles.h_Current[0];
-    linkParticlesSerially(
+    linkParticlesSerially<Particle>(
         lineStartIdx,
         lineEndIdx,
         particles.h_Current, &config, rng
+    );*/
+    /*fillParticlesPlane<Particle>(
+        sqrt(config.numParticles * 0.4),
+        PARTICLE_TYPE_LIPID,
+        make_float3(0.35 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
+        make_float3(-1, 0, 0),
+        particles.h_Current, nActiveParticles.h_Current, &config, rng
+    );*/
+    fillParticlesSphere(
+        config.numParticles * 0.4,
+        PARTICLE_TYPE_LIPID,
+        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
+        particles.h_Current, nActiveParticles.h_Current, &config, rng
     );
     particles.copyToDevice();
+
+    // Initialize the metabolic particles
+    fillParticlesUniform<MetabolicParticle>(
+        config.numMetabolicParticles,
+        PARTICLE_TYPE_METABOLIC,
+        metabolicParticles.h_Current, nActiveMetabolicParticles.h_Current, &config, rng
+    );
+    addMetabolitesByCoord(
+        0,
+        config.numMetabolicParticles,
+        0,
+        metabolicParticles.h_Current, &config, rng
+    );
+    metabolicParticles.copyToDevice();
 
     // Set the reference particle numbers/indices
     lastActiveParticle.h_Current[0] = nActiveParticles.h_Current[0] - 1;
@@ -221,16 +246,26 @@ main(void)
     lastActiveParticle.copyToDevice();
     nextParticleId.copyToDevice();
 
-    printf("Particle CUDA kernel with %d blocks of %d threads\n", numCudaBlocks(config.numParticles), threadsPerBlock);
+    nActiveMetabolicParticles.copyToDevice();
+
+    printf("Particle CUDA kernels with %d blocks of %d threads\n", CUDA_NUM_BLOCKS(config.numParticles), CUDA_THREADS_PER_BLOCK);
+    printf("MetabolicParticle CUDA kernels with %d blocks of %d threads\n", CUDA_NUM_BLOCKS(config.numMetabolicParticles), CUDA_THREADS_PER_BLOCK);
 
     // Initialize the device-side variables
-    setupKernel KERNEL_ARGS2(numCudaBlocks(config.numParticles), threadsPerBlock) (rngState.d_Current);
+    setupRandomDevice KERNEL_ARGS2(CUDA_NUM_BLOCKS(config.numParticles), CUDA_THREADS_PER_BLOCK) (
+        rngState.d_Current,
+        config.numParticles
+    );
+    setupRandomDevice KERNEL_ARGS2(CUDA_NUM_BLOCKS(config.numMetabolicParticles), CUDA_THREADS_PER_BLOCK) (
+        metabolicParticleRngState.d_Current,
+        config.numMetabolicParticles
+    );
 
     // Write the frames file header
     storage.writeHeader();
 
     // Write the first frame
-    storage.writeFrame(&particles);
+    storage.writeFrame(&particles, &metabolicParticles);
 
     /*char *memBufPtr = (char*)pBuf;
     CopyMemory((PVOID)memBufPtr, (char*)&config.simSize, sizeof(float));
@@ -251,19 +286,36 @@ main(void)
     for (int i = 0; i < config.steps; i++) {
         // Order particles by their grid positions
         time_point t1 = now();
-        updateIndices KERNEL_ARGS2(numCudaBlocks(config.numParticles), threadsPerBlock) (particles.d_Current, indices.d_Current);
+        updateGridAndSort(
+            &particles,
+            &indices,
+            &gridRanges,
+            &particleSort,
+            &config
+        );
+        // Same for the metabolic particles
+        updateGridAndSort(
+            &metabolicParticles,
+            &metabolicParticleIndices,
+            &metabolicParticleGridRanges,
+            &metabolicParticleSort,
+            &config
+        );
         cudaDeviceSynchronize();
-        time_point t3 = now();
-        particleSort.sort(&indices, &particles);
-        cudaDeviceSynchronize();
-        particles.swap();
-        indices.swap();
-        //printCUDAIntArray(d_Indices, config.numParticles);
-        time_point t4 = now();
-        gridRanges.clear();
-        updateGridRanges KERNEL_ARGS2(numCudaBlocks(config.gridSize), threadsPerBlock) (indices.d_Current, gridRanges.d_Current);
-        cudaDeviceSynchronize();
-        //printCUDAIntArray(gridRanges.d_Current, config.gridSize * 2);
+
+        //updateIndices KERNEL_ARGS2(CUDA_NUM_BLOCKS(config.numParticles), CUDA_THREADS_PER_BLOCK) (particles.d_Current, indices.d_Current);
+        //cudaDeviceSynchronize();
+        //time_point t3 = now();
+        //particleSort.sort(&indices, &particles);
+        //cudaDeviceSynchronize();
+        //particles.swap();
+        //indices.swap();
+        ////printCUDAIntArray(d_Indices, config.numParticles);
+        //time_point t4 = now();
+        //gridRanges.clear();
+        //updateGridRanges KERNEL_ARGS2(CUDA_NUM_BLOCKS(config.gridSize), CUDA_THREADS_PER_BLOCK) (indices.d_Current, gridRanges.d_Current);
+        //cudaDeviceSynchronize();
+        ////printCUDAIntArray(gridRanges.d_Current, config.gridSize * 2);
 
         nActiveParticles.copyToHost();
         lastActiveParticle.h_Current[0] = nActiveParticles.h_Current[0];
@@ -271,9 +323,8 @@ main(void)
 
         // Simulate the dynamics
         time_point t5 = now();
-
         particles.clearNextOnDevice();
-        move KERNEL_ARGS2(numCudaBlocks(nActiveParticles.h_Current[0]), threadsPerBlock) (
+        move KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
             i,
             rngState.d_Current,
             particles.d_Current,
@@ -282,36 +333,79 @@ main(void)
             nActiveParticles.d_Current,
             lastActiveParticle.d_Current,
             nextParticleId.d_Current,
-            indices.d_Current,
             gridRanges.d_Current
         );
         particles.swap();
         cudaDeviceSynchronize();
         nActiveParticles.copyToHost();
-        time_point t6 = now();
 
+        time_point t6 = now();
+        metabolicParticles.clearNextOnDevice();
+        moveMetabolicParticles KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            i,
+            metabolicParticleRngState.d_Current,
+            metabolicParticles.d_Current,
+            metabolicParticles.d_Next,
+            nActiveMetabolicParticles.h_Current[0],
+            metabolicParticleGridRanges.d_Current
+        );
+        metabolicParticles.swap();
+        cudaDeviceSynchronize();
+        //nActiveParticles.copyToHost();
+
+        time_point t6_1 = now();
         for (int j = 0; j < config.relaxationSteps; j++) {
             // Relax the accumulated tensions
-            cudaMemset(particles.d_Next, 0, size);
-            relax KERNEL_ARGS2(numCudaBlocks(nActiveParticles.h_Current[0]), threadsPerBlock) (
+            particles.clearNextOnDevice();
+            relax KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
                 i,
                 rngState.d_Current,
                 particles.d_Current,
                 particles.d_Next,
                 nActiveParticles.h_Current[0],
-                indices.d_Current,
                 gridRanges.d_Current
             );
             particles.swap();
             cudaDeviceSynchronize();
         }
-        time_point t7 = now();
 
+        time_point t6_2 = now();
+        for (int j = 0; j < config.relaxationSteps; j++) {
+            // Relax the accumulated metabolic particle tensions
+            metabolicParticles.clearNextOnDevice();
+            relaxMetabolicParticles KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                i,
+                metabolicParticleRngState.d_Current,
+                metabolicParticles.d_Current,
+                metabolicParticles.d_Next,
+                nActiveMetabolicParticles.h_Current[0],
+                metabolicParticleGridRanges.d_Current,
+                particles.d_Current,
+                gridRanges.d_Current
+                );
+            metabolicParticles.swap();
+            cudaDeviceSynchronize();
+        }
+
+        time_point t6_3 = now();
+        metabolicParticles.clearNextOnDevice();
+        diffuseMetabolites KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            i,
+            metabolicParticleRngState.d_Current,
+            metabolicParticles.d_Current,
+            metabolicParticles.d_Next,
+            nActiveMetabolicParticles.h_Current[0],
+            metabolicParticleGridRanges.d_Current
+        );
+        metabolicParticles.swap();
+        cudaDeviceSynchronize();
+
+        time_point t7 = now();
         particles.copyToHost();
+        metabolicParticles.copyToHost();
 
         time_point t8 = now();
-
-        storage.writeFrame(&particles);
+        storage.writeFrame(&particles, &metabolicParticles);
 
         /*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
         memBufPtr += sizeof(unsigned int);
@@ -321,16 +415,18 @@ main(void)
         time_point t9 = now();
 
         if (i % 10 == 0) {
-            printf("step %d, nActiveParticles %d, updateIndices %f, SortPairs %f, updateGridRanges %f, move %f, relax %f, cudaMemcpy %f, fout.write %f\n",
+            printf("step %d, nActiveParticles %d, updateGridAndSort %f, move %f, moveMetabolicParticles %f, relax %f, relaxMetabolicParticles %f, diffuseMetabolites %f, cudaMemcpy %f, fout.write %f, full step time %f\n",
                 i,
                 nActiveParticles.h_Current[0],
-                getDuration(t1, t3),
-                getDuration(t3, t4),
-                getDuration(t4, t5),
+                getDuration(t1, t5),
                 getDuration(t5, t6),
-                getDuration(t6, t7),
+                getDuration(t6, t6_1),
+                getDuration(t6_1, t6_2),
+                getDuration(t6_2, t6_3),
+                getDuration(t6_3, t7),
                 getDuration(t7, t8),
-                getDuration(t8, t9)
+                getDuration(t8, t9),
+                getDuration(t1, t9)
             );
         }
     }

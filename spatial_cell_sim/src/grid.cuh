@@ -7,6 +7,7 @@
 //#include <cub/device/device_radix_sort.cuh>
 
 #include "constants.cuh"
+#include "macros.cuh"
 #include "memory.cuh"
 
 __device__ __inline__ unsigned int
@@ -23,21 +24,23 @@ makeIdx(unsigned int gridX, unsigned int gridY, unsigned int gridZ)
         | (gridZ << 0);
 }
 
+template <typename T>
 __device__ __inline__ unsigned int
-makeIdx(Particle p)
+makeIdx(T p)
 {
     return makeIdx(getGridIdx(p.pos.x), getGridIdx(p.pos.y), getGridIdx(p.pos.z));
 }
 
+template <typename T>
 __global__ void
-updateIndices(const Particle* curParticles, unsigned int* indices)
+updateIndices(const T* curParticles, unsigned int* indices)
 {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
     if (idx >= d_Config.numParticles)
         return;
 
-    Particle p = curParticles[idx];
-    indices[idx] = (p.flags & PARTICLE_FLAG_ACTIVE) ? makeIdx(p) : MAX_GRID_INDEX;
+    T p = curParticles[idx];
+    indices[idx] = (p.flags & PARTICLE_FLAG_ACTIVE) ? makeIdx<T>(p) : MAX_GRID_INDEX;
 }
 
 __global__ void
@@ -100,3 +103,31 @@ public:
         cudaUnalloc(d_temp_storage);
     }
 };
+
+
+template <typename T>
+void
+updateGridAndSort(
+    DoubleBuffer<T>* particles,
+    DeviceOnlyDoubleBuffer<unsigned int>* indices,
+    DeviceOnlySingleBuffer<unsigned int>* gridRanges,
+    RadixSortPairs<T>* particleSort,
+    Config* config
+) {
+    updateIndices<T> KERNEL_ARGS2(CUDA_NUM_BLOCKS(config->numParticles), CUDA_THREADS_PER_BLOCK) (
+        particles->d_Current,
+        indices->d_Current
+    );
+    //cudaDeviceSynchronize();
+    particleSort->sort(indices, particles);
+    //cudaDeviceSynchronize();
+    particles->swap();
+    indices->swap();
+    //printCUDAIntArray(d_Indices, config.numParticles);
+    gridRanges->clear();
+    updateGridRanges KERNEL_ARGS2(CUDA_NUM_BLOCKS(config->gridSize), CUDA_THREADS_PER_BLOCK) (
+        indices->d_Current,
+        gridRanges->d_Current
+    );
+    //cudaDeviceSynchronize();
+}

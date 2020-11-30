@@ -1,11 +1,13 @@
 {
   "numParticles": 2048,
+  "numMetabolicParticles": 2048,
   "steps": 501,
   "simSize": 0.2,
   "interactionDistance": 0.01,
   "nGridCellsBits": 3,
-  "movementNoiseScale": 0.0002,
-  "rotationNoiseScale": 0.05,
+  "movementNoiseScale": 0.00002,
+  "rotationNoiseScale": 0.005,
+  "metaboliteMovementNoiseScale": 0.0005,
   "velocityDecay": 0.7,
   "relaxationSteps": 4
 }

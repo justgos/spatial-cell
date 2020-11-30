@@ -1,4 +1,7 @@
-﻿#define PARTICLE_FLAG_ACTIVE 0x0001
+﻿#define NUM_METABOLITES 100
+
+#define PARTICLE_FLAG_ACTIVE 0x0001
+
 // Upgrade NOTE: excluded shader from DX11, OpenGL ES 2.0 because it uses unsized arrays
 #pragma exclude_renderers d3d11 gles
 
@@ -18,6 +21,20 @@ struct Particle {
     int nActiveInteractions;
     ParticleInteraction interactions[4];
     float4 debugVector;
+};
+
+struct MetabolicParticle {
+    int id;
+    int type;
+    int flags;
+    float3 pos;
+    float __padding1[2];
+    float4 rot;
+    float3 velocity;
+    int nActiveInteractions;
+    ParticleInteraction interactions[4];
+    float4 debugVector;
+    float metabolites[NUM_METABOLITES];
 };
 
 
