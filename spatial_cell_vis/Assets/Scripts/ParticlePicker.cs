@@ -2,11 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 using Unity.Collections.LowLevel.Unsafe;
 
 public class ParticlePicker : MonoBehaviour
 {
     public Camera camera;
+
+    public RangeSlider particleVisibleRangeXSlider;
+    public RangeSlider particleVisibleRangeYSlider;
+    public RangeSlider particleVisibleRangeZSlider;
 
     void Start()
     {
@@ -54,7 +59,20 @@ public class ParticlePicker : MonoBehaviour
                     for (var i = 0; i < particleRenderer.frameData.Frame.particles.Length; i++)
                     {
                         var p = UnsafeUtility.ReadArrayElement<SimData.Particle>(particleRenderer.frameData.Frame.particles.GetUnsafeReadOnlyPtr(), i);
-                        var particlePos = particleRenderer.transform.position + p.pos.UnityVector() * 10;
+
+                        if (
+                            (p.flags & SimData.PARTICLE_FLAG_ACTIVE) < 1
+                            || p.pos.x < particleVisibleRangeXSlider.LowValue
+                            || p.pos.x > particleVisibleRangeXSlider.HighValue
+                            || p.pos.y < particleVisibleRangeYSlider.LowValue
+                            || p.pos.y > particleVisibleRangeYSlider.HighValue
+                            || p.pos.z < particleVisibleRangeZSlider.LowValue
+                            || p.pos.z > particleVisibleRangeZSlider.HighValue
+                        ) {
+                            continue;
+                        }
+                        var pPos = p.pos.UnityVector();
+                        var particlePos = particleRenderer.transform.position + pPos * 10;
                         //Debug.Log("particlePos " + p.id + ", " + particlePos.ToString("F4"));
                         if (IntersectRaySphere(ray, particlePos, 0.025f))
                         {

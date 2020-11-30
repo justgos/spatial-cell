@@ -8,10 +8,13 @@ using UnityEngine;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 
 
 public class SimData : MonoBehaviour
 {
+    public static readonly int PARTICLE_FLAG_ACTIVE = 0x0001;
+
     public GameObject spherePrefab;
 
     [StructLayout(LayoutKind.Sequential)]
@@ -109,6 +112,10 @@ public class SimData : MonoBehaviour
     private bool playing = false;
     private float playbackFps = 30;
 
+    public RangeSlider particleVisibleRangeXSlider;
+    public RangeSlider particleVisibleRangeYSlider;
+    public RangeSlider particleVisibleRangeZSlider;
+
     void Start()
     {
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
@@ -142,6 +149,10 @@ public class SimData : MonoBehaviour
                 //var memStream = mmf.CreateViewStream();
                 var br = new BinaryReader(fs);
                 simSize = br.ReadSingle();
+                particleVisibleRangeXSlider.MaxValue = simSize;
+                particleVisibleRangeYSlider.MaxValue = simSize;
+                particleVisibleRangeZSlider.MaxValue = simSize;
+
                 int particleBufferSize = br.ReadInt32();
                 var particleStructSize = Marshal.SizeOf(new Particle());
                 Debug.Log("numParticles " + particleBufferSize);

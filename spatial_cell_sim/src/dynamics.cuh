@@ -186,20 +186,16 @@ move(
     moveVec.z += (curand_normal(&rngState[idx]) - 0.0) * d_Config.movementNoiseScale;
 
     // Apply the velocity changes
-    p.velocity.x *= d_Config.velocityDecay;
-    p.velocity.y *= d_Config.velocityDecay;
-    p.velocity.z *= d_Config.velocityDecay;
-    p.velocity.x += moveVec.x;
-    p.velocity.y += moveVec.y;
-    p.velocity.z += moveVec.z;
+    p.velocity = add(
+        mul(p.velocity, d_Config.velocityDecay),
+        moveVec
+    );
 
     // Brownian rotation
     p.rot = slerp(p.rot, random_rotation(&rngState[idx]), d_Config.rotationNoiseScale);
 
     // Move the particle
-    p.pos.x = fmin(fmax(p.pos.x + p.velocity.x, 0.0f), d_Config.simSize);
-    p.pos.y = fmin(fmax(p.pos.y + p.velocity.y, 0.0f), d_Config.simSize);
-    p.pos.z = fmin(fmax(p.pos.z + p.velocity.z, 0.0f), d_Config.simSize);
+    p.pos = clamp(add(p.pos, p.velocity), 0, d_Config.simSize);
 
     nextParticles[idx] = p;
 }
@@ -277,17 +273,25 @@ relax(
                     if (dist <= collisionDist) {
                         float distRatio = (collisionDist - dist) / (dist + 1e-6);
                         constexpr float collisionRelaxationSpeed = 0.25f;
-                        moveVec.x += -delta.x * distRatio * collisionRelaxationSpeed;
-                        moveVec.y += -delta.y * distRatio * collisionRelaxationSpeed;
-                        moveVec.z += -delta.z * distRatio * collisionRelaxationSpeed;
+                        moveVec = add(
+                            moveVec,
+                            mul(
+                                negate(delta),
+                                distRatio * collisionRelaxationSpeed
+                            )
+                        );
                     }
 
                     if (p.type == PARTICLE_TYPE_LIPID && p.type == tp.type && dist <= 0.007) {
                         float distRatio = (interactionDistance - dist);
                         constexpr float distanceRelaxationSpeed = 0.25f;
-                        moveVec.x += delta.x * distRatio * distanceRelaxationSpeed;
-                        moveVec.y += delta.y * distRatio * distanceRelaxationSpeed;
-                        moveVec.z += delta.z * distRatio * distanceRelaxationSpeed;
+                        moveVec = add(
+                            moveVec,
+                            mul(
+                                delta,
+                                distRatio * distanceRelaxationSpeed
+                            )
+                        );
 
                         float interactionAngleMaxDelta = 0.4f;
                         float interactionOrientationAngle = 0;
@@ -350,19 +354,19 @@ relax(
                                 //// Decrease the movement noise for each interaction
                                 //p.velocity = mul(p.velocity, 0.5);
 
-                                // Align relative position
-                                constexpr float relativePositionRelaxationSpeed = 0.001f;
-                                //float4 targetRelativePositionRotation = quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle);
-                                float3 relaxedRelativePosition = transform_vector(tup, quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle));
-                                relaxedRelativePosition.x *= interactionDistance;
-                                relaxedRelativePosition.y *= interactionDistance;
-                                relaxedRelativePosition.z *= interactionDistance;
-                                relaxedRelativePosition.x += tp.pos.x;
-                                relaxedRelativePosition.y += tp.pos.y;
-                                relaxedRelativePosition.z += tp.pos.z;
-                                /*moveVec.x += (relaxedRelativePosition.x - p.pos.x) * relativePositionRelaxationSpeed;
-                                moveVec.y += (relaxedRelativePosition.y - p.pos.y) * relativePositionRelaxationSpeed;
-                                moveVec.z += (relaxedRelativePosition.z - p.pos.z) * relativePositionRelaxationSpeed;*/
+                                //// Align relative position
+                                //constexpr float relativePositionRelaxationSpeed = 0.001f;
+                                ////float4 targetRelativePositionRotation = quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle);
+                                //float3 relaxedRelativePosition = transform_vector(tup, quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle));
+                                //relaxedRelativePosition.x *= interactionDistance;
+                                //relaxedRelativePosition.y *= interactionDistance;
+                                //relaxedRelativePosition.z *= interactionDistance;
+                                //relaxedRelativePosition.x += tp.pos.x;
+                                //relaxedRelativePosition.y += tp.pos.y;
+                                //relaxedRelativePosition.z += tp.pos.z;
+                                ///*moveVec.x += (relaxedRelativePosition.x - p.pos.x) * relativePositionRelaxationSpeed;
+                                //moveVec.y += (relaxedRelativePosition.y - p.pos.y) * relativePositionRelaxationSpeed;
+                                //moveVec.z += (relaxedRelativePosition.z - p.pos.z) * relativePositionRelaxationSpeed;*/
 
                                 /*p.debugVector.x = (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
                                 p.debugVector.y = (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);

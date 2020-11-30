@@ -76,7 +76,7 @@
 					mul(UNITY_MATRIX_V, o.pos) + float4(quadPoints[id] * float3(0.005 * scale, 0.005 * scale, 1), 0)
 				);
 				
-				o.col = float4((float)(p.type % 2), 1, 1, 1);
+				o.col = float4((float)((uint)p.type % 2), 1, 1, 1);
 				o.col.xyz /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
 				UNITY_TRANSFER_FOG(o, o.pos);
 				return o;

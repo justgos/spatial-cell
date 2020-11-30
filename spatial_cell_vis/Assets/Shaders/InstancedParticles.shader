@@ -35,6 +35,12 @@
         uniform float meshScale;
         uniform float scale;
         uniform float simSize;
+        uniform float visibleMinX;
+        uniform float visibleMaxX;
+        uniform float visibleMinY;
+        uniform float visibleMaxY;
+        uniform float visibleMinZ;
+        uniform float visibleMaxZ;
         uniform int targetParticleId;
 #endif
         half _Glossiness;
@@ -89,7 +95,7 @@
                 );
             float3 cameraDist = pos - clippedCameraPos;
 
-            o.col = colormap[p.type % colormapLength];
+            o.col = colormap[(uint)p.type % colormapLength];
             if(p.type == 0)
                 o.col = float4(0.2, 0.2, 0.2, 1);
             //o.col = float4(1, 1, 1, 1);
@@ -99,9 +105,17 @@
             if(targetParticleId == p.id)
                 o.col = float4(1, 0, 0, 1);
 
-            if (!(p.flags & PARTICLE_FLAG_ACTIVE)) {
+            if (
+                !(p.flags & PARTICLE_FLAG_ACTIVE)
+                || p.pos.x < visibleMinX
+                || p.pos.x > visibleMaxX
+                || p.pos.y < visibleMinY
+                || p.pos.y > visibleMaxY
+                || p.pos.z < visibleMinZ
+                || p.pos.z > visibleMaxZ
+            ) {
                 v.vertex = 0;
-                o.col = float4(1, 0, 0, 1);
+                //o.col = float4(1, 0, 0, 1);
             }
 #else
             o.col = float4(1, 1, 1, 1);
