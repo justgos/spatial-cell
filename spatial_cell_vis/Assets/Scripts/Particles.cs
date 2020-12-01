@@ -29,6 +29,8 @@ public class Particles : MonoBehaviour
     private int targetParticleId = -1;
     public int TargetParticleId { set { targetParticleId = value; } }
 
+    public bool drawInstanced = true;
+
     ComputeBuffer quadPoints;
     ComputeBuffer quadUVs;
 
@@ -40,6 +42,10 @@ public class Particles : MonoBehaviour
 
     void Start()
     {
+        instancedMaterial = Instantiate(instancedMaterial);
+        debugVectorInstancedMaterial = Instantiate(debugVectorInstancedMaterial);
+        material = Instantiate(material);
+
         quadPoints = new ComputeBuffer(6, Marshal.SizeOf(new Vector3()));
         quadPoints.SetData(new[] {
                 new Vector3(-0.5f, 0.5f),
@@ -60,18 +66,7 @@ public class Particles : MonoBehaviour
                 new Vector2(0.0f, 1.0f),
         });
 
-        mesh = model.GetComponent<MeshFilter>().sharedMesh;
-        meshScale = model.transform.localScale.x;
-        // Argument buffer used by DrawMeshInstancedIndirect.
-        // Arguments for drawing mesh.
-        // 0 == number of triangle indices, 1 == population, others are only relevant if drawing submeshes.
-        drawArgs = new uint[5] { 0, 0, 0, 0, 0 };
-        drawArgs[0] = (uint)mesh.GetIndexCount(0);
-        drawArgs[1] = (uint)1;
-        drawArgs[2] = (uint)mesh.GetIndexStart(0);
-        drawArgs[3] = (uint)mesh.GetBaseVertex(0);
-        argsBuffer = new ComputeBuffer(1, drawArgs.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
-        argsBuffer.SetData(drawArgs);
+        SetModel(model);
 
         debugVectorMesh = debugVectorModel.GetComponent<MeshFilter>().sharedMesh;
         debugVectorMeshScale = debugVectorModel.transform.localScale.y;
@@ -86,61 +81,97 @@ public class Particles : MonoBehaviour
         debugVectorArgsBuffer.SetData(debugVectorDrawArgs);
     }
 
+    public void SetModel(GameObject model)
+    {
+        this.model = model;
+        mesh = model.GetComponent<MeshFilter>().sharedMesh;
+        meshScale = model.transform.localScale.x;
+        // Argument buffer used by DrawMeshInstancedIndirect.
+        // Arguments for drawing mesh.
+        // 0 == number of triangle indices, 1 == population, others are only relevant if drawing submeshes.
+        drawArgs = new uint[5] { 0, 0, 0, 0, 0 };
+        drawArgs[0] = (uint)mesh.GetIndexCount(0);
+        drawArgs[1] = (uint)1;
+        drawArgs[2] = (uint)mesh.GetIndexStart(0);
+        drawArgs[3] = (uint)mesh.GetBaseVertex(0);
+        argsBuffer = new ComputeBuffer(1, drawArgs.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
+        argsBuffer.SetData(drawArgs);
+    }
+
     void Update()
     {
-        if(frameData.NumParticles != drawArgs[1])
-        {
-            drawArgs[1] = (uint)frameData.NumParticles;
-            argsBuffer.SetData(drawArgs);
-            debugVectorDrawArgs[1] = (uint)frameData.NumParticles;
-            debugVectorArgsBuffer.SetData(debugVectorDrawArgs);
-        }
-        instancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
-        instancedMaterial.SetFloat("scale", 10.0f);
-        instancedMaterial.SetFloat("meshScale", meshScale);
-        instancedMaterial.SetFloat("simSize", simData.SimSize);
-        instancedMaterial.SetFloat("visibleMinX", particleVisibleRangeXSlider.LowValue);
-        instancedMaterial.SetFloat("visibleMaxX", particleVisibleRangeXSlider.HighValue);
-        instancedMaterial.SetFloat("visibleMinY", particleVisibleRangeYSlider.LowValue);
-        instancedMaterial.SetFloat("visibleMaxY", particleVisibleRangeYSlider.HighValue);
-        instancedMaterial.SetFloat("visibleMinZ", particleVisibleRangeZSlider.LowValue);
-        instancedMaterial.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
-        instancedMaterial.SetInt("targetParticleId", targetParticleId);
-        instancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
-        Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), argsBuffer);
+        if (frameData.Frame == null)
+            return;
 
-        debugVectorInstancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
-        debugVectorInstancedMaterial.SetFloat("scale", 10.0f);
-        debugVectorInstancedMaterial.SetFloat("meshScale", debugVectorMeshScale);
-        debugVectorInstancedMaterial.SetFloat("meshHeight", debugVectorMeshHeight);
-        debugVectorInstancedMaterial.SetFloat("simSize", simData.SimSize);
-        debugVectorInstancedMaterial.SetFloat("visibleMinX", particleVisibleRangeXSlider.LowValue);
-        debugVectorInstancedMaterial.SetFloat("visibleMaxX", particleVisibleRangeXSlider.HighValue);
-        debugVectorInstancedMaterial.SetFloat("visibleMinY", particleVisibleRangeYSlider.LowValue);
-        debugVectorInstancedMaterial.SetFloat("visibleMaxY", particleVisibleRangeYSlider.HighValue);
-        debugVectorInstancedMaterial.SetFloat("visibleMinZ", particleVisibleRangeZSlider.LowValue);
-        debugVectorInstancedMaterial.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
-        debugVectorInstancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
-        Graphics.DrawMeshInstancedIndirect(debugVectorMesh, 0, debugVectorInstancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), debugVectorArgsBuffer);
+        if (drawInstanced)
+        {
+            if (frameData.NumParticles != drawArgs[1])
+            {
+                drawArgs[1] = (uint)frameData.NumParticles;
+                argsBuffer.SetData(drawArgs);
+                debugVectorDrawArgs[1] = (uint)frameData.NumParticles;
+                debugVectorArgsBuffer.SetData(debugVectorDrawArgs);
+            }
+            instancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
+            instancedMaterial.SetFloat("scale", 10.0f);
+            instancedMaterial.SetFloat("meshScale", meshScale);
+            instancedMaterial.SetFloat("simSize", simData.SimSize);
+            instancedMaterial.SetFloat("visibleMinX", particleVisibleRangeXSlider.LowValue);
+            instancedMaterial.SetFloat("visibleMaxX", particleVisibleRangeXSlider.HighValue);
+            instancedMaterial.SetFloat("visibleMinY", particleVisibleRangeYSlider.LowValue);
+            instancedMaterial.SetFloat("visibleMaxY", particleVisibleRangeYSlider.HighValue);
+            instancedMaterial.SetFloat("visibleMinZ", particleVisibleRangeZSlider.LowValue);
+            instancedMaterial.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
+            instancedMaterial.SetInt("targetParticleId", targetParticleId);
+            instancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
+            Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), argsBuffer);
+
+            debugVectorInstancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
+            debugVectorInstancedMaterial.SetFloat("scale", 10.0f);
+            debugVectorInstancedMaterial.SetFloat("meshScale", debugVectorMeshScale);
+            debugVectorInstancedMaterial.SetFloat("meshHeight", debugVectorMeshHeight);
+            debugVectorInstancedMaterial.SetFloat("simSize", simData.SimSize);
+            debugVectorInstancedMaterial.SetFloat("visibleMinX", particleVisibleRangeXSlider.LowValue);
+            debugVectorInstancedMaterial.SetFloat("visibleMaxX", particleVisibleRangeXSlider.HighValue);
+            debugVectorInstancedMaterial.SetFloat("visibleMinY", particleVisibleRangeYSlider.LowValue);
+            debugVectorInstancedMaterial.SetFloat("visibleMaxY", particleVisibleRangeYSlider.HighValue);
+            debugVectorInstancedMaterial.SetFloat("visibleMinZ", particleVisibleRangeZSlider.LowValue);
+            debugVectorInstancedMaterial.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
+            debugVectorInstancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
+            Graphics.DrawMeshInstancedIndirect(debugVectorMesh, 0, debugVectorInstancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), debugVectorArgsBuffer);
+        }
     }
 
     void OnRenderObject()
     {
-        //material.SetMatrix("baseTransform", Matrix4x4.identity);
-        //material.SetBuffer("quadPoints", quadPoints);
-        //material.SetBuffer("quadUVs", quadUVs);
-        //material.SetBuffer("particles", simData.frameBuffer);
-        //material.SetFloat("scale", 10.0f);
-        //material.SetFloat("simSize", simData.SimSize);
-        //material.SetPass(0);
-        //Graphics.DrawProceduralNow(MeshTopology.Triangles, 6, simData.frameBuffer.count);
+        if (!drawInstanced)
+        {
+            material.SetMatrix("baseTransform", Matrix4x4.identity);
+            material.SetBuffer("quadPoints", quadPoints);
+            material.SetBuffer("quadUVs", quadUVs);
+            material.SetBuffer("particles", frameData.ParticleBuffer);
+            material.SetFloat("scale", 10.0f);
+            material.SetFloat("simSize", simData.SimSize);
+            material.SetFloat("visibleMinX", particleVisibleRangeXSlider.LowValue);
+            material.SetFloat("visibleMaxX", particleVisibleRangeXSlider.HighValue);
+            material.SetFloat("visibleMinY", particleVisibleRangeYSlider.LowValue);
+            material.SetFloat("visibleMaxY", particleVisibleRangeYSlider.HighValue);
+            material.SetFloat("visibleMinZ", particleVisibleRangeZSlider.LowValue);
+            material.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
+            material.SetBuffer("particles", frameData.ParticleBuffer);
+            material.SetPass(0);
+            Graphics.DrawProceduralNow(MeshTopology.Triangles, 6, frameData.NumParticles);
+        }
     }
 
     void OnDestroy()
     {
-        quadPoints.Dispose();
-        quadUVs.Dispose();
-        argsBuffer.Dispose();
-        debugVectorArgsBuffer.Dispose();
+        if (quadPoints != null)
+        {
+            quadPoints.Dispose();
+            quadUVs.Dispose();
+            argsBuffer.Dispose();
+            debugVectorArgsBuffer.Dispose();
+        }
     }
 }

@@ -192,11 +192,11 @@ main(void)
     int lastType1ParticleIdx = -1;
 
     // Initialize the particles
-    /*fillParticlesUniform<Particle>(
-        config.numParticles * 0.5,
-        PARTICLE_TYPE_LIPID,
+    fillParticlesUniform<Particle>(
+        config.numParticles * 0.1,
+        PARTICLE_TYPE_DNA,
         particles.h_Current, nActiveParticles.h_Current, &config, rng
-    );*/
+    );
     /*int lineStartIdx = nActiveParticles.h_Current[0];
     fillParticlesStraightLine<Particle>(
         config.numParticles * 0.05,
@@ -221,6 +221,24 @@ main(void)
     fillParticlesSphere(
         config.numParticles * 0.4,
         PARTICLE_TYPE_LIPID,
+        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
+        particles.h_Current, nActiveParticles.h_Current, &config, rng
+    );
+    fillParticlesSphere(
+        config.numParticles * 0.25,
+        PARTICLE_TYPE_DNA,
+        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
+        particles.h_Current, nActiveParticles.h_Current, &config, rng
+    );
+    fillParticlesSphere(
+        config.numParticles * 0.15,
+        PARTICLE_TYPE_DNA,
+        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
+        particles.h_Current, nActiveParticles.h_Current, &config, rng
+    );
+    fillParticlesSphere(
+        config.numParticles * 0.05,
+        PARTICLE_TYPE_DNA,
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
         particles.h_Current, nActiveParticles.h_Current, &config, rng
     );

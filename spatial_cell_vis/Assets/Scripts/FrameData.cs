@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Collections;
@@ -10,8 +11,8 @@ public class FrameData : MonoBehaviour
     public int NumParticles { get { return numParticles; } }
     private ComputeBuffer particleBuffer = null;
     public ComputeBuffer ParticleBuffer { get { return particleBuffer; } }
-    private SimData.SimFrame frame = null;
-    public SimData.SimFrame Frame { get { return frame; } }
+    private Nullable<SimData.SimFrame> frame = null;
+    public Nullable<SimData.SimFrame> Frame { get { return frame; } }
 
 
     void Start()
@@ -29,10 +30,11 @@ public class FrameData : MonoBehaviour
         
     }
 
-    public void SetData<T> (NativeArray<T> items, int count, SimData.SimFrame simFrame) where T : struct
+    public void SetData<T> (Nullable<NativeArray<T>> items, int count, Nullable<SimData.SimFrame> simFrame) where T : struct
     {
         numParticles = count;
-        particleBuffer.SetData(items);
+        if(items.HasValue)
+            particleBuffer.SetData(items.Value);
         frame = simFrame;
     }
 

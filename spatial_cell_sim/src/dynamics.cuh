@@ -369,9 +369,13 @@ relax(
                         );
                     }
 
+                    /*
+                    * TODO: interactions should alter the particle's velocity, not just position
+                    */
+
                     if (p.type == PARTICLE_TYPE_LIPID && p.type == tp.type && dist <= 0.007) {
                         float deltaInteractionDist = -(interactionDistance - dist);
-                        constexpr float distanceRelaxationSpeed = 0.05f;
+                        constexpr float distanceRelaxationSpeed = 0.15f;
                         moveVec = add(
                             moveVec,
                             mul(
@@ -434,7 +438,7 @@ relax(
                                 //p.velocity = mul(p.velocity, 0.5);
 
                                 //// Align relative position
-                                //constexpr float relativePositionRelaxationSpeed = 0.001f;
+                                //constexpr float relativePositionRelaxationSpeed = 0.1f;
                                 ////float4 targetRelativePositionRotation = quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle);
                                 //float3 relaxedRelativePosition = transform_vector(tup, quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle));
                                 //relaxedRelativePosition.x *= interactionDistance;
@@ -443,9 +447,9 @@ relax(
                                 //relaxedRelativePosition.x += tp.pos.x;
                                 //relaxedRelativePosition.y += tp.pos.y;
                                 //relaxedRelativePosition.z += tp.pos.z;
-                                ///*moveVec.x += (relaxedRelativePosition.x - p.pos.x) * relativePositionRelaxationSpeed;
+                                //moveVec.x += (relaxedRelativePosition.x - p.pos.x) * relativePositionRelaxationSpeed;
                                 //moveVec.y += (relaxedRelativePosition.y - p.pos.y) * relativePositionRelaxationSpeed;
-                                //moveVec.z += (relaxedRelativePosition.z - p.pos.z) * relativePositionRelaxationSpeed;*/
+                                //moveVec.z += (relaxedRelativePosition.z - p.pos.z) * relativePositionRelaxationSpeed;
 
                                 /*p.debugVector.x = (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
                                 p.debugVector.y = (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);

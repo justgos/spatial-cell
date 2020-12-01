@@ -97,7 +97,7 @@
 
             o.col = colormap[(uint)p.type % colormapLength];
             if(p.type == 0)
-                o.col = float4(0.2, 0.2, 0.2, 1);
+                o.col = float4(0.9, 0.8, 0.3, 1);
             //o.col = float4(1, 1, 1, 1);
             //o.col.rgb = abs(p.rot.xyz);
             o.col.rgb /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);

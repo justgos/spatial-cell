@@ -429,6 +429,15 @@
     <Reference Include="UnityEditor">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.1.12f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Burst.Unsafe">
+      <HintPath>Library\PackageCache\com.unity.burst@1.3.7\Unity.Burst.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Collections.LowLevel.ILSupport">
+      <HintPath>Library\PackageCache\com.unity.collections@0.14.0-preview.16\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@2.0.0-preview\Runtime\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.1.12f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\mscorlib.dll</HintPath>
     </Reference>
@@ -800,6 +809,27 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst">
+      <HintPath>Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Jobs">
+      <HintPath>Library\ScriptAssemblies\Unity.Jobs.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Jobs.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Jobs.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Collections">
+      <HintPath>Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -56,13 +56,14 @@ public class ParticlePicker : MonoBehaviour
             var particleRenderers = GameObject.FindObjectsOfType<Particles>();
             foreach (var particleRenderer in particleRenderers)
             {
-                if (!particleRenderer.gameObject.activeSelf)
+                if (!particleRenderer.gameObject.activeSelf || particleRenderer.frameData.Frame == null)
                     continue;
+                SimData.SimFrame frame = (SimData.SimFrame)particleRenderer.frameData.Frame;
                 unsafe
                 {
-                    for (var i = 0; i < particleRenderer.frameData.Frame.particles.Length; i++)
+                    for (var i = 0; i < frame.particles.Length; i++)
                     {
-                        var p = UnsafeUtility.ReadArrayElement<SimData.Particle>(particleRenderer.frameData.Frame.particles.GetUnsafeReadOnlyPtr(), i);
+                        var p = UnsafeUtility.ReadArrayElement<SimData.Particle>(frame.particles.GetUnsafeReadOnlyPtr(), i);
 
                         if (
                             (p.flags & SimData.PARTICLE_FLAG_ACTIVE) < 1
@@ -124,13 +125,14 @@ public class ParticlePicker : MonoBehaviour
                 var particleRenderers = GameObject.FindObjectsOfType<Particles>();
                 foreach (var particleRenderer in particleRenderers)
                 {
-                    if (!particleRenderer.gameObject.activeSelf)
+                    if (!particleRenderer.gameObject.activeSelf || particleRenderer.frameData.Frame == null)
                         continue;
+                    SimData.SimFrame frame = (SimData.SimFrame)particleRenderer.frameData.Frame;
                     unsafe
                     {
-                        for (var i = 0; i < particleRenderer.frameData.Frame.particles.Length; i++)
+                        for (var i = 0; i < frame.particles.Length; i++)
                         {
-                            var p = UnsafeUtility.ReadArrayElement<SimData.Particle>(particleRenderer.frameData.Frame.particles.GetUnsafeReadOnlyPtr(), i);
+                            var p = UnsafeUtility.ReadArrayElement<SimData.Particle>(frame.particles.GetUnsafeReadOnlyPtr(), i);
 
                             if(p.id == tp.id)
                             {

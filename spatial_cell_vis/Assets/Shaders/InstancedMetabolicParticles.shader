@@ -83,7 +83,7 @@
                 float4(transform_vector(p.pos, p.rot) * scale, 1)
             );*/
 
-            v.vertex.xyz *= min(max(p.metabolites[0] / 10.0, 0.0), 1.0);
+            //v.vertex.xyz *= min(max(log(1 + p.metabolites[0]) / log(100.0), 0.0), 1.0);
 
             v.vertex.xyz = transform_vector(v.vertex.xyz, p.rot);
             v.normal.xyz = transform_vector(v.normal.xyz, p.rot);
@@ -100,7 +100,7 @@
             o.col = colormap[(uint)p.type % colormapLength];
             if(p.type == 0)
                 o.col = float4(0.2, 0.2, 0.2, 1);
-            o.col = float4(1, 0, 0, 1);
+            o.col = float4(0.6953125, 0.87109375, 0.5390625, 1) * min(max(log(1 + p.metabolites[0]) / log(100.0), 0.0), 1.0);
             o.col.rgb /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
 
 

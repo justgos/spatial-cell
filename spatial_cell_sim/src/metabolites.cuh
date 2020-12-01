@@ -145,6 +145,12 @@ relaxMetabolicParticles(
                 for (int j = startIdx; j < endIdx; j++) {
                     const Particle tp = particles[j];
                     // Repulsion only from lipids
+
+                    /*
+                    * TODO: repel the _lipids_ from the metabolic particles,
+                    *       so that vesicles full of small molecules would preserve their volume
+                    */
+
                     if (
                         !(tp.flags & PARTICLE_FLAG_ACTIVE)
                         || tp.type != PARTICLE_TYPE_LIPID
