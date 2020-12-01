@@ -117,6 +117,7 @@ public class SimData : MonoBehaviour
 
     // Lipid bilayer model
     // Ref: https://www.umass.edu/microbio/rasmol/bilayers.htm
+    public GameObject particleType0Model;
 
     public Slider frameSlider;
     public Text frameNumberText;
@@ -291,6 +292,8 @@ public class SimData : MonoBehaviour
                 var particleRenderer = Instantiate(baseParticleRenderer.gameObject, baseParticleRenderer.transform.parent).GetComponent<Particles>();
                 particleRenderer.gameObject.name = string.Format("{0}-{1}", baseParticleRenderer.gameObject.name, entry.Key);
                 particleRenderer.frameData = particleFrameData[entry.Key];
+                if (entry.Key == 0)
+                    particleRenderer.SetModel(particleType0Model);
                 particleRenderer.gameObject.SetActive(true);
                 particleRenderers.Add(entry.Key, particleRenderer);
             }
@@ -362,9 +365,6 @@ public class SimData : MonoBehaviour
         var frame = frames[(int)frameNum];
         foreach(var entry in particleFrameData)
         {
-            Debug.Log(string.Format("ChangeFrame {0}, {1}", entry.Key, frame.particleMap.ContainsKey(entry.Key)));
-            if (frame.particleMap.ContainsKey(entry.Key))
-                Debug.Log(string.Format("particleMap {0}, {1}", entry.Key, frame.particleMap[entry.Key].Length));
             if (frame.particleMap.ContainsKey(entry.Key))
                 entry.Value.SetData<Particle>(frame.particleMap[entry.Key].AsArray(), frame.particleMap[entry.Key].Length, frame);
             else

@@ -122,27 +122,34 @@ public class ParticlePicker : MonoBehaviour
             {
                 SimData.Particle tp = (SimData.Particle)targetParticle;
 
-                var particleRenderers = GameObject.FindObjectsOfType<Particles>();
-                foreach (var particleRenderer in particleRenderers)
-                {
-                    if (!particleRenderer.gameObject.activeSelf || particleRenderer.frameData.Frame == null)
-                        continue;
-                    SimData.SimFrame frame = (SimData.SimFrame)particleRenderer.frameData.Frame;
-                    unsafe
-                    {
-                        for (var i = 0; i < frame.particles.Length; i++)
-                        {
-                            var p = UnsafeUtility.ReadArrayElement<SimData.Particle>(frame.particles.GetUnsafeReadOnlyPtr(), i);
+                LogParticleState(tp.id);
+            }
+        }
+    }
 
-                            if(p.id == tp.id)
-                            {
-                                Debug.Log(string.Format("Target particle (id {0}), pos {1}, rot {2}",
-                                    p.id,
-                                    p.pos.UnityVector().ToString("F4"),
-                                    p.rot.UnityQuaternion().ToString("F4")
-                                ));
-                            }
-                        }
+    void LogParticleState(int id)
+    {
+        var particleRenderers = GameObject.FindObjectsOfType<Particles>();
+        foreach (var particleRenderer in particleRenderers)
+        {
+            if (!particleRenderer.gameObject.activeSelf || particleRenderer.frameData.Frame == null)
+                continue;
+            SimData.SimFrame frame = (SimData.SimFrame)particleRenderer.frameData.Frame;
+            unsafe
+            {
+                for (var i = 0; i < frame.particles.Length; i++)
+                {
+                    var p = UnsafeUtility.ReadArrayElement<SimData.Particle>(frame.particles.GetUnsafeReadOnlyPtr(), i);
+
+                    if (p.id == id)
+                    {
+                        Debug.Log(string.Format("Target particle (id {0}), pos {1}, rot {2}",
+                            p.id,
+                            p.pos.UnityVector().ToString("F4"),
+                            p.rot.UnityQuaternion().ToString("F4")
+                        ));
+
+                        return;
                     }
                 }
             }

@@ -219,13 +219,13 @@ main(void)
         particles.h_Current, nActiveParticles.h_Current, &config, rng
     );*/
     fillParticlesSphere(
-        config.numParticles * 0.4,
+        config.numParticles * 0.35,
         PARTICLE_TYPE_LIPID,
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
         particles.h_Current, nActiveParticles.h_Current, &config, rng
     );
     fillParticlesSphere(
-        config.numParticles * 0.25,
+        config.numParticles * 0.23,
         PARTICLE_TYPE_DNA,
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
         particles.h_Current, nActiveParticles.h_Current, &config, rng
@@ -237,11 +237,17 @@ main(void)
         particles.h_Current, nActiveParticles.h_Current, &config, rng
     );
     fillParticlesSphere(
-        config.numParticles * 0.05,
+        config.numParticles * 0.08,
         PARTICLE_TYPE_DNA,
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
         particles.h_Current, nActiveParticles.h_Current, &config, rng
     );
+    /*fillParticlesSphere(
+        config.numParticles * 0.05,
+        PARTICLE_TYPE_DNA,
+        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
+        particles.h_Current, nActiveParticles.h_Current, &config, rng
+    );*/
     particles.copyToDevice();
 
     // Initialize the metabolic particles
@@ -403,12 +409,7 @@ main(void)
                 gridRanges.d_Current
             );
             particles.swap();
-            cudaDeviceSynchronize();
-        }
 
-        time_point t6_2 = now();
-        for (int j = 0; j < config.relaxationSteps; j++) {
-            // Relax the accumulated metabolic particle tensions
             metabolicParticles.clearNextOnDevice();
             relaxMetabolicParticles KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
                 i,
@@ -421,8 +422,28 @@ main(void)
                 gridRanges.d_Current
                 );
             metabolicParticles.swap();
-            cudaDeviceSynchronize();
+
+            relaxMetabolicParticlePartners KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                i,
+                rngState.d_Current,
+                particles.d_Current,
+                particles.d_Next,
+                nActiveParticles.h_Current[0],
+                gridRanges.d_Current,
+                metabolicParticles.d_Current,
+                metabolicParticleGridRanges.d_Current
+            );
+            particles.swap();
+
+            //cudaDeviceSynchronize();
         }
+
+        time_point t6_2 = now();
+        //for (int j = 0; j < config.relaxationSteps; j++) {
+        //    // Relax the accumulated metabolic particle tensions
+        //    
+        //    cudaDeviceSynchronize();
+        //}
 
         time_point t6_3 = now();
         metabolicParticles.clearNextOnDevice();
@@ -452,14 +473,13 @@ main(void)
         time_point t9 = now();
 
         if (i % 10 == 0) {
-            printf("step %d, nActiveParticles %d, updateGridAndSort %f, move %f, moveMetabolicParticles %f, relax %f, relaxMetabolicParticles %f, diffuseMetabolites %f, cudaMemcpy %f, fout.write %f, full step time %f\n",
+            printf("step %d, nActiveParticles %d, updateGridAndSort %f, move %f, moveMetabolicParticles %f, relax %f, diffuseMetabolites %f, cudaMemcpy %f, fout.write %f, full step time %f\n",
                 i,
                 nActiveParticles.h_Current[0],
                 getDuration(t1, t5),
                 getDuration(t5, t6),
                 getDuration(t6, t6_1),
                 getDuration(t6_1, t6_2),
-                getDuration(t6_2, t6_3),
                 getDuration(t6_3, t7),
                 getDuration(t7, t8),
                 getDuration(t8, t9),

@@ -95,7 +95,7 @@ move(
                     float interactionAngleMaxDelta = 0.2f;
                     float orientationAngleDelta = fabs(fabs(orientationDifferenceAngle) - interactionAngle);
                     float relativePositionAngleDelta = fabs(fabs(relativePositionAngle) - interactionAngle);
-                    if (
+                    /*if (
                         p.type == 0
                         && tp.type == 1
                         && dist <= 0.005
@@ -104,7 +104,7 @@ move(
                         && relativePositionAngleDelta < interactionAngleMaxDelta
                     ) {
                         shouldBeRemoved = true;
-                    }
+                    }*/
                     if (
                         p.type == 1
                         && tp.type == 1
@@ -456,6 +456,16 @@ relax(
                                 p.debugVector.z = (relaxedRelativePosition.z - p.pos.z) * (1.0 - relativePositionRelaxationSpeed);*/
                             }
                         }
+                        /*else {
+                            constexpr float verticalIrregularityRelaxationSpeed = 0.02f;
+                            moveVec = add(
+                                moveVec,
+                                mul(
+                                    dot(up, normalizedDelta) > 0 ? up : negate(up),
+                                    dist * verticalIrregularityRelaxationSpeed
+                                )
+                            );
+                        }*/
                     }
 
                     for (int k = 0; k < p.nActiveInteractions; k++) {

@@ -88,7 +88,7 @@
 				//o.col = float4((float)((uint)p.type % 2), 1, 1, 1);
 				o.col = float4(0.6953125, 0.87109375, 0.5390625, 1);
 				o.col.xyz /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
-				o.col.w *= 0.3;
+				o.col.w *= 0.2;
 				UNITY_TRANSFER_FOG(o, o.pos);
 
 				if (
