@@ -100,7 +100,8 @@
             o.col = colormap[(uint)p.type % colormapLength];
             if(p.type == 0)
                 o.col = float4(0.2, 0.2, 0.2, 1);
-            o.col = float4(0.6953125, 0.87109375, 0.5390625, 1) * min(max(log(1 + p.metabolites[0]) / log(100.0), 0.0), 1.0);
+            float4 baseColor = float4(0.2, 0.2, 0.2, 1);
+            o.col.rgb = baseColor.rgb + (float3(0.6953125, 0.87109375, 0.5390625) - baseColor.rgb) * min(max(log(1 + p.metabolites[0]) / log(100.0), 0.0), 1.0);
             o.col.rgb /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
 
 

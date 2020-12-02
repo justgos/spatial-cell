@@ -41,6 +41,13 @@
 			uniform float4x4 baseTransform;
 			uniform float scale;
 			uniform float simSize;
+			uniform float visibleMinX;
+			uniform float visibleMaxX;
+			uniform float visibleMinY;
+			uniform float visibleMaxY;
+			uniform float visibleMinZ;
+			uniform float visibleMaxZ;
+			uniform int targetParticleId;
 
 			struct appdata
 			{
@@ -76,8 +83,32 @@
 					mul(UNITY_MATRIX_V, o.pos) + float4(quadPoints[id] * float3(0.005 * scale, 0.005 * scale, 1), 0)
 				);
 				
-				o.col = float4((float)((uint)p.type % 2), 1, 1, 1);
-				o.col.xyz /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
+				//o.col = float4((float)((uint)p.type % 2), 1, 1, 1);
+				//o.col.xyz /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
+
+				o.col = colormap[(uint)p.type % colormapLength];
+				if (p.type == 0)
+					o.col = float4(0.9, 0.8, 0.3, 1);
+				//o.col = float4(1, 1, 1, 1);
+				//o.col.rgb = abs(p.rot.xyz);
+				o.col.rgb /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
+
+				if (targetParticleId == p.id)
+					o.col = float4(1, 0, 0, 1);
+
+				if (
+					!(p.flags & PARTICLE_FLAG_ACTIVE)
+					|| p.pos.x < visibleMinX
+					|| p.pos.x > visibleMaxX
+					|| p.pos.y < visibleMinY
+					|| p.pos.y > visibleMaxY
+					|| p.pos.z < visibleMinZ
+					|| p.pos.z > visibleMaxZ
+				) {
+					o.pos = 0;
+					//o.col = float4(1, 0, 0, 1);
+				}
+
 				UNITY_TRANSFER_FOG(o, o.pos);
 				return o;
 			}

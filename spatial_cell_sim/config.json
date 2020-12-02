@@ -1,14 +1,16 @@
 {
-  "numParticles": 2048,
-  "numMetabolicParticles": 4096,
-  "steps": 1001,
-  "simSize": 0.2,
-  "interactionDistance": 0.007,
-  "nGridCellsBits": 4,
-  "movementNoiseScale": 0.0002,
+  "numParticles": 262144,
+  "numMetabolicParticles": 1048576,
+  "steps": 501,
+  "simSize": 0.8,
+  "maxInteractionDistance": 0.007,
+  "maxDiffusionDistance": 0.01,
+  "nGridCellsBits": 6,
+  "movementNoiseScale": 0.0005,
   "rotationNoiseScale": 0.05,
   "metaboliteMovementNoiseScale": 0.0005,
   "velocityDecay": 0.7,
   "angularVelocityDecay": 0.7,
-  "relaxationSteps": 4
+  "relaxationSteps": 4,
+  "metaboliteDiffusionSteps": 8
 }

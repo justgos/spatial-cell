@@ -26,10 +26,11 @@ public:
 		fout.write((char*)&config->numMetabolicParticles, sizeof(unsigned int));
 	}
 
+	template <typename ParticleType, typename MetabolicParticleType>
 	void
 	writeFrame(
-		const DoubleBuffer<Particle> *particles,
-		const DoubleBuffer<MetabolicParticle> *metabolicParticles
+		const SingleBuffer<ParticleType> *particles,
+		const SingleBuffer<MetabolicParticleType> *metabolicParticles
 	) {
 		fout.write((char*)&config->numParticles, sizeof(unsigned int));
 		fout.write((char*)particles->h_Current, particles->size);

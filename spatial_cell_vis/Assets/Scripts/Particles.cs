@@ -158,6 +158,7 @@ public class Particles : MonoBehaviour
             material.SetFloat("visibleMaxY", particleVisibleRangeYSlider.HighValue);
             material.SetFloat("visibleMinZ", particleVisibleRangeZSlider.LowValue);
             material.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
+            material.SetInt("targetParticleId", targetParticleId);
             material.SetBuffer("particles", frameData.ParticleBuffer);
             material.SetPass(0);
             Graphics.DrawProceduralNow(MeshTopology.Triangles, 6, frameData.NumParticles);

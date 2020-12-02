@@ -37,6 +37,10 @@ move(
         return;
     }
 
+    p.debugVector.x = 0;
+    p.debugVector.y = 0;
+    p.debugVector.z = 0;
+
     //float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
     /*float3 attractionVec = make_float3(0.0f, 0.0f, 0.0f);
     constexpr float clipImpulse = 10.0f;
@@ -71,10 +75,10 @@ move(
                         tp.pos.y - p.pos.y,
                         tp.pos.z - p.pos.z
                     );
-                    // Skip particles beyong the maximum interaction distance
-                    if (fabs(delta.x) > d_Config.interactionDistance
-                        || fabs(delta.y) > d_Config.interactionDistance
-                        || fabs(delta.y) > d_Config.interactionDistance)
+                    // Skip particles beyond the maximum interaction distance
+                    if (fabs(delta.x) > d_Config.maxInteractionDistance
+                        || fabs(delta.y) > d_Config.maxInteractionDistance
+                        || fabs(delta.z) > d_Config.maxInteractionDistance)
                         continue;
 
                     float3 normalizedDelta = normalized(delta);
@@ -167,7 +171,7 @@ move(
 
     // Mark the particle as inactive
     if (shouldBeRemoved) {
-        p.flags = p.flags ^ PARTICLE_FLAG_ACTIVE;
+        p.flags = p.flags & ~PARTICLE_FLAG_ACTIVE;
         atomicAdd(nActiveParticles, -1);
     }
 
@@ -212,18 +216,20 @@ move(
     nextParticles[idx] = p;
 }
 
+template <typename T>
 __global__ void
 brownianMovementAndRotation(
     const int step,
     curandState* rngState,
-    Particle* particles,
-    int stepStart_nActiveParticles
+    T* particles,
+    const int stepStart_nActiveParticles,
+    const float movementNoiseScale
 ) {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
     if (idx >= stepStart_nActiveParticles)
         return;
 
-    Particle p = particles[idx];
+    T p = particles[idx];
 
     if (!(p.flags & PARTICLE_FLAG_ACTIVE)) {
         return;
@@ -234,7 +240,7 @@ brownianMovementAndRotation(
         mul(p.velocity, d_Config.velocityDecay),
         mul(
             transform_vector(VECTOR_UP, random_rotation(&rngState[idx])),
-            d_Config.movementNoiseScale
+            movementNoiseScale
         )
     );
 
@@ -248,11 +254,12 @@ brownianMovementAndRotation(
     particles[idx] = p;
 }
 
+template <typename T>
 __global__ void
 applyVelocities(
     const int step,
     curandState* rngState,
-    Particle* particles,
+    T* particles,
     int stepStart_nActiveParticles,
     float stepFraction
 ) {
@@ -260,7 +267,7 @@ applyVelocities(
     if (idx >= stepStart_nActiveParticles)
         return;
 
-    Particle p = particles[idx];
+    T p = particles[idx];
 
     if (!(p.flags & PARTICLE_FLAG_ACTIVE)) {
         return;
@@ -280,10 +287,6 @@ applyVelocities(
         p.rot,
         slerp(QUATERNION_IDENTITY, p.angularVelocity, stepFraction)
     );
-
-    if (isnan(p.rot.x) || isinf(p.rot.x) || fabs(p.rot.x) > 100.0f) {
-        p.rot.x += 0.0f;
-    }\
 
     particles[idx] = p;
 }
@@ -319,10 +322,6 @@ relax(
     // Up direction of the current particle
     float3 up = transform_vector(VECTOR_UP, p.rot);
 
-    p.debugVector.x = 0;
-    p.debugVector.y = 0;
-    p.debugVector.z = 0;
-
     for (int gx = max(cgx - 1, 0); gx <= min(cgx + 1, d_Config.nGridCells - 1); gx++) {
         for (int gy = max(cgy - 1, 0); gy <= min(cgy + 1, d_Config.nGridCells - 1); gy++) {
             for (int gz = max(cgz - 1, 0); gz <= min(cgz + 1, d_Config.nGridCells - 1); gz++) {
@@ -342,10 +341,10 @@ relax(
                         tp.pos.y - p.pos.y,
                         tp.pos.z - p.pos.z
                     );
-                    // Skip particles beyong the maximum interaction distance
-                    if (fabs(delta.x) > d_Config.interactionDistance
-                        || fabs(delta.y) > d_Config.interactionDistance
-                        || fabs(delta.y) > d_Config.interactionDistance)
+                    // Skip particles beyond the maximum interaction distance
+                    if (fabs(delta.x) > d_Config.maxInteractionDistance
+                        || fabs(delta.y) > d_Config.maxInteractionDistance
+                        || fabs(delta.z) > d_Config.maxInteractionDistance)
                         continue;
 
                     float3 normalizedDelta = normalized(delta);
@@ -384,7 +383,7 @@ relax(
                             )
                         );
 
-                        float interactionAngleMaxDelta = 0.4f;
+                        float interactionAngleMaxDelta = PI / 4;
                         float interactionOrientationAngle = 0;
                         float interactionRelativePositionsAngle = PI / 2;
                         // Rotation between the particles' up directions
@@ -401,10 +400,23 @@ relax(
 
                             // If the particles are aligned well enough, strengthen the alignment futher
                             if (relativePositionAngleDelta < interactionAngleMaxDelta) {
+                                // Lipids that are part of the membrane should experience
+                                // less movement noise perpendicular to the membrane surface
+                                p.velocity = add(
+                                    p.velocity,
+                                    mul(
+                                        negate(mul(up, dot(p.velocity, up))),
+                                        0.9
+                                    )
+                                );
+                                // and less angular noise
+                                p.angularVelocity = slerp(p.angularVelocity, QUATERNION_IDENTITY, 0.9);
+
                                 // Align relative orientation
                                 float4 targetRelativeOrientationDelta = quaternion(VECTOR_RIGHT, 0);
                                 constexpr float relativeOrientationRelaxationSpeed = 0.05f;
                                 float targetRelativePositionAngle = PI / 2;
+                                float targetRelativePositionAngleFlex = PI / 8;
 
                                 p.rot = slerp(
                                     p.rot,
@@ -437,19 +449,33 @@ relax(
                                 //// Decrease the movement noise for each interaction
                                 //p.velocity = mul(p.velocity, 0.5);
 
-                                //// Align relative position
-                                //constexpr float relativePositionRelaxationSpeed = 0.1f;
-                                ////float4 targetRelativePositionRotation = quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle);
-                                //float3 relaxedRelativePosition = transform_vector(tup, quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle));
-                                //relaxedRelativePosition.x *= interactionDistance;
-                                //relaxedRelativePosition.y *= interactionDistance;
-                                //relaxedRelativePosition.z *= interactionDistance;
-                                //relaxedRelativePosition.x += tp.pos.x;
-                                //relaxedRelativePosition.y += tp.pos.y;
-                                //relaxedRelativePosition.z += tp.pos.z;
-                                //moveVec.x += (relaxedRelativePosition.x - p.pos.x) * relativePositionRelaxationSpeed;
-                                //moveVec.y += (relaxedRelativePosition.y - p.pos.y) * relativePositionRelaxationSpeed;
-                                //moveVec.z += (relaxedRelativePosition.z - p.pos.z) * relativePositionRelaxationSpeed;
+                                // Align relative position
+                                constexpr float relativePositionRelaxationSpeed = 0.02f;
+                                //float4 targetRelativePositionRotation = quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle);
+                                float3 relativePositionRelaxationAxis = cross(tup, negate(normalizedDelta));
+                                float currentRelativePositionAngle = angle(tup, negate(normalizedDelta));
+                                float3 relaxedRelativePosition = transform_vector(
+                                    tup,
+                                    quaternion(
+                                        relativePositionRelaxationAxis,
+                                        min(
+                                            max(
+                                                currentRelativePositionAngle,
+                                                targetRelativePositionAngle - targetRelativePositionAngleFlex
+                                            ),
+                                            targetRelativePositionAngle + targetRelativePositionAngleFlex
+                                        )
+                                    )
+                                );
+                                relaxedRelativePosition.x *= interactionDistance;
+                                relaxedRelativePosition.y *= interactionDistance;
+                                relaxedRelativePosition.z *= interactionDistance;
+                                relaxedRelativePosition.x += tp.pos.x;
+                                relaxedRelativePosition.y += tp.pos.y;
+                                relaxedRelativePosition.z += tp.pos.z;
+                                moveVec.x += (relaxedRelativePosition.x - p.pos.x) * relativePositionRelaxationSpeed;
+                                moveVec.y += (relaxedRelativePosition.y - p.pos.y) * relativePositionRelaxationSpeed;
+                                moveVec.z += (relaxedRelativePosition.z - p.pos.z) * relativePositionRelaxationSpeed;
 
                                 /*p.debugVector.x = (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
                                 p.debugVector.y = (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
@@ -514,20 +540,35 @@ relax(
     }
 
     // Move the particle
-    /*p.pos = clamp(
+    p.pos = clamp(
         add(
             p.pos,
             moveVec
         ),
         0.0f, d_Config.simSize
-    );*/
-    p.pos.x = fmin(fmax(p.pos.x + moveVec.x, 0.0f), d_Config.simSize);
-    p.pos.y = fmin(fmax(p.pos.y + moveVec.y, 0.0f), d_Config.simSize);
-    p.pos.z = fmin(fmax(p.pos.z + moveVec.z, 0.0f), d_Config.simSize);
+    );
 
     //p.rot = normalized(p.rot);
 
     //p.rot = mul(p.rot, rotQuat);
 
     nextParticles[idx] = p;
+}
+
+template <typename OriginalType, typename ReducedType>
+__global__ void
+reduceParticles(
+    const OriginalType* particles,
+    ReducedType* reducedParticles,
+    int stepStart_nActiveParticles
+) {
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx >= stepStart_nActiveParticles)
+        return;
+
+    OriginalType p = particles[idx];
+
+    ReducedType rp(p);
+
+    reducedParticles[idx] = rp;
 }

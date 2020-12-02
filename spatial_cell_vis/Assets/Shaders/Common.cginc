@@ -1,4 +1,5 @@
 ﻿#define NUM_METABOLITES 50
+#define REDUCED_NUM_METABOLITES 4
 
 #define PARTICLE_FLAG_ACTIVE 0x0001
 
@@ -10,22 +11,53 @@ struct ParticleInteraction {
     int partnerId;
 };
 
+//struct Particle {
+//    int id;
+//    int type;
+//    int flags;
+//	float3 pos;
+//    float __padding1[2];
+//	float4 rot;
+//	float3 velocity;
+//    float __padding2[1];
+//    float4 angularVelocity;
+//    int nActiveInteractions;
+//    ParticleInteraction interactions[4];
+//    float __padding3[3];
+//    float4 debugVector;
+//};
+
+// ReducedParticle
 struct Particle {
     int id;
     int type;
     int flags;
-	float3 pos;
+    float3 pos;
     float __padding1[2];
-	float4 rot;
-	float3 velocity;
-    float __padding2[1];
-    float4 angularVelocity;
-    int nActiveInteractions;
-    ParticleInteraction interactions[4];
-    float __padding3[3];
-    float4 debugVector;
+    float4 rot;
+    //float4 debugVector;
 };
 
+//struct MetabolicParticle {
+//    int id;
+//    int type;
+//    int flags;
+//    float3 pos;
+//    float __padding1[2];
+//    float4 rot;
+//    float3 velocity;
+//    float __padding2[1];
+//    float4 angularVelocity;
+//    int nActiveInteractions;
+//    ParticleInteraction interactions[4];
+//    float __padding3[3];
+//    float4 debugVector;
+//    float metabolites[NUM_METABOLITES];
+//    float __padding4[2];
+//};
+
+
+// ReducedMetabolicParticle
 struct MetabolicParticle {
     int id;
     int type;
@@ -33,15 +65,7 @@ struct MetabolicParticle {
     float3 pos;
     float __padding1[2];
     float4 rot;
-    float3 velocity;
-    float __padding2[1];
-    float4 angularVelocity;
-    int nActiveInteractions;
-    ParticleInteraction interactions[4];
-    float __padding3[3];
-    float4 debugVector;
-    float metabolites[NUM_METABOLITES];
-    float __padding4[2];
+    float metabolites[REDUCED_NUM_METABOLITES];
 };
 
 

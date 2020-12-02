@@ -17,8 +17,6 @@ public class SimData : MonoBehaviour
 {
     public static readonly int PARTICLE_FLAG_ACTIVE = 0x0001;
 
-    public GameObject spherePrefab;
-
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector3_
     {
@@ -54,43 +52,68 @@ public class SimData : MonoBehaviour
         public int partnerId;
     };
 
-    [StructLayout(LayoutKind.Explicit, Size = 144)]
+    //[StructLayout(LayoutKind.Explicit, Size = 144)]
+    //unsafe public struct Particle
+    //{
+    //    [FieldOffset(0)]  public int id;
+    //    [FieldOffset(4)]  public int type;
+    //    [FieldOffset(8)]  public int flags;
+    //    [FieldOffset(12)] public Vector3_ pos;
+    //    [FieldOffset(24)] public fixed float __padding1[2];
+    //    [FieldOffset(32)] public Vector4_ rot;
+    //    [FieldOffset(48)] public Vector3_ velocity;
+    //    [FieldOffset(64)] public Vector4_ angularVelocity;
+    //    [FieldOffset(80)] public int nActiveInteractions;
+    //    [FieldOffset(84)] public ParticleInteraction interaction1;
+    //    [FieldOffset(92)] public ParticleInteraction interaction2;
+    //    [FieldOffset(100)] public ParticleInteraction interaction3;
+    //    [FieldOffset(108)] public ParticleInteraction interaction4;
+    //    [FieldOffset(128)] public Vector4_ debugVector;
+    //};
+
+    // ReducedParticle
+    [StructLayout(LayoutKind.Explicit, Size = 48)]
     unsafe public struct Particle
     {
-        [FieldOffset(0)]  public int id;
-        [FieldOffset(4)]  public int type;
-        [FieldOffset(8)]  public int flags;
+        [FieldOffset(0)] public int id;
+        [FieldOffset(4)] public int type;
+        [FieldOffset(8)] public int flags;
         [FieldOffset(12)] public Vector3_ pos;
-        [FieldOffset(24)] public fixed float __padding1[2];
         [FieldOffset(32)] public Vector4_ rot;
-        [FieldOffset(48)] public Vector3_ velocity;
-        [FieldOffset(64)] public Vector4_ angularVelocity;
-        [FieldOffset(80)] public int nActiveInteractions;
-        [FieldOffset(84)] public ParticleInteraction interaction1;
-        [FieldOffset(92)] public ParticleInteraction interaction2;
-        [FieldOffset(100)] public ParticleInteraction interaction3;
-        [FieldOffset(108)] public ParticleInteraction interaction4;
-        [FieldOffset(128)] public Vector4_ debugVector;
+        //[FieldOffset(128)] public Vector4_ debugVector;
     };
 
-    [StructLayout(LayoutKind.Explicit, Size = 352)]
+    //[StructLayout(LayoutKind.Explicit, Size = 352)]
+    //unsafe public struct MetabolicParticle
+    //{
+    //    [FieldOffset(0)] public int id;
+    //    [FieldOffset(4)] public int type;
+    //    [FieldOffset(8)] public int flags;
+    //    [FieldOffset(12)] public Vector3_ pos;
+    //    [FieldOffset(24)] public fixed float __padding1[2];
+    //    [FieldOffset(32)] public Vector4_ rot;
+    //    [FieldOffset(48)] public Vector3_ velocity;
+    //    [FieldOffset(64)] public Vector4_ angularVelocity;
+    //    [FieldOffset(80)] public int nActiveInteractions;
+    //    [FieldOffset(84)] public ParticleInteraction interaction1;
+    //    [FieldOffset(92)] public ParticleInteraction interaction2;
+    //    [FieldOffset(100)] public ParticleInteraction interaction3;
+    //    [FieldOffset(108)] public ParticleInteraction interaction4;
+    //    [FieldOffset(128)] public Vector4_ debugVector;
+    //    [FieldOffset(144)] public fixed float metabolites[50];
+    //};
+
+    // ReducedMetabolicParticle
+    [StructLayout(LayoutKind.Explicit, Size = 64)]
     unsafe public struct MetabolicParticle
     {
         [FieldOffset(0)] public int id;
         [FieldOffset(4)] public int type;
         [FieldOffset(8)] public int flags;
         [FieldOffset(12)] public Vector3_ pos;
-        [FieldOffset(24)] public fixed float __padding1[2];
         [FieldOffset(32)] public Vector4_ rot;
-        [FieldOffset(48)] public Vector3_ velocity;
-        [FieldOffset(64)] public Vector4_ angularVelocity;
-        [FieldOffset(80)] public int nActiveInteractions;
-        [FieldOffset(84)] public ParticleInteraction interaction1;
-        [FieldOffset(92)] public ParticleInteraction interaction2;
-        [FieldOffset(100)] public ParticleInteraction interaction3;
-        [FieldOffset(108)] public ParticleInteraction interaction4;
-        [FieldOffset(128)] public Vector4_ debugVector;
-        [FieldOffset(144)] public fixed float metabolites[50];
+        //[FieldOffset(128)] public Vector4_ debugVector;
+        [FieldOffset(48)] public fixed float metabolites[4];
     };
 
     public struct SimFrame
@@ -134,8 +157,13 @@ public class SimData : MonoBehaviour
     {
         baseParticleFrameData.gameObject.SetActive(false);
         baseParticleRenderer.gameObject.SetActive(false);
+        metabolicParticleRenderer.gameObject.SetActive(false);
 
         LoadFrames();
+
+        // Enable the metabolic renderer after the plain ones,
+        // so that it's drawn on top
+        metabolicParticleRenderer.gameObject.SetActive(true);
     }
 
     void LoadFrames()
@@ -302,6 +330,7 @@ public class SimData : MonoBehaviour
             ChangeFrame(0);
             //}
         }
+
         sw.Stop();
         Debug.Log("Frames loaded in " + ((double)sw.ElapsedTicks / System.Diagnostics.Stopwatch.Frequency) + "s");
     }

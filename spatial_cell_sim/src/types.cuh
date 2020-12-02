@@ -71,12 +71,47 @@ struct MetabolicParticle : Particle {
     }
 };
 
+struct ReducedParticle {
+    int id;
+    int type;
+    int flags;
+    float3 pos;
+    float4 rot;
+    //float4 debugVector;
+
+    __device__ __host__ ReducedParticle(
+        Particle p
+    ) : id(p.id),
+        type(p.type),
+        flags(p.flags),
+        pos(p.pos),
+        rot(p.rot)
+        //debugVector(p.debugVector)
+    {
+        //
+    }
+};
+
+struct ReducedMetabolicParticle : ReducedParticle {
+    float metabolites[REDUCED_NUM_METABOLITES];
+
+    //using Particle::Particle;
+    __device__ __host__ ReducedMetabolicParticle(
+        MetabolicParticle p
+    ) : ReducedParticle(p)
+    {
+        for (int i = 0; i < REDUCED_NUM_METABOLITES; i++)
+            metabolites[i] = p.metabolites[i];
+    }
+};
+
 struct Config {
     int numParticles;
     int numMetabolicParticles;
     int steps;
     float simSize;
-    float interactionDistance;
+    float maxInteractionDistance;
+    float maxDiffusionDistance;
     int nGridCellsBits;
 
     // Derived
@@ -91,6 +126,7 @@ struct Config {
     float velocityDecay;
     float angularVelocityDecay;
     int relaxationSteps;
+    int metaboliteDiffusionSteps;
 
     Config() {
         //
@@ -101,14 +137,16 @@ struct Config {
           numMetabolicParticles(configJson["numMetabolicParticles"].asInt()),
           steps(configJson["steps"].asInt()),
           simSize(configJson["simSize"].asFloat()),
-          interactionDistance(configJson["interactionDistance"].asFloat()),
+          maxInteractionDistance(configJson["maxInteractionDistance"].asFloat()),
+          maxDiffusionDistance(configJson["maxDiffusionDistance"].asFloat()),
           nGridCellsBits(configJson["nGridCellsBits"].asInt()),
           movementNoiseScale(configJson["movementNoiseScale"].asFloat()),
           rotationNoiseScale(configJson["rotationNoiseScale"].asFloat()),
           metaboliteMovementNoiseScale(configJson["metaboliteMovementNoiseScale"].asFloat()),
           velocityDecay(configJson["velocityDecay"].asFloat()),
           angularVelocityDecay(configJson["angularVelocityDecay"].asFloat()),
-          relaxationSteps(configJson["relaxationSteps"].asInt())
+          relaxationSteps(configJson["relaxationSteps"].asInt()),
+          metaboliteDiffusionSteps(configJson["metaboliteDiffusionSteps"].asInt())
     {
         // Calculate the derived values
         nGridCells = 1 << nGridCellsBits;
@@ -123,7 +161,8 @@ struct Config {
         printf("numMetabolicParticles %d\n", numMetabolicParticles);
         printf("steps %d\n", steps);
         printf("simSize %f\n", simSize);
-        printf("interactionDistance %f\n", interactionDistance);
+        printf("maxInteractionDistance %f\n", maxInteractionDistance);
+        printf("maxDiffusionDistance %f\n", maxDiffusionDistance);
         printf("nGridCellsBits %d\n", nGridCellsBits);
         printf("nGridCells %d\n", nGridCells);
         printf("gridCellSize %f\n", gridCellSize);
@@ -132,6 +171,7 @@ struct Config {
         printf("velocityDecay %f\n", velocityDecay);
         printf("angularVelocityDecay %f\n", angularVelocityDecay);
         printf("relaxationSteps %d\n", relaxationSteps);
+        printf("metaboliteDiffusionSteps %d\n", metaboliteDiffusionSteps);
         printf("\n");
     }
 };

@@ -70,7 +70,7 @@
 				float3 v = quadPoints[id];
 				o.uv = quadUVs[id];
 
-				v *= 8.0 * min(max(log(1 + p.metabolites[0]) / log(100.0), 0.0), 1.0);
+				v *= 100.0 * simSize * min(max(log(1 + p.metabolites[0]) / log(100.0), 0.0), 1.0);
 				
 				o.pos = mul(baseTransform,
 					float4(p.pos * scale, 1)

@@ -85,8 +85,11 @@ main(void)
     Config config(configJson);
     config.print();
 
-    if (config.gridSize < config.interactionDistance) {
-        printf("WARNING! The interactionDistance (%f) is less than gridCellSize (%f).\nNot all interactions may play out as intended\n", config.interactionDistance, config.gridCellSize);
+    if (config.gridSize < config.maxInteractionDistance) {
+        printf("WARNING! The maxInteractionDistance (%f) is less than gridCellSize (%f).\nNot all interactions may play out as intended\n", config.maxInteractionDistance, config.gridCellSize);
+    }
+    if (config.gridSize < config.maxDiffusionDistance) {
+        printf("WARNING! The maxDiffusionDistance (%f) is less than gridCellSize (%f).\nMetabolite diffusion may play out as intended\n", config.maxDiffusionDistance, config.gridCellSize);
     }
 
     /*int sharedMemSize;
@@ -120,6 +123,19 @@ main(void)
     printf("----- MetabolicParticle size: %d\n", sizeof(MetabolicParticle));
     printf("Offsets:");
     printf(" metabolites %d", offsetof(MetabolicParticle, metabolites));
+    printf("\n");
+    printf("----- ReducedParticle size: %d\n", sizeof(ReducedParticle));
+    printf("Offsets:");
+    printf(" id %d", offsetof(ReducedParticle, id));
+    printf(", type %d", offsetof(ReducedParticle, type));
+    printf(", flags %d", offsetof(ReducedParticle, flags));
+    printf(", pos %d", offsetof(ReducedParticle, pos));
+    printf(", rot %d", offsetof(ReducedParticle, rot));
+    //printf(", debugVector %d", offsetof(ReducedParticle, debugVector));
+    printf("\n");
+    printf("----- ReducedMetabolicParticle size: %d\n", sizeof(ReducedMetabolicParticle));
+    printf("Offsets:");
+    printf(" metabolites %d", offsetof(ReducedMetabolicParticle, metabolites));
     printf("\n\n");
 
     std::string storageFileName = "./results/frames.dat";
@@ -169,6 +185,7 @@ main(void)
 
     // Allocate the host & device variables
     DoubleBuffer<Particle> particles(config.numParticles);
+    SingleBuffer<ReducedParticle> reducedParticles(config.numParticles);
     DeviceOnlyDoubleBuffer<unsigned int> indices(config.numParticles);
     DeviceOnlySingleBuffer<unsigned int> gridRanges(config.gridSize * 2);
     SingleBuffer<int> nActiveParticles(1);
@@ -177,6 +194,7 @@ main(void)
     RadixSortPairs<Particle> particleSort(&indices, &particles);
 
     DoubleBuffer<MetabolicParticle> metabolicParticles(config.numMetabolicParticles);
+    SingleBuffer<ReducedMetabolicParticle> reducedMetabolicParticles(config.numMetabolicParticles);
     DeviceOnlyDoubleBuffer<unsigned int> metabolicParticleIndices(config.numMetabolicParticles);
     DeviceOnlySingleBuffer<unsigned int> metabolicParticleGridRanges(config.gridSize * 2);
     SingleBuffer<int> nActiveMetabolicParticles(1);
@@ -230,7 +248,19 @@ main(void)
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
         particles.h_Current, nActiveParticles.h_Current, &config, rng
     );
+    /*fillParticlesSphere(
+        config.numParticles * 0.1,
+        PARTICLE_TYPE_LIPID,
+        make_float3(0.2 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
+        particles.h_Current, nActiveParticles.h_Current, &config, rng
+    );
     fillParticlesSphere(
+        config.numParticles * 0.01,
+        PARTICLE_TYPE_DNA,
+        make_float3(0.2 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
+        particles.h_Current, nActiveParticles.h_Current, &config, rng
+    );*/
+    /*fillParticlesSphere(
         config.numParticles * 0.15,
         PARTICLE_TYPE_DNA,
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
@@ -241,7 +271,7 @@ main(void)
         PARTICLE_TYPE_DNA,
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
         particles.h_Current, nActiveParticles.h_Current, &config, rng
-    );
+    );*/
     /*fillParticlesSphere(
         config.numParticles * 0.05,
         PARTICLE_TYPE_DNA,
@@ -289,8 +319,52 @@ main(void)
     // Write the frames file header
     storage.writeHeader();
 
+    // Remove the initially interfering metabolic particles
+    updateGridAndSort(
+        &particles,
+        &indices,
+        &gridRanges,
+        &particleSort,
+        config.numParticles,
+        &config
+    );
+    updateGridAndSort(
+        &metabolicParticles,
+        &metabolicParticleIndices,
+        &metabolicParticleGridRanges,
+        &metabolicParticleSort,
+        config.numMetabolicParticles,
+        &config
+    );
+    cudaDeviceSynchronize();
+    metabolicParticles.clearNextOnDevice();
+    removeInterferingMetabolicParticles KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+        metabolicParticles.d_Current,
+        metabolicParticles.d_Next,
+        nActiveMetabolicParticles.h_Current[0],
+        metabolicParticleGridRanges.d_Current,
+        particles.d_Current,
+        gridRanges.d_Current
+    );
+    metabolicParticles.swap();
+    cudaDeviceSynchronize();
+    metabolicParticles.copyToHost();
+
+    reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+        particles.d_Current,
+        reducedParticles.d_Current,
+        nActiveParticles.h_Current[0]
+    );
+    reducedParticles.copyToHost();
+    reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+        metabolicParticles.d_Current,
+        reducedMetabolicParticles.d_Current,
+        nActiveMetabolicParticles.h_Current[0]
+    );
+    reducedMetabolicParticles.copyToHost();
+
     // Write the first frame
-    storage.writeFrame(&particles, &metabolicParticles);
+    storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
 
     /*char *memBufPtr = (char*)pBuf;
     CopyMemory((PVOID)memBufPtr, (char*)&config.simSize, sizeof(float));
@@ -316,6 +390,7 @@ main(void)
             &indices,
             &gridRanges,
             &particleSort,
+            config.numParticles,
             &config
         );
         // Same for the metabolic particles
@@ -324,6 +399,7 @@ main(void)
             &metabolicParticleIndices,
             &metabolicParticleGridRanges,
             &metabolicParticleSort,
+            config.numMetabolicParticles,
             &config
         );
         cudaDeviceSynchronize();
@@ -362,14 +438,16 @@ main(void)
         );
         particles.swap();
 
-        brownianMovementAndRotation KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+        brownianMovementAndRotation<Particle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
             i,
             rngState.d_Current,
             particles.d_Current,
-            nActiveParticles.h_Current[0]
+            nActiveParticles.h_Current[0],
+            config.movementNoiseScale
         );
 
         cudaDeviceSynchronize();
+
         nActiveParticles.copyToHost();
 
         time_point t6 = now();
@@ -383,16 +461,24 @@ main(void)
             metabolicParticleGridRanges.d_Current
         );
         metabolicParticles.swap();
+
+        brownianMovementAndRotation<MetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            i,
+            metabolicParticleRngState.d_Current,
+            metabolicParticles.d_Current,
+            nActiveMetabolicParticles.h_Current[0],
+            config.metaboliteMovementNoiseScale
+        );
+
         cudaDeviceSynchronize();
         //nActiveParticles.copyToHost();
 
         time_point t6_1 = now();
         float stepFraction = 1.0f / config.relaxationSteps;
         for (int j = 0; j < config.relaxationSteps; j++) {
-            // Relax the accumulated tensions
+            // Relax the accumulated tensions - Particles
             particles.clearNextOnDevice();
-
-            applyVelocities KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            applyVelocities<Particle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
                 i,
                 rngState.d_Current,
                 particles.d_Current,
@@ -410,7 +496,16 @@ main(void)
             );
             particles.swap();
 
+            // Relax the accumulated tensions - MetabolicParticles
             metabolicParticles.clearNextOnDevice();
+            applyVelocities<MetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                i,
+                metabolicParticleRngState.d_Current,
+                metabolicParticles.d_Current,
+                nActiveMetabolicParticles.h_Current[0],
+                stepFraction
+            );
+
             relaxMetabolicParticles KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
                 i,
                 metabolicParticleRngState.d_Current,
@@ -420,9 +515,11 @@ main(void)
                 metabolicParticleGridRanges.d_Current,
                 particles.d_Current,
                 gridRanges.d_Current
-                );
+            );
             metabolicParticles.swap();
 
+            // Relax the metabolic-plain particle tensions
+            particles.clearNextOnDevice();
             relaxMetabolicParticlePartners KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
                 i,
                 rngState.d_Current,
@@ -435,7 +532,7 @@ main(void)
             );
             particles.swap();
 
-            //cudaDeviceSynchronize();
+            cudaDeviceSynchronize();
         }
 
         time_point t6_2 = now();
@@ -446,33 +543,79 @@ main(void)
         //}
 
         time_point t6_3 = now();
-        metabolicParticles.clearNextOnDevice();
-        diffuseMetabolites KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-            i,
-            metabolicParticleRngState.d_Current,
-            metabolicParticles.d_Current,
-            metabolicParticles.d_Next,
-            nActiveMetabolicParticles.h_Current[0],
-            metabolicParticleGridRanges.d_Current
-        );
-        metabolicParticles.swap();
+        // Diffuse metabolites a bit faster
+        for (int j = 0; j < config.metaboliteDiffusionSteps; j++) {
+            metabolicParticles.clearNextOnDevice();
+            diffuseMetabolites KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                i,
+                metabolicParticleRngState.d_Current,
+                metabolicParticles.d_Current,
+                metabolicParticles.d_Next,
+                nActiveMetabolicParticles.h_Current[0],
+                metabolicParticleGridRanges.d_Current
+            );
+            metabolicParticles.swap();
+            cudaDeviceSynchronize();
+        }
         cudaDeviceSynchronize();
 
-        time_point t7 = now();
-        particles.copyToHost();
-        metabolicParticles.copyToHost();
+        //time_point t7 = now();
+        //particles.copyToHost();
+        //metabolicParticles.copyToHost();
 
-        time_point t8 = now();
-        storage.writeFrame(&particles, &metabolicParticles);
+        //time_point t8 = now();
 
-        /*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
-        memBufPtr += sizeof(unsigned int);
-        CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
-        memBufPtr += size;*/
+        //reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+        //    particles.d_Current,
+        //    reducedParticles.d_Current,
+        //    nActiveParticles.h_Current[0]
+        //    );
+        //reducedParticles.copyToHost();
+        //reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+        //    metabolicParticles.d_Current,
+        //    reducedMetabolicParticles.d_Current,
+        //    nActiveMetabolicParticles.h_Current[0]
+        //    );
+        //reducedMetabolicParticles.copyToHost();
 
-        time_point t9 = now();
+        //storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
+
+        ///*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
+        //memBufPtr += sizeof(unsigned int);
+        //CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
+        //memBufPtr += size;*/
+
+        //time_point t9 = now();
 
         if (i % 10 == 0) {
+            time_point t7 = now();
+            particles.copyToHost();
+            metabolicParticles.copyToHost();
+
+            time_point t8 = now();
+
+            reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                particles.d_Current,
+                reducedParticles.d_Current,
+                nActiveParticles.h_Current[0]
+                );
+            reducedParticles.copyToHost();
+            reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                metabolicParticles.d_Current,
+                reducedMetabolicParticles.d_Current,
+                nActiveMetabolicParticles.h_Current[0]
+                );
+            reducedMetabolicParticles.copyToHost();
+
+            storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
+
+            /*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
+            memBufPtr += sizeof(unsigned int);
+            CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
+            memBufPtr += size;*/
+
+            time_point t9 = now();
+
             printf("step %d, nActiveParticles %d, updateGridAndSort %f, move %f, moveMetabolicParticles %f, relax %f, diffuseMetabolites %f, cudaMemcpy %f, fout.write %f, full step time %f\n",
                 i,
                 nActiveParticles.h_Current[0],
