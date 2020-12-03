@@ -1,6 +1,6 @@
 {
-  "numParticles": 262144,
-  "numMetabolicParticles": 1048576,
+  "numParticles": 131072,
+  "numMetabolicParticles": 524288,
   "steps": 501,
   "simSize": 0.8,
   "maxInteractionDistance": 0.007,

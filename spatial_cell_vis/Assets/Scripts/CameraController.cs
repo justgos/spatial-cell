@@ -62,21 +62,22 @@ public class CameraController : MonoBehaviour
     }
     void MoveThecamera()
     {
-        float scrollSensitivity = 0.1f;
+        var speedMultiplier = Input.GetKey(KeyCode.LeftShift) ? 5.0f : 1.0f;
+        float scrollSensitivity = 0.2f;
         //taking horizpontal input into the horizontal variable
-        horizontal = Input.GetAxis("Horizontal") + Input.mouseScrollDelta.x * scrollSensitivity;
+        horizontal = Input.GetAxis("Horizontal") * speedMultiplier + Input.mouseScrollDelta.x * scrollSensitivity;
         //changing the parent position based on the camera’s transform.right
         //transform.right also consider rotation too
         //so that it can move in the ‘right’ direction
         cam.transform.position += cam.transform.right * horizontal * Cam_speed * Time.deltaTime;
         //taking vertical axis into vertical variable
-        vertical = Input.GetAxis("Vertical") + Input.mouseScrollDelta.y * scrollSensitivity;
+        vertical = Input.GetAxis("Vertical") * speedMultiplier + Input.mouseScrollDelta.y * scrollSensitivity;
         //changing the parent position based on the camera’s        transform.forward
         //transform is also 0,0,1 but it also consider rotation too
         //so that it can move in the forward direction considering the  rotation too
         cam.transform.position += cam.transform.forward * vertical * Cam_speed * Time.deltaTime;
 
-        depth = Input.GetAxis("Depth");
+        depth = Input.GetAxis("Depth") * speedMultiplier;
         cam.transform.position += cam.transform.up * depth * Cam_speed * Time.deltaTime;
     }
 }

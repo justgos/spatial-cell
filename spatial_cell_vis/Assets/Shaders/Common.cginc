@@ -32,9 +32,10 @@ struct Particle {
     int id;
     int type;
     int flags;
-    float3 pos;
+    /*float3 pos;
     float __padding1[2];
-    float4 rot;
+    float4 rot;*/
+    uint pos_rot[4];
     //float4 debugVector;
 };
 
@@ -62,12 +63,23 @@ struct MetabolicParticle {
     int id;
     int type;
     int flags;
-    float3 pos;
+    /*float3 pos;
     float __padding1[2];
-    float4 rot;
-    float metabolites[REDUCED_NUM_METABOLITES];
+    float4 rot;*/
+    uint pos_rot[4];
+    uint metabolites[REDUCED_NUM_METABOLITES / 2];
+    //float metabolites[REDUCED_NUM_METABOLITES];
 };
 
+float
+decodeLowUintToFloat16(uint s) {
+    return asfloat((uint)(((s & 0x8000) << 16) | (((s & 0x7c00) + 0x1C000) << 13) | ((s & 0x03FF) << 13)));
+}
+
+float
+decodeHighUintToFloat16(uint s) {
+    return asfloat(decodeLowUintToFloat16((s >> 16) & 0xffff));
+}
 
 float
 angle(float3 a, float3 b) {

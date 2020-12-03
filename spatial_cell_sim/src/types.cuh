@@ -7,6 +7,7 @@
 #include <json/json.h>
 
 #include <cuda_runtime.h>
+#include <cuda_fp16.h>
 
 #include "./constants.cuh"
 
@@ -75,8 +76,15 @@ struct ReducedParticle {
     int id;
     int type;
     int flags;
-    float3 pos;
-    float4 rot;
+    /*float3 pos;
+    float4 rot;*/
+    __half posX;
+    __half posY;
+    __half posZ;
+    __half rotX;
+    __half rotY;
+    __half rotZ;
+    __half rotW;
     //float4 debugVector;
 
     __device__ __host__ ReducedParticle(
@@ -84,8 +92,15 @@ struct ReducedParticle {
     ) : id(p.id),
         type(p.type),
         flags(p.flags),
-        pos(p.pos),
-        rot(p.rot)
+        posX(p.pos.x),
+        posY(p.pos.y),
+        posZ(p.pos.z),
+        rotX(p.rot.x),
+        rotY(p.rot.y),
+        rotZ(p.rot.z),
+        rotW(p.rot.w)
+        /*pos(p.pos),
+        rot(p.rot)*/
         //debugVector(p.debugVector)
     {
         //
@@ -93,7 +108,7 @@ struct ReducedParticle {
 };
 
 struct ReducedMetabolicParticle : ReducedParticle {
-    float metabolites[REDUCED_NUM_METABOLITES];
+    __half metabolites[REDUCED_NUM_METABOLITES];
 
     //using Particle::Particle;
     __device__ __host__ ReducedMetabolicParticle(

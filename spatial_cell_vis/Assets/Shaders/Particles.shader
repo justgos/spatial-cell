@@ -69,10 +69,34 @@
 				Particle p = particles[instanceId];
 				float3 v = quadPoints[id];
 				o.uv = quadUVs[id];
-				
-				o.pos = mul(baseTransform,
+
+				/*o.pos = mul(baseTransform,
 					float4(p.pos * scale, 1)
+				);*/
+				float3 pos = float3(
+					decodeLowUintToFloat16(p.pos_rot[0]),
+					decodeHighUintToFloat16(p.pos_rot[0]),
+					decodeLowUintToFloat16(p.pos_rot[1])
 				);
+
+				if (
+					!(p.flags & PARTICLE_FLAG_ACTIVE)
+					|| pos.x < visibleMinX
+					|| pos.x > visibleMaxX
+					|| pos.y < visibleMinY
+					|| pos.y > visibleMaxY
+					|| pos.z < visibleMinZ
+					|| pos.z > visibleMaxZ
+				) {
+					o.pos = 0;
+					//o.col = float4(1, 0, 0, 1);
+					return o;
+				}
+
+				o.pos = mul(baseTransform,
+					float4(pos * scale, 1)
+				);
+				//o.pos.z = p.pos_rot[3] * scale;
 				float3 clippedCameraPos = float3(
 					min(max(_WorldSpaceCameraPos.x, 0.0), simSize * scale),
 					min(max(_WorldSpaceCameraPos.y, 0.0), simSize * scale),
@@ -95,19 +119,6 @@
 
 				if (targetParticleId == p.id)
 					o.col = float4(1, 0, 0, 1);
-
-				if (
-					!(p.flags & PARTICLE_FLAG_ACTIVE)
-					|| p.pos.x < visibleMinX
-					|| p.pos.x > visibleMaxX
-					|| p.pos.y < visibleMinY
-					|| p.pos.y > visibleMaxY
-					|| p.pos.z < visibleMinZ
-					|| p.pos.z > visibleMaxZ
-				) {
-					o.pos = 0;
-					//o.col = float4(1, 0, 0, 1);
-				}
 
 				UNITY_TRANSFER_FOG(o, o.pos);
 				return o;

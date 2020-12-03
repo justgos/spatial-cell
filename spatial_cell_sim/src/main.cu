@@ -129,8 +129,15 @@ main(void)
     printf(" id %d", offsetof(ReducedParticle, id));
     printf(", type %d", offsetof(ReducedParticle, type));
     printf(", flags %d", offsetof(ReducedParticle, flags));
-    printf(", pos %d", offsetof(ReducedParticle, pos));
-    printf(", rot %d", offsetof(ReducedParticle, rot));
+    /*printf(", pos %d", offsetof(ReducedParticle, pos));
+    printf(", rot %d", offsetof(ReducedParticle, rot));*/
+    printf(", posX %d", offsetof(ReducedParticle, posX));
+    printf(", posY %d", offsetof(ReducedParticle, posY));
+    printf(", posZ %d", offsetof(ReducedParticle, posZ));
+    printf(", rotX %d", offsetof(ReducedParticle, rotX));
+    printf(", rotY %d", offsetof(ReducedParticle, rotY));
+    printf(", rotZ %d", offsetof(ReducedParticle, rotZ));
+    printf(", rotW %d", offsetof(ReducedParticle, rotW));
     //printf(", debugVector %d", offsetof(ReducedParticle, debugVector));
     printf("\n");
     printf("----- ReducedMetabolicParticle size: %d\n", sizeof(ReducedMetabolicParticle));
@@ -559,62 +566,62 @@ main(void)
         }
         cudaDeviceSynchronize();
 
-        //time_point t7 = now();
-        //particles.copyToHost();
-        //metabolicParticles.copyToHost();
+        time_point t7 = now();
+        particles.copyToHost();
+        metabolicParticles.copyToHost();
 
-        //time_point t8 = now();
+        time_point t8 = now();
 
-        //reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-        //    particles.d_Current,
-        //    reducedParticles.d_Current,
-        //    nActiveParticles.h_Current[0]
-        //    );
-        //reducedParticles.copyToHost();
-        //reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-        //    metabolicParticles.d_Current,
-        //    reducedMetabolicParticles.d_Current,
-        //    nActiveMetabolicParticles.h_Current[0]
-        //    );
-        //reducedMetabolicParticles.copyToHost();
+        reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            particles.d_Current,
+            reducedParticles.d_Current,
+            nActiveParticles.h_Current[0]
+            );
+        reducedParticles.copyToHost();
+        reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            metabolicParticles.d_Current,
+            reducedMetabolicParticles.d_Current,
+            nActiveMetabolicParticles.h_Current[0]
+            );
+        reducedMetabolicParticles.copyToHost();
 
-        //storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
+        storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
 
-        ///*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
-        //memBufPtr += sizeof(unsigned int);
-        //CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
-        //memBufPtr += size;*/
+        /*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
+        memBufPtr += sizeof(unsigned int);
+        CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
+        memBufPtr += size;*/
 
-        //time_point t9 = now();
+        time_point t9 = now();
 
         if (i % 10 == 0) {
-            time_point t7 = now();
-            particles.copyToHost();
-            metabolicParticles.copyToHost();
+            //time_point t7 = now();
+            //particles.copyToHost();
+            //metabolicParticles.copyToHost();
 
-            time_point t8 = now();
+            //time_point t8 = now();
 
-            reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-                particles.d_Current,
-                reducedParticles.d_Current,
-                nActiveParticles.h_Current[0]
-                );
-            reducedParticles.copyToHost();
-            reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-                metabolicParticles.d_Current,
-                reducedMetabolicParticles.d_Current,
-                nActiveMetabolicParticles.h_Current[0]
-                );
-            reducedMetabolicParticles.copyToHost();
+            //reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            //    particles.d_Current,
+            //    reducedParticles.d_Current,
+            //    nActiveParticles.h_Current[0]
+            //    );
+            //reducedParticles.copyToHost();
+            //reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            //    metabolicParticles.d_Current,
+            //    reducedMetabolicParticles.d_Current,
+            //    nActiveMetabolicParticles.h_Current[0]
+            //    );
+            //reducedMetabolicParticles.copyToHost();
 
-            storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
+            //storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
 
-            /*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
-            memBufPtr += sizeof(unsigned int);
-            CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
-            memBufPtr += size;*/
+            ///*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
+            //memBufPtr += sizeof(unsigned int);
+            //CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
+            //memBufPtr += size;*/
 
-            time_point t9 = now();
+            //time_point t9 = now();
 
             printf("step %d, nActiveParticles %d, updateGridAndSort %f, move %f, moveMetabolicParticles %f, relax %f, diffuseMetabolites %f, cudaMemcpy %f, fout.write %f, full step time %f\n",
                 i,

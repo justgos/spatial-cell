@@ -70,10 +70,30 @@
 				float3 v = quadPoints[id];
 				o.uv = quadUVs[id];
 
-				v *= 100.0 * simSize * min(max(log(1 + p.metabolites[0]) / log(100.0), 0.0), 1.0);
-				
+				float3 pos = float3(
+					decodeLowUintToFloat16(p.pos_rot[0]),
+					decodeHighUintToFloat16(p.pos_rot[0]),
+					decodeLowUintToFloat16(p.pos_rot[1])
+				);
+
+				if (
+					!(p.flags & PARTICLE_FLAG_ACTIVE)
+					|| pos.x < visibleMinX
+					|| pos.x > visibleMaxX
+					|| pos.y < visibleMinY
+					|| pos.y > visibleMaxY
+					|| pos.z < visibleMinZ
+					|| pos.z > visibleMaxZ
+				) {
+					o.pos = 0;
+					//o.col = float4(1, 0, 0, 1);
+					return o;
+				}
+
+				v *= 40.0 * simSize * min(max(log(1 + decodeLowUintToFloat16(p.metabolites[0])) / log(100.0), 0.0), 1.0);
+
 				o.pos = mul(baseTransform,
-					float4(p.pos * scale, 1)
+					float4(pos * scale, 1)
 				);
 				float3 clippedCameraPos = float3(
 					min(max(_WorldSpaceCameraPos.x, 0.0), simSize * scale),
@@ -90,19 +110,6 @@
 				o.col.xyz /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
 				o.col.w *= 0.2;
 				UNITY_TRANSFER_FOG(o, o.pos);
-
-				if (
-					!(p.flags & PARTICLE_FLAG_ACTIVE)
-					|| p.pos.x < visibleMinX
-					|| p.pos.x > visibleMaxX
-					|| p.pos.y < visibleMinY
-					|| p.pos.y > visibleMaxY
-					|| p.pos.z < visibleMinZ
-					|| p.pos.z > visibleMaxZ
-				) {
-					o.pos = 0;
-					//o.col = float4(1, 0, 0, 1);
-				}
 
 				return o;
 			}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
@@ -20,10 +21,10 @@ public class FrameData : MonoBehaviour
         
     }
 
-    public void Init(int count, int itemSize)
-    {
-        particleBuffer = new ComputeBuffer(count, itemSize);
-    }
+    //public void Init(int count, int itemSize)
+    //{
+    //    particleBuffer = new ComputeBuffer(count, itemSize);
+    //}
 
     void Update()
     {
@@ -33,8 +34,19 @@ public class FrameData : MonoBehaviour
     public void SetData<T> (Nullable<NativeArray<T>> items, int count, Nullable<SimData.SimFrame> simFrame) where T : struct
     {
         numParticles = count;
-        if(items.HasValue)
+        if (items.HasValue)
+        {
+            int bufferSize = particleBuffer != null ? particleBuffer.count : 1;
+            while (bufferSize < items.Value.Length)
+                bufferSize *= 2;
+            // Grow the bufeer if necessary
+            if(bufferSize != particleBuffer?.count)
+            {
+                particleBuffer?.Dispose();
+                particleBuffer = new ComputeBuffer(count, Marshal.SizeOf(typeof(T)));
+            }
             particleBuffer.SetData(items.Value);
+        }
         frame = simFrame;
     }
 
