@@ -70,10 +70,11 @@
 				float3 v = quadPoints[id];
 				o.uv = quadUVs[id];
 
+				float radius = decodeLowUintToFloat16(p.r_pos_rot[0]);
 				float3 pos = float3(
-					decodeLowUintToFloat16(p.pos_rot[0]),
-					decodeHighUintToFloat16(p.pos_rot[0]),
-					decodeLowUintToFloat16(p.pos_rot[1])
+					decodeHighUintToFloat16(p.r_pos_rot[0]),
+					decodeLowUintToFloat16(p.r_pos_rot[1]),
+					decodeHighUintToFloat16(p.r_pos_rot[1])
 				);
 
 				if (
@@ -90,7 +91,8 @@
 					return o;
 				}
 
-				v *= 40.0 * simSize * min(max(log(1 + decodeLowUintToFloat16(p.metabolites[0])) / log(100.0), 0.0), 1.0);
+				float metaboliteConcentration = min(max(log(1 + decodeLowUintToFloat16(p.metabolites[0])) / log(100.0), 0.0), 1.0);
+				v *= 4.0 * metaboliteConcentration;
 
 				o.pos = mul(baseTransform,
 					float4(pos * scale, 1)
@@ -102,7 +104,7 @@
 				);
 				float3 cameraDist = o.pos - clippedCameraPos;
 				o.pos = mul(UNITY_MATRIX_P,
-					mul(UNITY_MATRIX_V, o.pos) + float4(v * float3(0.005 * scale, 0.005 * scale, 1), 0)
+					mul(UNITY_MATRIX_V, o.pos) + float4(v * float3(radius * 2 * scale, radius * 2 * scale, 1), 0)
 				);
 				
 				//o.col = float4((float)((uint)p.type % 2), 1, 1, 1);

@@ -102,7 +102,7 @@ move(
                     /*if (
                         p.type == 0
                         && tp.type == 1
-                        && dist <= 0.005
+                        && dist <= p.radius + tp.radius
                         && step > 10
                         && orientationAngleDelta < interactionAngleMaxDelta
                         && relativePositionAngleDelta < interactionAngleMaxDelta
@@ -112,7 +112,7 @@ move(
                     if (
                         p.type == 1
                         && tp.type == 1
-                        && dist <= 0.005
+                        && dist <= p.radius + tp.radius
                         && step > 10
                         && orientationAngleDelta < interactionAngleMaxDelta
                         && relativePositionAngleDelta < interactionAngleMaxDelta
@@ -126,6 +126,7 @@ move(
                                     newId,
                                     2,
                                     0,
+                                    0.001,
                                     make_float3(
                                         p.pos.x + delta.x / 2,
                                         p.pos.y + delta.y / 2,
@@ -137,6 +138,7 @@ move(
                                 atomicAdd(nActiveParticles, 1);
                             }
                         }
+                        p.radius = 0.002;
                         p.type = 3;
                     }
 
@@ -350,8 +352,8 @@ relax(
                     float3 normalizedDelta = normalized(delta);
                     float dist = norm(delta);
 
-                    float collisionDist = 0.005;
-                    float interactionDistance = 0.005;
+                    float collisionDist = p.radius + tp.radius;
+                    float interactionDistance = p.radius + tp.radius;
 
                     // Up direction of the other particle
                     float3 tup = transform_vector(VECTOR_UP, tp.rot);
@@ -372,7 +374,7 @@ relax(
                     * TODO: interactions should alter the particle's velocity, not just position
                     */
 
-                    if (p.type == PARTICLE_TYPE_LIPID && p.type == tp.type && dist <= 0.007) {
+                    if (p.type == PARTICLE_TYPE_LIPID && p.type == tp.type && dist <= p.radius + tp.radius + 0.8 * p.radius) {
                         float deltaInteractionDist = -(interactionDistance - dist);
                         constexpr float distanceRelaxationSpeed = 0.15f;
                         moveVec = add(
@@ -409,6 +411,7 @@ relax(
                                         0.9
                                     )
                                 );
+                                p.velocity = mul(p.velocity, 0.9);
                                 // and less angular noise
                                 p.angularVelocity = slerp(p.angularVelocity, QUATERNION_IDENTITY, 0.9);
 

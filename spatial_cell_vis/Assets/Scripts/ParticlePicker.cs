@@ -79,7 +79,7 @@ public class ParticlePicker : MonoBehaviour
                         var pPos = p.pos.UnityVector();
                         var particlePos = particleRenderer.transform.position + pPos * 10;
                         //Debug.Log("particlePos " + p.id + ", " + particlePos.ToString("F4"));
-                        if (IntersectRaySphere(ray, particlePos, 0.025f))
+                        if (IntersectRaySphere(ray, particlePos, p.radius))
                         {
                             var particleDist = (ray.origin - particlePos).magnitude;
                             if (particleDist < targetParticleDist)

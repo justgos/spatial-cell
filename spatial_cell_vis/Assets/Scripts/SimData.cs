@@ -108,8 +108,9 @@ public class SimData : MonoBehaviour
         [FieldOffset(0)] public int id;
         [FieldOffset(4)] public int type;
         [FieldOffset(8)] public int flags;
-        [FieldOffset(12)] public VectorHalf3_ pos;
-        [FieldOffset(18)] public VectorHalf4_ rot;
+        [FieldOffset(12)] public Half radius;
+        [FieldOffset(14)] public VectorHalf3_ pos;
+        [FieldOffset(20)] public VectorHalf4_ rot;
         //[FieldOffset(128)] public Vector4_ debugVector;
     };
 
@@ -140,8 +141,9 @@ public class SimData : MonoBehaviour
         [FieldOffset(0)] public int id;
         [FieldOffset(4)] public int type;
         [FieldOffset(8)] public int flags;
-        [FieldOffset(12)] public VectorHalf3_ pos;
-        [FieldOffset(18)] public VectorHalf4_ rot;
+        [FieldOffset(12)] public Half radius;
+        [FieldOffset(14)] public VectorHalf3_ pos;
+        [FieldOffset(20)] public VectorHalf4_ rot;
         //[FieldOffset(128)] public Vector4_ debugVector;
         //[FieldOffset(48)] public fixed float metabolites[4];
     };
@@ -540,11 +542,19 @@ public class SimData : MonoBehaviour
             SetFrame(frameSlider.value + (Input.GetKey(KeyCode.LeftShift) ? 5 : 1));
         }
 
-        foreach(var entry in particleRenderers)
+        //foreach(var entry in particleRenderers)
+        //{
+        //    if(Input.GetKeyDown(KeyCode.Alpha0 + entry.Key))
+        //    {
+        //        entry.Value.gameObject.SetActive(!entry.Value.gameObject.activeSelf);
+        //    }
+        //}
+
+        for(var i = 0; i < 8; i++)
         {
-            if(Input.GetKeyDown(KeyCode.Alpha0 + entry.Key))
+            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
             {
-                entry.Value.gameObject.SetActive(!entry.Value.gameObject.activeSelf);
+                particleRenderers[0].ToggleParticleType(i);
             }
         }
 

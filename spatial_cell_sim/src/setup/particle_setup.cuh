@@ -10,6 +10,27 @@
 #include "../math.cuh"
 
 
+std::map<int, ParticleTypeInfo> particleTypeInfo = {
+    {
+        0,
+        ParticleTypeInfo(
+            0.0025
+        )
+    },
+    {
+        1,
+        ParticleTypeInfo(
+            0.0025
+        )
+    },
+    {
+        1000,
+        ParticleTypeInfo(
+            0.0025
+        )
+    }
+};
+
 template <typename T> void
 fillParticlesUniform(
 	int count,
@@ -26,6 +47,7 @@ fillParticlesUniform(
             i,
             type,
             0,
+            particleTypeInfo[type].radius,
             make_float3(
                 rng() * config->simSize,
                 rng() * config->simSize,
@@ -55,6 +77,7 @@ fillParticlesStraightLine(
             i,
             type,
             0,
+            particleTypeInfo[type].radius,
             make_float3(
                 min(max(pos.x, 0.0f), 1.0f),
                 min(max(pos.y, 0.0f), 1.0f),
@@ -79,8 +102,8 @@ fillParticlesPlane(
 ) {
     float3 dir1 = cross(normal, VECTOR_UP);
     float3 dir2 = cross(normal, dir1);
-    dir1 = mul(dir1, 0.005);
-    dir2 = mul(dir2, 0.005);
+    dir1 = mul(dir1, particleTypeInfo[type].radius * 2.0);
+    dir2 = mul(dir2, particleTypeInfo[type].radius * 2.0);
     float3 startPos = add(
         center,
         add(
@@ -101,6 +124,7 @@ fillParticlesPlane(
             i,
             type,
             0,
+            particleTypeInfo[type].radius,
             make_float3(
                 min(max(pos.x, 0.0f), 1.0f),
                 min(max(pos.y, 0.0f), 1.0f),
@@ -146,7 +170,7 @@ fillParticlesSphere(
     std::function<double()> rng
 ) {
     std::vector<float3> pointsOnTheSphere = fibonacci_spiral_sphere(count);
-    float r = sqrt(count / 1000.0) * 0.04;
+    float r = sqrt(count / 1000.0 * pow(particleTypeInfo[type].radius / 0.0025, 2.0)) * 0.04;
     for (int i = h_nActiveParticles[0]; i < h_nActiveParticles[0] + count; i++)
     {
         float3 pos = add(
@@ -159,6 +183,7 @@ fillParticlesSphere(
             i,
             type,
             0,
+            particleTypeInfo[type].radius,
             make_float3(
                 min(max(pos.x, 0.0f), 1.0f),
                 min(max(pos.y, 0.0f), 1.0f),

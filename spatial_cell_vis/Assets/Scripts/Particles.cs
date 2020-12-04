@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Linq;
@@ -25,6 +26,8 @@ public class Particles : MonoBehaviour
     public RangeSlider particleVisibleRangeXSlider;
     public RangeSlider particleVisibleRangeYSlider;
     public RangeSlider particleVisibleRangeZSlider;
+
+    private int particleTypeFilter = 0x0000ffff;  // 0x7fffffff;
 
     private int targetParticleId = -1;
     public int TargetParticleId { set { targetParticleId = value; } }
@@ -98,6 +101,12 @@ public class Particles : MonoBehaviour
         argsBuffer.SetData(drawArgs);
     }
 
+    public void ToggleParticleType(int type)
+    {
+        particleTypeFilter = particleTypeFilter ^ (1 << type);
+        Debug.Log(string.Format("{0}", Convert.ToString(particleTypeFilter, 2)));
+    }
+
     void Update()
     {
         if (frameData.Frame == null)
@@ -122,6 +131,7 @@ public class Particles : MonoBehaviour
             instancedMaterial.SetFloat("visibleMaxY", particleVisibleRangeYSlider.HighValue);
             instancedMaterial.SetFloat("visibleMinZ", particleVisibleRangeZSlider.LowValue);
             instancedMaterial.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
+            instancedMaterial.SetInt("particleTypeFilter", particleTypeFilter);
             instancedMaterial.SetInt("targetParticleId", targetParticleId);
             instancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
             Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), argsBuffer);
@@ -137,6 +147,7 @@ public class Particles : MonoBehaviour
             debugVectorInstancedMaterial.SetFloat("visibleMaxY", particleVisibleRangeYSlider.HighValue);
             debugVectorInstancedMaterial.SetFloat("visibleMinZ", particleVisibleRangeZSlider.LowValue);
             debugVectorInstancedMaterial.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
+            debugVectorInstancedMaterial.SetInt("particleTypeFilter", particleTypeFilter);
             debugVectorInstancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
             Graphics.DrawMeshInstancedIndirect(debugVectorMesh, 0, debugVectorInstancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), debugVectorArgsBuffer);
         }
@@ -158,6 +169,8 @@ public class Particles : MonoBehaviour
             material.SetFloat("visibleMaxY", particleVisibleRangeYSlider.HighValue);
             material.SetFloat("visibleMinZ", particleVisibleRangeZSlider.LowValue);
             material.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
+            material.SetInt("particleTypeFilter", particleTypeFilter);
+            //Debug.Log(string.Format("{0}", Convert.ToString(particleTypeFilter, 2)));
             material.SetInt("targetParticleId", targetParticleId);
             material.SetBuffer("particles", frameData.ParticleBuffer);
             material.SetPass(0);

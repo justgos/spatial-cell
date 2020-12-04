@@ -74,7 +74,7 @@ removeInterferingMetabolicParticles(
                     float3 normalizedDelta = normalized(delta);
                     float dist = norm(delta);
 
-                    float interferenceDist = 0.006;
+                    float interferenceDist = p.radius + tp.radius + 0.001;
 
                     if (dist <= interferenceDist) {
                         p.flags = p.flags & ~PARTICLE_FLAG_ACTIVE;
@@ -197,7 +197,7 @@ relaxMetabolicParticles(
                     float3 normalizedDelta = normalized(delta);
                     float dist = norm(delta);
 
-                    float collisionDist = 0.007;
+                    float collisionDist = p.radius + tp.radius + 0.8 * p.radius;
 
                     // Up direction of the other particle
                     float3 tup = transform_vector(VECTOR_UP, tp.rot);
@@ -242,7 +242,7 @@ relaxMetabolicParticles(
                     float3 normalizedDelta = normalized(delta);
                     float dist = norm(delta);
 
-                    float collisionDist = 0.007;
+                    float collisionDist = p.radius + tp.radius + 0.8 * p.radius;
 
                     // Up direction of the other particle
                     float3 tup = transform_vector(VECTOR_UP, tp.rot);
@@ -336,7 +336,7 @@ relaxMetabolicParticlePartners(
                     float3 normalizedDelta = normalized(delta);
                     float dist = norm(delta);
 
-                    float collisionDist = 0.007;
+                    float collisionDist = p.radius + tp.radius + 0.8 * p.radius;
 
                     // Up direction of the other particle
                     float3 tup = transform_vector(VECTOR_UP, tp.rot);
@@ -425,8 +425,8 @@ diffuseMetabolites(
                     float3 normalizedDelta = normalized(delta);
                     float dist = norm(delta);
 
-                    const float diffusionDistance = 0.01;
-                    if (dist <= diffusionDistance) {
+                    //const float diffusionDistance = 0.01;
+                    if (dist <= d_Config.maxDiffusionDistance) {
                         for (int k = 0; k < NUM_METABOLITES; k++) {
                             float diff = tp.metabolites[k] - p.metabolites[k];
                             //// TODO: shuffle around single metabolites using `scramble_float`

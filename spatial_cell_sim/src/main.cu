@@ -107,6 +107,8 @@ main(void)
         printf("WARNING! The maxDiffusionDistance (%f) is less than gridCellSize (%f).\nMetabolite diffusion may play out as intended\n", config.maxDiffusionDistance, config.gridCellSize);
     }
 
+    // TODO: check that the maxDiffusionDistance doesn't span the lipid layer width + metabolite-lipid collision distance
+
     /*int sharedMemSize;
     cudaDeviceGetAttribute(&sharedMemSize, cudaDeviceAttr::cudaDevAttrMaxSharedMemoryPerBlock, 0);
     printf("sharedMemSize %d\n", sharedMemSize);
@@ -127,6 +129,7 @@ main(void)
     printf(" id %d", offsetof(Particle, id));
     printf(", type %d", offsetof(Particle, type));
     printf(", flags %d", offsetof(Particle, flags));
+    printf(", radius %d", offsetof(Particle, radius));
     printf(", pos %d", offsetof(Particle, pos));
     printf(", rot %d", offsetof(Particle, rot));
     printf(", velocity %d", offsetof(Particle, velocity));
@@ -144,6 +147,7 @@ main(void)
     printf(" id %d", offsetof(ReducedParticle, id));
     printf(", type %d", offsetof(ReducedParticle, type));
     printf(", flags %d", offsetof(ReducedParticle, flags));
+    printf(", radius %d", offsetof(ReducedParticle, radius));
     /*printf(", pos %d", offsetof(ReducedParticle, pos));
     printf(", rot %d", offsetof(ReducedParticle, rot));*/
     printf(", posX %d", offsetof(ReducedParticle, posX));

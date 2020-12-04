@@ -23,6 +23,7 @@ struct Particle {
     int id;
     int type;
     int flags;
+    float radius;
     float3 pos;
     float4 rot;
     float3 velocity;
@@ -35,6 +36,7 @@ struct Particle {
         int id = 0,
         int type = 0,
         int flags = 0,
+        float radius = 0.0025,
         float3 pos = VECTOR_ZERO,
         float4 rot = QUATERNION_IDENTITY,
         float3 velocity = VECTOR_ZERO,
@@ -42,6 +44,7 @@ struct Particle {
     ) : id(id),
         type(type),
         flags(flags | PARTICLE_FLAG_ACTIVE),
+        radius(radius),
         pos(pos),
         rot(rot),
         velocity(velocity),
@@ -62,11 +65,12 @@ struct MetabolicParticle : Particle {
         int id = 0,
         int type = 0,
         int flags = 0,
+        float radius = 0.0025,
         float3 pos = VECTOR_ZERO,
         float4 rot = QUATERNION_IDENTITY,
         float3 velocity = VECTOR_ZERO,
         float4 angularVelocity = QUATERNION_IDENTITY
-    ) : Particle(id, type, flags, pos, rot, velocity, angularVelocity)
+    ) : Particle(id, type, flags, radius, pos, rot, velocity, angularVelocity)
     {
         memset(metabolites, 0, NUM_METABOLITES * sizeof(float));
     }
@@ -78,6 +82,7 @@ struct ReducedParticle {
     int flags;
     /*float3 pos;
     float4 rot;*/
+    __half radius;
     __half posX;
     __half posY;
     __half posZ;
@@ -92,6 +97,7 @@ struct ReducedParticle {
     ) : id(p.id),
         type(p.type),
         flags(p.flags),
+        radius(p.radius),
         posX(p.pos.x),
         posY(p.pos.y),
         posZ(p.pos.z),
@@ -117,6 +123,17 @@ struct ReducedMetabolicParticle : ReducedParticle {
     {
         for (int i = 0; i < REDUCED_NUM_METABOLITES; i++)
             metabolites[i] = p.metabolites[i];
+    }
+};
+
+struct ParticleTypeInfo {
+    float radius;
+
+    ParticleTypeInfo(
+        float radius = 0.0025
+    ) : radius(radius)
+    {
+        //
     }
 };
 

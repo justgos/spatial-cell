@@ -47,6 +47,7 @@
 			uniform float visibleMaxY;
 			uniform float visibleMinZ;
 			uniform float visibleMaxZ;
+			uniform int particleTypeFilter;
 			uniform int targetParticleId;
 
 			struct appdata
@@ -73,10 +74,11 @@
 				/*o.pos = mul(baseTransform,
 					float4(p.pos * scale, 1)
 				);*/
+				float radius = decodeLowUintToFloat16(p.r_pos_rot[0]);
 				float3 pos = float3(
-					decodeLowUintToFloat16(p.pos_rot[0]),
-					decodeHighUintToFloat16(p.pos_rot[0]),
-					decodeLowUintToFloat16(p.pos_rot[1])
+					decodeHighUintToFloat16(p.r_pos_rot[0]),
+					decodeLowUintToFloat16(p.r_pos_rot[1]),
+					decodeHighUintToFloat16(p.r_pos_rot[1])
 				);
 
 				if (
@@ -87,6 +89,7 @@
 					|| pos.y > visibleMaxY
 					|| pos.z < visibleMinZ
 					|| pos.z > visibleMaxZ
+					|| (p.type < 8 && !(particleTypeFilter & (0x0000001 << p.type)))
 				) {
 					o.pos = 0;
 					//o.col = float4(1, 0, 0, 1);
@@ -104,7 +107,7 @@
 				);
 				float3 cameraDist = o.pos - clippedCameraPos;
 				o.pos = mul(UNITY_MATRIX_P,
-					mul(UNITY_MATRIX_V, o.pos) + float4(quadPoints[id] * float3(0.005 * scale, 0.005 * scale, 1), 0)
+					mul(UNITY_MATRIX_V, o.pos) + float4(quadPoints[id] * float3(radius * 2 * scale, radius * 2 * scale, 1), 0)
 				);
 				
 				//o.col = float4((float)((uint)p.type % 2), 1, 1, 1);
