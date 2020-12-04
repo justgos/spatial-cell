@@ -21,6 +21,7 @@
 #include <chrono>
 #include <functional>
 //#include <windows.h>
+#include <future>
 
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
@@ -69,6 +70,20 @@ printCUDAIntArray(unsigned int* a, unsigned int len) {
     }
     printf(" ]\n");
     free(host_a);
+}
+
+double
+persistFrame(
+    SingleBuffer<ReducedParticle> *particles,
+    SingleBuffer<ReducedMetabolicParticle> *metabolicParticles,
+    FileStorage *storage
+) {
+    time_point t1 = now();
+    particles->copyToHost();
+    metabolicParticles->copyToHost();
+    storage->writeFrame<ReducedParticle, ReducedMetabolicParticle>(particles, metabolicParticles);
+    time_point t2 = now();
+    return getDuration(t1, t2);
 }
 
 /**
@@ -326,7 +341,7 @@ main(void)
     // Write the frames file header
     storage.writeHeader();
 
-    // Remove the initially interfering metabolic particles
+    // Initial grid-sorting of particles
     updateGridAndSort(
         &particles,
         &indices,
@@ -344,6 +359,7 @@ main(void)
         &config
     );
     cudaDeviceSynchronize();
+    // Remove the initially interfering metabolic particles
     metabolicParticles.clearNextOnDevice();
     removeInterferingMetabolicParticles KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
         metabolicParticles.d_Current,
@@ -357,21 +373,29 @@ main(void)
     cudaDeviceSynchronize();
     metabolicParticles.copyToHost();
 
+    // Reduce particles buffer to slimmer representation for saving
     reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
         particles.d_Current,
         reducedParticles.d_Current,
         nActiveParticles.h_Current[0]
     );
-    reducedParticles.copyToHost();
     reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
         metabolicParticles.d_Current,
         reducedMetabolicParticles.d_Current,
         nActiveMetabolicParticles.h_Current[0]
     );
-    reducedMetabolicParticles.copyToHost();
+    cudaDeviceSynchronize();
 
     // Write the first frame
-    storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
+    std::future<double> persistFrameTask = std::async(
+        persistFrame,
+        &reducedParticles,
+        &reducedMetabolicParticles,
+        &storage
+    );
+    /*reducedParticles.copyToHost();
+    reducedMetabolicParticles.copyToHost();
+    storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);*/
 
     /*char *memBufPtr = (char*)pBuf;
     CopyMemory((PVOID)memBufPtr, (char*)&config.simSize, sizeof(float));
@@ -567,25 +591,33 @@ main(void)
         cudaDeviceSynchronize();
 
         time_point t7 = now();
-        particles.copyToHost();
-        metabolicParticles.copyToHost();
+        /*particles.copyToHost();
+        metabolicParticles.copyToHost();*/
 
         time_point t8 = now();
+
+        // Wait till the previous frame is persisted
+        double persistFrameDuration = persistFrameTask.get();
 
         reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
             particles.d_Current,
             reducedParticles.d_Current,
             nActiveParticles.h_Current[0]
-            );
-        reducedParticles.copyToHost();
+        );
+        //reducedParticles.copyToHost();
         reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
             metabolicParticles.d_Current,
             reducedMetabolicParticles.d_Current,
             nActiveMetabolicParticles.h_Current[0]
-            );
-        reducedMetabolicParticles.copyToHost();
-
-        storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
+        );
+        //reducedMetabolicParticles.copyToHost();
+        //storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
+        persistFrameTask = std::async(
+            persistFrame,
+            &reducedParticles,
+            &reducedMetabolicParticles,
+            &storage
+        );
 
         /*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
         memBufPtr += sizeof(unsigned int);
@@ -623,7 +655,7 @@ main(void)
 
             //time_point t9 = now();
 
-            printf("step %d, nActiveParticles %d, updateGridAndSort %f, move %f, moveMetabolicParticles %f, relax %f, diffuseMetabolites %f, cudaMemcpy %f, fout.write %f, full step time %f\n",
+            printf("step %d, nActiveParticles %d, updateGridAndSort %f, move %f, moveMetabolicParticles %f, relax %f, diffuseMetabolites %f, persistFrame (previous) %f, reduceParticles %f, full step time %f\n",
                 i,
                 nActiveParticles.h_Current[0],
                 getDuration(t1, t5),
@@ -631,13 +663,17 @@ main(void)
                 getDuration(t6, t6_1),
                 getDuration(t6_1, t6_2),
                 getDuration(t6_3, t7),
-                getDuration(t7, t8),
+                persistFrameDuration,
                 getDuration(t8, t9),
                 getDuration(t1, t9)
             );
         }
     }
     cudaDeviceSynchronize();
+
+    // Make sure the last frame is persisted
+    double persistFrameDuration = persistFrameTask.get();
+
     time_point t2 = now();
     printf("time %f\n", getDuration(t0, t2));
 
