@@ -1,6 +1,8 @@
 // cudaNoise
 // Library of common 3D noise functions for CUDA kernels
 
+// Ref: https://github.com/covexp/cuda-noise
+
 #ifndef cudanoise_cuh
 #define cudanoise_cuh
 

@@ -111,6 +111,7 @@ public class SimData : MonoBehaviour
         [FieldOffset(12)] public Half radius;
         [FieldOffset(14)] public VectorHalf3_ pos;
         [FieldOffset(20)] public VectorHalf4_ rot;
+        //[FieldOffset(28)] public VectorHalf4_ debugVector;
         //[FieldOffset(128)] public Vector4_ debugVector;
     };
 
@@ -144,6 +145,7 @@ public class SimData : MonoBehaviour
         [FieldOffset(12)] public Half radius;
         [FieldOffset(14)] public VectorHalf3_ pos;
         [FieldOffset(20)] public VectorHalf4_ rot;
+        //[FieldOffset(28)] public VectorHalf4_ debugVector;
         //[FieldOffset(128)] public Vector4_ debugVector;
         //[FieldOffset(48)] public fixed float metabolites[4];
     };

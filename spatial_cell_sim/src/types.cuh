@@ -91,6 +91,10 @@ struct ReducedParticle {
     __half rotZ;
     __half rotW;
     //float4 debugVector;
+    /*__half debugVectorX;
+    __half debugVectorY;
+    __half debugVectorZ;
+    __half debugVectorW;*/
 
     __device__ __host__ ReducedParticle(
         Particle p
@@ -104,7 +108,11 @@ struct ReducedParticle {
         rotX(p.rot.x),
         rotY(p.rot.y),
         rotZ(p.rot.z),
-        rotW(p.rot.w)
+        rotW(p.rot.w)//,
+        /*debugVectorX(p.debugVector.x),
+        debugVectorY(p.debugVector.y),
+        debugVectorZ(p.debugVector.z),
+        debugVectorW(p.debugVector.w)*/
         /*pos(p.pos),
         rot(p.rot)*/
         //debugVector(p.debugVector)

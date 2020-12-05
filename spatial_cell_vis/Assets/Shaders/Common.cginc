@@ -37,6 +37,7 @@ struct Particle {
     float4 rot;*/
     uint r_pos_rot[4];
     //float4 debugVector;
+    //uint debugVector[2];
 };
 
 //struct MetabolicParticle {
@@ -67,6 +68,7 @@ struct MetabolicParticle {
     float __padding1[2];
     float4 rot;*/
     uint r_pos_rot[4];
+    //uint debugVector[2];
     uint metabolites[REDUCED_NUM_METABOLITES / 2];
     //float metabolites[REDUCED_NUM_METABOLITES];
 };

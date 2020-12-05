@@ -21,7 +21,7 @@ addMetabolitesByCoord(
 ) {
     for (int i = start + 1; i < end; i++) {
         MetabolicParticle* p = &h_Particles[i];
-        if (p->pos.x < config->simSize * 0.3) {
+        if (p->pos.x < config->simSize * 0.2) {
             h_Particles[i].metabolites[metaboliteId] = 100.0f;  // *1400.0f / (end - start);
         }
     }

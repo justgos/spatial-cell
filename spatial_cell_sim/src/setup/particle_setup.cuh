@@ -177,7 +177,7 @@ fillParticlesSphere(
             center,
             mul(pointsOnTheSphere[i - h_nActiveParticles[0]], r)
         );
-        float3 posDirection = normalized(add(pos, negate(center)));
+        float3 posDirection = normalize(add(pos, negate(center)));
         float3 rotAxis = cross(VECTOR_UP, posDirection);
         h_Particles[i] = T(
             i,
