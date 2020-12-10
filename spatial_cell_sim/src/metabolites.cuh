@@ -71,7 +71,7 @@ removeInterferingMetabolicParticles(
                         || fabs(delta.z) > d_Config.maxInteractionDistance)
                         continue;
 
-                    float3 normalizeDelta = normalize(delta);
+                    float3 normalizedDelta = normalize(delta);
                     float dist = norm(delta);
 
                     float interferenceDist = p.radius + tp.radius + 0.001;
@@ -194,7 +194,7 @@ relaxMetabolicParticles(
                         || fabs(delta.z) > d_Config.maxInteractionDistance)
                         continue;
 
-                    float3 normalizeDelta = normalize(delta);
+                    float3 normalizedDelta = normalize(delta);
                     float dist = norm(delta);
 
                     float collisionDist = p.radius + tp.radius + 0.8 * p.radius;
@@ -208,7 +208,7 @@ relaxMetabolicParticles(
                         moveVec = add(
                             moveVec,
                             mul(
-                                normalizeDelta,
+                                normalizedDelta,
                                 deltaCollisionDist * collisionRelaxationSpeed
                             )
                         );
@@ -239,7 +239,7 @@ relaxMetabolicParticles(
                         || fabs(delta.z) > d_Config.maxInteractionDistance)
                         continue;
 
-                    float3 normalizeDelta = normalize(delta);
+                    float3 normalizedDelta = normalize(delta);
                     float dist = norm(delta);
 
                     float collisionDist = p.radius + tp.radius + 0.8 * p.radius;
@@ -253,7 +253,7 @@ relaxMetabolicParticles(
                         moveVec = add(
                             moveVec,
                             mul(
-                                normalizeDelta,
+                                normalizedDelta,
                                 deltaCollisionDist * collisionRelaxationSpeed
                             )
                         );
@@ -333,7 +333,7 @@ relaxMetabolicParticlePartners(
                         || fabs(delta.z) > d_Config.maxInteractionDistance)
                         continue;
 
-                    float3 normalizeDelta = normalize(delta);
+                    float3 normalizedDelta = normalize(delta);
                     float dist = norm(delta);
 
                     float collisionDist = p.radius + tp.radius + 0.8 * p.radius;
@@ -347,7 +347,7 @@ relaxMetabolicParticlePartners(
                         moveVec = add(
                             moveVec,
                             mul(
-                                normalizeDelta,
+                                normalizedDelta,
                                 deltaCollisionDist * collisionRelaxationSpeed
                             )
                         );
@@ -422,7 +422,7 @@ diffuseMetabolites(
                         || fabs(delta.z) > d_Config.maxDiffusionDistance)
                         continue;
 
-                    float3 normalizeDelta = normalize(delta);
+                    float3 normalizedDelta = normalize(delta);
                     float dist = norm(delta);
 
                     //const float diffusionDistance = 0.01;
