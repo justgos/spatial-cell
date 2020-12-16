@@ -25,5 +25,7 @@
     <ClInclude Include="src\metabolites.cuh" />
     <ClInclude Include="src\random.cuh" />
     <ClInclude Include="src\setup\metabolite_setup.cuh" />
+    <ClInclude Include="src\chemistry.cuh" />
+    <ClInclude Include="src\config.cuh" />
   </ItemGroup>
 </Project>

@@ -102,7 +102,7 @@ public class SimData : MonoBehaviour
     //};
 
     // ReducedParticle
-    [StructLayout(LayoutKind.Explicit, Size = 28)]  // 48
+    [StructLayout(LayoutKind.Explicit, Size = 36)]  // 48
     unsafe public struct Particle
     {
         [FieldOffset(0)] public int id;
@@ -111,7 +111,7 @@ public class SimData : MonoBehaviour
         [FieldOffset(12)] public Half radius;
         [FieldOffset(14)] public VectorHalf3_ pos;
         [FieldOffset(20)] public VectorHalf4_ rot;
-        //[FieldOffset(28)] public VectorHalf4_ debugVector;
+        [FieldOffset(28)] public VectorHalf4_ debugVector;
         //[FieldOffset(128)] public Vector4_ debugVector;
     };
 
@@ -136,7 +136,7 @@ public class SimData : MonoBehaviour
     //};
 
     // ReducedMetabolicParticle
-    [StructLayout(LayoutKind.Explicit, Size = 36)]  // 64
+    [StructLayout(LayoutKind.Explicit, Size = 44)]  // 64
     unsafe public struct MetabolicParticle
     {
         [FieldOffset(0)] public int id;
@@ -145,7 +145,7 @@ public class SimData : MonoBehaviour
         [FieldOffset(12)] public Half radius;
         [FieldOffset(14)] public VectorHalf3_ pos;
         [FieldOffset(20)] public VectorHalf4_ rot;
-        //[FieldOffset(28)] public VectorHalf4_ debugVector;
+        [FieldOffset(28)] public VectorHalf4_ debugVector;
         //[FieldOffset(128)] public Vector4_ debugVector;
         //[FieldOffset(48)] public fixed float metabolites[4];
     };
@@ -180,7 +180,7 @@ public class SimData : MonoBehaviour
 
     // Lipid bilayer model
     // Ref: https://www.umass.edu/microbio/rasmol/bilayers.htm
-    public GameObject particleType0Model;
+    //public GameObject particleType0Model;
 
     public Slider frameSlider;
     public Text frameNumberText;
@@ -273,97 +273,108 @@ public class SimData : MonoBehaviour
 
             while (br.BaseStream.Position != br.BaseStream.Length)
             {
-                //var frame = new SimFrame();
-                var numParticles = br.ReadUInt32();
-                //frame.numParticles = br.ReadUInt32();
-                if (numParticles < 1)
+                try
+                {
+                    //var frame = new SimFrame();
+                    var numParticles = br.ReadUInt32();
+                    //frame.numParticles = br.ReadUInt32();
+                    if (numParticles < 1)
+                        break;
+                    //frame.particles = new NativeArray<Particle>((int)frame.numParticles, Allocator.Persistent);
+                    int frameSize = (int)(particleStructSize * numParticles);
+                    frameOffsets.Add(br.BaseStream.Position - sizeof(uint));
+                    //var bytes = br.ReadBytes(frameSize);
+
+                    br.BaseStream.Position += frameSize;
+
+                    var numMetabolicParticles = br.ReadUInt32();
+                    frameSize = (int)(metabolicParticleStructSize * numMetabolicParticles);
+
+                    br.BaseStream.Position += frameSize;
+
+                    //unsafe
+                    //{
+                    //    //byte* ptr = (byte*)0;
+                    //    //accessor.SafeMemoryMappedViewHandle.AcquirePointer(ref ptr);
+                    //    fixed (void* bytesPointer = bytes)
+                    //    {
+                    //        //UnsafeUtility.CopyStructureToPtr((byte*)bytes[0], frame.particles.GetUnsafePtr());
+                    //        UnsafeUtility.MemCpy(frame.particles.GetUnsafePtr(), bytesPointer, UnsafeUtility.SizeOf<Particle>() * frame.numParticles);
+                    //        //UnsafeUtility.MemCpy(frame.particles.GetUnsafePtr(), ptr + br.BaseStream.Position, UnsafeUtility.SizeOf<Particle>() * frame.numParticles);
+                    //    }
+                    //    //accessor.SafeMemoryMappedViewHandle.ReleasePointer();
+
+
+                    //    //fixed (Particle* bytesPointer = frame.particles.ToArray())
+                    //    //{
+                    //    //    NativeList<Particle> typeList;
+                    //    //    frame.particleMap.TryGetValue(p.type, out typeList);
+                    //    //}
+                    //}
+                    ////br.BaseStream.Position += frameSize;
+
+                    //frame.particleMap = new Dictionary<int, NativeList<Particle>>();
+                    //foreach (var p in frame.particles.ToArray())
+                    //{
+                    //    //Debug.Log("p " + p.id + ", " + p.pos.UnityVector().ToString("F4"));
+                    //    NativeList<Particle> typeList;
+                    //    if (!frame.particleMap.ContainsKey(p.type))
+                    //    {
+                    //        typeList = new NativeList<Particle>(0, Allocator.Persistent);
+                    //        frame.particleMap.Add(p.type, typeList);
+                    //    }
+                    //    else
+                    //    {
+                    //        typeList = frame.particleMap[p.type];
+                    //    }
+                    //    typeList.Add(p);
+                    //}
+
+                    //foreach(var entry in frame.particleMap)
+                    //{
+                    //    int particleCount = 0;
+                    //    particleCount = particleMaxCountByType.TryGetValue(entry.Key, out particleCount) ? particleCount : 0;
+                    //    particleCount = Math.Max(particleCount, entry.Value.Length);
+                    //    particleMaxCountByType[entry.Key] = particleCount;
+                    //}
+
+                    //frame.numMetabolicParticles = br.ReadUInt32();
+                    //frame.metabolicParticles = new NativeArray<MetabolicParticle>((int)frame.numMetabolicParticles, Allocator.Persistent);
+                    //frameSize = (int)(metabolicParticleStructSize * frame.numMetabolicParticles);
+                    //bytes = br.ReadBytes(frameSize);
+
+                    //unsafe
+                    //{
+                    //    fixed (void* bytesPointer = bytes)
+                    //    {
+                    //        UnsafeUtility.MemCpy(frame.metabolicParticles.GetUnsafePtr(), bytesPointer, UnsafeUtility.SizeOf<MetabolicParticle>() * frame.numMetabolicParticles);
+                    //    }
+                    //}
+
+                    ////UnsafeUtility.
+                    ////NativeArray.
+                    ////for (var i = 0; i < frame.numParticles; i++)
+                    ////    frame.particles[i] = Marshal.PtrToStructure<Particle>(Marshal.UnsafeAddrOfPinnedArrayElement(bytes, particleStructSize * i));
+
+                    //frames.Add(frame);
+
+                    ////unsafe
+                    ////{
+                    ////    fixed (float* m = frame.metabolicParticles.ToArray()[0].metabolites)
+                    ////    {
+                    ////        Debug.Log("frame.metabolicParticles " + m[0] + ", " + m[1] + ", " + m[2] + ", " + m[3]);
+                    ////    }
+                    ////}
+                    ////return;
+                }
+                catch(Exception e)
+                {
+                    Debug.LogError("Caught exception while loading frames " + e);
+                    // The last loaded frame may've been corrupted - drop it
+                    if(frameOffsets.Count > 0)
+                        frameOffsets.RemoveAt(frameOffsets.Count - 1);
                     break;
-                //frame.particles = new NativeArray<Particle>((int)frame.numParticles, Allocator.Persistent);
-                int frameSize = (int)(particleStructSize * numParticles);
-                frameOffsets.Add(br.BaseStream.Position - sizeof(uint));
-                //var bytes = br.ReadBytes(frameSize);
-
-                br.BaseStream.Position += frameSize;
-
-                var numMetabolicParticles = br.ReadUInt32();
-                frameSize = (int)(metabolicParticleStructSize * numMetabolicParticles);
-
-                br.BaseStream.Position += frameSize;
-
-                //unsafe
-                //{
-                //    //byte* ptr = (byte*)0;
-                //    //accessor.SafeMemoryMappedViewHandle.AcquirePointer(ref ptr);
-                //    fixed (void* bytesPointer = bytes)
-                //    {
-                //        //UnsafeUtility.CopyStructureToPtr((byte*)bytes[0], frame.particles.GetUnsafePtr());
-                //        UnsafeUtility.MemCpy(frame.particles.GetUnsafePtr(), bytesPointer, UnsafeUtility.SizeOf<Particle>() * frame.numParticles);
-                //        //UnsafeUtility.MemCpy(frame.particles.GetUnsafePtr(), ptr + br.BaseStream.Position, UnsafeUtility.SizeOf<Particle>() * frame.numParticles);
-                //    }
-                //    //accessor.SafeMemoryMappedViewHandle.ReleasePointer();
-
-
-                //    //fixed (Particle* bytesPointer = frame.particles.ToArray())
-                //    //{
-                //    //    NativeList<Particle> typeList;
-                //    //    frame.particleMap.TryGetValue(p.type, out typeList);
-                //    //}
-                //}
-                ////br.BaseStream.Position += frameSize;
-
-                //frame.particleMap = new Dictionary<int, NativeList<Particle>>();
-                //foreach (var p in frame.particles.ToArray())
-                //{
-                //    //Debug.Log("p " + p.id + ", " + p.pos.UnityVector().ToString("F4"));
-                //    NativeList<Particle> typeList;
-                //    if (!frame.particleMap.ContainsKey(p.type))
-                //    {
-                //        typeList = new NativeList<Particle>(0, Allocator.Persistent);
-                //        frame.particleMap.Add(p.type, typeList);
-                //    }
-                //    else
-                //    {
-                //        typeList = frame.particleMap[p.type];
-                //    }
-                //    typeList.Add(p);
-                //}
-
-                //foreach(var entry in frame.particleMap)
-                //{
-                //    int particleCount = 0;
-                //    particleCount = particleMaxCountByType.TryGetValue(entry.Key, out particleCount) ? particleCount : 0;
-                //    particleCount = Math.Max(particleCount, entry.Value.Length);
-                //    particleMaxCountByType[entry.Key] = particleCount;
-                //}
-
-                //frame.numMetabolicParticles = br.ReadUInt32();
-                //frame.metabolicParticles = new NativeArray<MetabolicParticle>((int)frame.numMetabolicParticles, Allocator.Persistent);
-                //frameSize = (int)(metabolicParticleStructSize * frame.numMetabolicParticles);
-                //bytes = br.ReadBytes(frameSize);
-
-                //unsafe
-                //{
-                //    fixed (void* bytesPointer = bytes)
-                //    {
-                //        UnsafeUtility.MemCpy(frame.metabolicParticles.GetUnsafePtr(), bytesPointer, UnsafeUtility.SizeOf<MetabolicParticle>() * frame.numMetabolicParticles);
-                //    }
-                //}
-
-                ////UnsafeUtility.
-                ////NativeArray.
-                ////for (var i = 0; i < frame.numParticles; i++)
-                ////    frame.particles[i] = Marshal.PtrToStructure<Particle>(Marshal.UnsafeAddrOfPinnedArrayElement(bytes, particleStructSize * i));
-
-                //frames.Add(frame);
-
-                ////unsafe
-                ////{
-                ////    fixed (float* m = frame.metabolicParticles.ToArray()[0].metabolites)
-                ////    {
-                ////        Debug.Log("frame.metabolicParticles " + m[0] + ", " + m[1] + ", " + m[2] + ", " + m[3]);
-                ////    }
-                ////}
-                ////return;
+                }
             }
 
             foreach(var entry in particleMaxCountByType)
@@ -378,8 +389,8 @@ public class SimData : MonoBehaviour
                 var particleRenderer = Instantiate(baseParticleRenderer.gameObject, baseParticleRenderer.transform.parent).GetComponent<Particles>();
                 particleRenderer.gameObject.name = string.Format("{0}-{1}", baseParticleRenderer.gameObject.name, entry.Key);
                 particleRenderer.frameData = particleFrameData[entry.Key];
-                if (entry.Key == 0)
-                    particleRenderer.SetModel(particleType0Model);
+                //if (entry.Key == 0)
+                //    particleRenderer.SetModel(particleType0Model);
                 particleRenderer.gameObject.SetActive(true);
                 particleRenderers.Add(entry.Key, particleRenderer);
             }

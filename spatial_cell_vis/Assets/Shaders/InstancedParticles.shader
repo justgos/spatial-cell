@@ -62,10 +62,17 @@
             /*float rotation = data.w * data.w * _Time.y * 0.5f;
             rotate2D(data.xz, rotation);*/
 
-            unity_ObjectToWorld._11_21_31_41 = float4(meshScale / 10 * scale, 0, 0, 0);
-            unity_ObjectToWorld._12_22_32_42 = float4(0, meshScale / 10 * scale, 0, 0);
-            unity_ObjectToWorld._13_23_33_43 = float4(0, 0, meshScale / 10 * scale, 0);
-            unity_ObjectToWorld._14_24_34_44 = float4(p.pos.xyz * scale, 1);
+            float radius = decodeLowUintToFloat16(p.r_pos_rot[0]);
+            float3 pos = float3(
+                decodeHighUintToFloat16(p.r_pos_rot[0]),
+                decodeLowUintToFloat16(p.r_pos_rot[1]),
+                decodeHighUintToFloat16(p.r_pos_rot[1])
+            );
+
+            unity_ObjectToWorld._11_21_31_41 = float4(meshScale / 0.005 * radius * 2 / 10 * scale, 0, 0, 0);
+            unity_ObjectToWorld._12_22_32_42 = float4(0, meshScale / 0.005 * radius * 2 / 10 * scale, 0, 0);
+            unity_ObjectToWorld._13_23_33_43 = float4(0, 0, meshScale / 0.005 * radius * 2 / 10 * scale, 0);
+            unity_ObjectToWorld._14_24_34_44 = float4(pos.xyz * scale, 1);
             unity_WorldToObject = unity_ObjectToWorld;
             unity_WorldToObject._14_24_34 *= -1;
             unity_WorldToObject._11_22_33 = 1.0f / unity_WorldToObject._11_22_33;
@@ -83,16 +90,42 @@
             /*float4 pos = mul(baseTransform,
                 float4(transform_vector(p.pos, p.rot) * scale, 1)
             );*/
-            v.vertex.xyz = transform_vector(v.vertex.xyz, p.rot);
-            v.normal.xyz = transform_vector(v.normal.xyz, p.rot);
-            float4 pos = mul(baseTransform,
-                float4(p.pos * scale, 1)
+            float radius = decodeLowUintToFloat16(p.r_pos_rot[0]);
+            float3 pos = float3(
+                decodeHighUintToFloat16(p.r_pos_rot[0]),
+                decodeLowUintToFloat16(p.r_pos_rot[1]),
+                decodeHighUintToFloat16(p.r_pos_rot[1])
+            );
+            float4 rot = float4(
+                decodeLowUintToFloat16(p.r_pos_rot[2]),
+                decodeHighUintToFloat16(p.r_pos_rot[2]),
+                decodeLowUintToFloat16(p.r_pos_rot[3]),
+                decodeHighUintToFloat16(p.r_pos_rot[3])
+            );
+
+            if (
+                !(p.flags & PARTICLE_FLAG_ACTIVE)
+                || pos.x < visibleMinX
+                || pos.x > visibleMaxX
+                || pos.y < visibleMinY
+                || pos.y > visibleMaxY
+                || pos.z < visibleMinZ
+                || pos.z > visibleMaxZ
+            ) {
+                v.vertex = 0;
+                //o.col = float4(1, 0, 0, 1);
+            }
+
+            v.vertex.xyz = transform_vector(v.vertex.xyz, rot);
+            v.normal.xyz = transform_vector(v.normal.xyz, rot);
+            pos = mul(baseTransform,
+                float4(pos * scale, 1)
             );
             float3 clippedCameraPos = float3(
                 min(max(_WorldSpaceCameraPos.x, 0.0), simSize * scale),
                 min(max(_WorldSpaceCameraPos.y, 0.0), simSize * scale),
                 min(max(_WorldSpaceCameraPos.z, 0.0), simSize * scale)
-                );
+            );
             float3 cameraDist = pos - clippedCameraPos;
 
             o.col = colormap[(uint)p.type % colormapLength];
@@ -104,19 +137,6 @@
 
             if(targetParticleId == p.id)
                 o.col = float4(1, 0, 0, 1);
-
-            if (
-                !(p.flags & PARTICLE_FLAG_ACTIVE)
-                || p.pos.x < visibleMinX
-                || p.pos.x > visibleMaxX
-                || p.pos.y < visibleMinY
-                || p.pos.y > visibleMaxY
-                || p.pos.z < visibleMinZ
-                || p.pos.z > visibleMaxZ
-            ) {
-                v.vertex = 0;
-                //o.col = float4(1, 0, 0, 1);
-            }
 #else
             o.col = float4(1, 1, 1, 1);
 #endif

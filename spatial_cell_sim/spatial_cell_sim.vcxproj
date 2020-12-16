@@ -120,6 +120,8 @@
     <ClCompile Include="src\types.cuh" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\chemistry.cuh" />
+    <ClInclude Include="src\config.cuh" />
     <ClInclude Include="src\dynamics.cuh" />
     <ClInclude Include="src\grid.cuh" />
     <ClInclude Include="src\interactions.cuh" />

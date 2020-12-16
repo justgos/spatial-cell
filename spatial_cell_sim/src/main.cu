@@ -22,6 +22,7 @@
 #include <functional>
 //#include <windows.h>
 #include <future>
+#include <vector>
 
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
@@ -33,12 +34,14 @@
 
 #include "types.cuh"
 #include "constants.cuh"
+#include "config.cuh"
 #include "time.cuh"
 #include "macros.cuh"
 #include "math.cuh"
 #include "grid.cuh"
 #include "memory.cuh"
 #include "storage.cuh"
+#include "chemistry.cuh"
 #include "dynamics.cuh"
 #include "metabolites.cuh"
 #include "setup/particle_setup.cuh"
@@ -106,6 +109,8 @@ main(void)
     if (config.gridSize < config.maxDiffusionDistance) {
         printf("WARNING! The maxDiffusionDistance (%f) is less than gridCellSize (%f).\nMetabolite diffusion may play out as intended\n", config.maxDiffusionDistance, config.gridCellSize);
     }
+
+    auto particleTypeInfo = loadParticleTypeInfo();
 
     // TODO: check that the maxDiffusionDistance doesn't span the lipid layer width + metabolite-lipid collision distance
 
@@ -239,7 +244,7 @@ main(void)
     fillParticlesUniform<Particle>(
         config.numParticles * 0.1,
         PARTICLE_TYPE_DNA,
-        particles.h_Current, nActiveParticles.h_Current, &config, rng
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
     );
     /*int lineStartIdx = nActiveParticles.h_Current[0];
     fillParticlesStraightLine<Particle>(
@@ -247,12 +252,13 @@ main(void)
         PARTICLE_TYPE_DNA,
         make_float3(config.simSize / 4, config.simSize / 4, config.simSize / 4),
         make_float3(0.0015, 0.0015, 0.0015),
-        particles.h_Current, nActiveParticles.h_Current, &config, rng
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
     );
     int lineEndIdx = nActiveParticles.h_Current[0];
     linkParticlesSerially<Particle>(
         lineStartIdx,
         lineEndIdx,
+        0,
         particles.h_Current, &config, rng
     );*/
     /*fillParticlesPlane<Particle>(
@@ -260,49 +266,74 @@ main(void)
         PARTICLE_TYPE_LIPID,
         make_float3(0.35 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
         make_float3(-1, 0, 0),
-        particles.h_Current, nActiveParticles.h_Current, &config, rng
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
     );*/
-    fillParticlesSphere(
+
+    /*fillParticlesSphere(
         config.numParticles * 0.35,
         PARTICLE_TYPE_LIPID,
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, &config, rng
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
+    );*/
+    std::vector<int> chainMembers;
+    for (int i = 0; i < 3; i++) {
+        for (auto it = particleTypeInfo->begin(); it != particleTypeInfo->end(); it++) {
+            if (it->second.category == "rna")
+                chainMembers.insert(chainMembers.end(), it->first);
+            /*if (chainMembers.size() >= 3)
+                break;*/
+        }
+    }
+    int chainStartIdx = nActiveParticles.h_Current[0];
+    fillParticlesWrappedChain(
+        &chainMembers,
+        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
     );
-    fillParticlesSphere(
+    int chainEndIdx = nActiveParticles.h_Current[0];
+    linkParticlesSerially<Particle>(
+        chainStartIdx,
+        chainEndIdx,
+        1,
+        particles.h_Current, &config, rng
+    );
+
+    /*fillParticlesSphere(
         config.numParticles * 0.23,
         PARTICLE_TYPE_DNA,
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, &config, rng
-    );
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
+    );*/
+
     /*fillParticlesSphere(
         config.numParticles * 0.1,
         PARTICLE_TYPE_LIPID,
         make_float3(0.2 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, &config, rng
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
     );
     fillParticlesSphere(
         config.numParticles * 0.01,
         PARTICLE_TYPE_DNA,
         make_float3(0.2 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, &config, rng
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
     );*/
     /*fillParticlesSphere(
         config.numParticles * 0.15,
         PARTICLE_TYPE_DNA,
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, &config, rng
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
     );
     fillParticlesSphere(
         config.numParticles * 0.08,
         PARTICLE_TYPE_DNA,
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, &config, rng
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
     );*/
     /*fillParticlesSphere(
         config.numParticles * 0.05,
         PARTICLE_TYPE_DNA,
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, &config, rng
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
     );*/
     particles.copyToDevice();
 
@@ -310,7 +341,7 @@ main(void)
     fillParticlesUniform<MetabolicParticle>(
         config.numMetabolicParticles,
         PARTICLE_TYPE_METABOLIC,
-        metabolicParticles.h_Current, nActiveMetabolicParticles.h_Current, &config, rng
+        metabolicParticles.h_Current, nActiveMetabolicParticles.h_Current, particleTypeInfo, &config, rng
     );
     addMetabolitesByCoord(
         0,

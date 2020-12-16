@@ -59,9 +59,9 @@
                 decodeHighUintToFloat16(p.r_pos_rot[1])
             );
 
-            unity_ObjectToWorld._11_21_31_41 = float4(meshScale / 10 * scale, 0, 0, 0);
-            unity_ObjectToWorld._12_22_32_42 = float4(0, meshScale / 10 * scale, 0, 0);
-            unity_ObjectToWorld._13_23_33_43 = float4(0, 0, meshScale / 10 * scale, 0);
+            unity_ObjectToWorld._11_21_31_41 = float4(meshScale / 0.005 * radius * 2 / 10 * scale, 0, 0, 0);
+            unity_ObjectToWorld._12_22_32_42 = float4(0, meshScale / 0.005 * radius * 2 / 10 * scale, 0, 0);
+            unity_ObjectToWorld._13_23_33_43 = float4(0, 0, meshScale / 0.005 * radius * 2 / 10 * scale, 0);
             unity_ObjectToWorld._14_24_34_44 = float4(pos.xyz * scale, 1);
             unity_WorldToObject = unity_ObjectToWorld;
             unity_WorldToObject._14_24_34 *= -1;
@@ -86,7 +86,7 @@
                 decodeLowUintToFloat16(p.debugVector[1]),
                 decodeHighUintToFloat16(p.debugVector[1])
             );
-            if (debugVector.x == 0 && debugVector.y == 0 && debugVector.z == 0) {
+            if (abs(debugVector.x) < 1e-4 && abs(debugVector.y) < 1e-4 && abs(debugVector.z) < 1e-4) {
                 v.vertex = 0;
                 return;
             }

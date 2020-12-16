@@ -10,33 +10,13 @@
 #include "../math.cuh"
 
 
-std::map<int, ParticleTypeInfo> particleTypeInfo = {
-    {
-        0,
-        ParticleTypeInfo(
-            0.0025
-        )
-    },
-    {
-        1,
-        ParticleTypeInfo(
-            0.0025
-        )
-    },
-    {
-        1000,
-        ParticleTypeInfo(
-            0.0025
-        )
-    }
-};
-
 template <typename T> void
 fillParticlesUniform(
 	int count,
 	int type,
 	T* h_Particles,
 	int *h_nActiveParticles,
+    std::map<int, ParticleTypeInfo> *particleTypeInfo,
     const Config *config,
     std::function<double()> rng
 ) {
@@ -47,7 +27,7 @@ fillParticlesUniform(
             i,
             type,
             0,
-            particleTypeInfo[type].radius,
+            (*particleTypeInfo)[type].radius,
             make_float3(
                 rng() * config->simSize,
                 rng() * config->simSize,
@@ -67,6 +47,7 @@ fillParticlesStraightLine(
     float3 dPos,
     T* h_Particles,
     int* h_nActiveParticles,
+    std::map<int, ParticleTypeInfo>* particleTypeInfo,
     const Config* config,
     std::function<double()> rng
 ) {
@@ -77,7 +58,7 @@ fillParticlesStraightLine(
             i,
             type,
             0,
-            particleTypeInfo[type].radius,
+            (*particleTypeInfo)[type].radius,
             make_float3(
                 min(max(pos.x, 0.0f), 1.0f),
                 min(max(pos.y, 0.0f), 1.0f),
@@ -90,6 +71,46 @@ fillParticlesStraightLine(
 }
 
 template <typename T> void
+fillParticlesWrappedChain(
+    std::vector<int> *types,
+    float3 startPos,
+    T* h_Particles,
+    int* h_nActiveParticles,
+    std::map<int, ParticleTypeInfo>* particleTypeInfo,
+    const Config* config,
+    std::function<double()> rng
+) {
+    float3 pos = startPos;
+    float4 rotation = random_rotation_host(rng);
+    // Maximum orientation change per residue
+    float wrapRate = 0.3;
+    for (int i = h_nActiveParticles[0]; i < h_nActiveParticles[0] + types->size(); i++)
+    {
+        int type = (*types)[i - h_nActiveParticles[0]];
+        float radius = (*particleTypeInfo)[type].radius;
+        if (i > h_nActiveParticles[0]) {
+            rotation = slerp(rotation, random_rotation_host(rng), wrapRate);
+            float3 dPos = -((*particleTypeInfo)[type - 1].radius + radius) *
+                transform_vector(VECTOR_UP, rotation);
+            pos += dPos;
+        }
+        h_Particles[i] = T(
+            i,
+            type,
+            0,
+            radius,
+            make_float3(
+                min(max(pos.x, 0.0f), 1.0f),
+                min(max(pos.y, 0.0f), 1.0f),
+                min(max(pos.z, 0.0f), 1.0f)
+            ),
+            rotation
+        );
+    }
+    h_nActiveParticles[0] += types->size();
+}
+
+template <typename T> void
 fillParticlesPlane(
     int countSqrt,
     int type,
@@ -97,13 +118,14 @@ fillParticlesPlane(
     float3 normal,
     T* h_Particles,
     int* h_nActiveParticles,
+    std::map<int, ParticleTypeInfo>* particleTypeInfo,
     const Config* config,
     std::function<double()> rng
 ) {
     float3 dir1 = cross(normal, VECTOR_UP);
     float3 dir2 = cross(normal, dir1);
-    dir1 = mul(dir1, particleTypeInfo[type].radius * 2.0);
-    dir2 = mul(dir2, particleTypeInfo[type].radius * 2.0);
+    dir1 = mul(dir1, (*particleTypeInfo)[type].radius * 2.0);
+    dir2 = mul(dir2, (*particleTypeInfo)[type].radius * 2.0);
     float3 startPos = add(
         center,
         add(
@@ -124,7 +146,7 @@ fillParticlesPlane(
             i,
             type,
             0,
-            particleTypeInfo[type].radius,
+            (*particleTypeInfo)[type].radius,
             make_float3(
                 min(max(pos.x, 0.0f), 1.0f),
                 min(max(pos.y, 0.0f), 1.0f),
@@ -166,11 +188,12 @@ fillParticlesSphere(
     float3 center,
     T* h_Particles,
     int* h_nActiveParticles,
+    std::map<int, ParticleTypeInfo>* particleTypeInfo,
     const Config* config,
     std::function<double()> rng
 ) {
     std::vector<float3> pointsOnTheSphere = fibonacci_spiral_sphere(count);
-    float r = sqrt(count / 1000.0 * pow(particleTypeInfo[type].radius / 0.0025, 2.0)) * 0.04;
+    float r = sqrt(count / 1000.0 * pow((*particleTypeInfo)[type].radius / 0.0025, 2.0)) * 0.04;
     for (int i = h_nActiveParticles[0]; i < h_nActiveParticles[0] + count; i++)
     {
         float3 pos = add(
@@ -183,7 +206,7 @@ fillParticlesSphere(
             i,
             type,
             0,
-            particleTypeInfo[type].radius,
+            (*particleTypeInfo)[type].radius,
             make_float3(
                 min(max(pos.x, 0.0f), 1.0f),
                 min(max(pos.y, 0.0f), 1.0f),

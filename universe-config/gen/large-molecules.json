@@ -1,0 +1,416 @@
+[
+  {
+    "type": 0,
+    "category": "lipid",
+    "name": "Generic lipid",
+    "radius": 0.0025
+  },
+  {
+    "type": 1,
+    "category": "protein",
+    "name": "Generic protein",
+    "radius": 0.0025
+  },
+  {
+    "type": 100,
+    "category": "rna",
+    "name": "TTT",
+    "radius": 0.00075
+  },
+  {
+    "type": 101,
+    "category": "rna",
+    "name": "TTC",
+    "radius": 0.00075
+  },
+  {
+    "type": 102,
+    "category": "rna",
+    "name": "TTA",
+    "radius": 0.00075
+  },
+  {
+    "type": 103,
+    "category": "rna",
+    "name": "TTG",
+    "radius": 0.00075
+  },
+  {
+    "type": 104,
+    "category": "rna",
+    "name": "TCT",
+    "radius": 0.00075
+  },
+  {
+    "type": 105,
+    "category": "rna",
+    "name": "TCC",
+    "radius": 0.00075
+  },
+  {
+    "type": 106,
+    "category": "rna",
+    "name": "TCA",
+    "radius": 0.00075
+  },
+  {
+    "type": 107,
+    "category": "rna",
+    "name": "TCG",
+    "radius": 0.00075
+  },
+  {
+    "type": 108,
+    "category": "rna",
+    "name": "TAT",
+    "radius": 0.00075
+  },
+  {
+    "type": 109,
+    "category": "rna",
+    "name": "TAC",
+    "radius": 0.00075
+  },
+  {
+    "type": 110,
+    "category": "rna",
+    "name": "TGT",
+    "radius": 0.00075
+  },
+  {
+    "type": 111,
+    "category": "rna",
+    "name": "TGC",
+    "radius": 0.00075
+  },
+  {
+    "type": 112,
+    "category": "rna",
+    "name": "TGG",
+    "radius": 0.00075
+  },
+  {
+    "type": 113,
+    "category": "rna",
+    "name": "CTT",
+    "radius": 0.00075
+  },
+  {
+    "type": 114,
+    "category": "rna",
+    "name": "CTC",
+    "radius": 0.00075
+  },
+  {
+    "type": 115,
+    "category": "rna",
+    "name": "CTA",
+    "radius": 0.00075
+  },
+  {
+    "type": 116,
+    "category": "rna",
+    "name": "CTG",
+    "radius": 0.00075
+  },
+  {
+    "type": 117,
+    "category": "rna",
+    "name": "CCT",
+    "radius": 0.00075
+  },
+  {
+    "type": 118,
+    "category": "rna",
+    "name": "CCC",
+    "radius": 0.00075
+  },
+  {
+    "type": 119,
+    "category": "rna",
+    "name": "CCA",
+    "radius": 0.00075
+  },
+  {
+    "type": 120,
+    "category": "rna",
+    "name": "CCG",
+    "radius": 0.00075
+  },
+  {
+    "type": 121,
+    "category": "rna",
+    "name": "CAT",
+    "radius": 0.00075
+  },
+  {
+    "type": 122,
+    "category": "rna",
+    "name": "CAC",
+    "radius": 0.00075
+  },
+  {
+    "type": 123,
+    "category": "rna",
+    "name": "CAA",
+    "radius": 0.00075
+  },
+  {
+    "type": 124,
+    "category": "rna",
+    "name": "CAG",
+    "radius": 0.00075
+  },
+  {
+    "type": 125,
+    "category": "rna",
+    "name": "CGT",
+    "radius": 0.00075
+  },
+  {
+    "type": 126,
+    "category": "rna",
+    "name": "CGC",
+    "radius": 0.00075
+  },
+  {
+    "type": 127,
+    "category": "rna",
+    "name": "CGA",
+    "radius": 0.00075
+  },
+  {
+    "type": 128,
+    "category": "rna",
+    "name": "CGG",
+    "radius": 0.00075
+  },
+  {
+    "type": 129,
+    "category": "rna",
+    "name": "ATT",
+    "radius": 0.00075
+  },
+  {
+    "type": 130,
+    "category": "rna",
+    "name": "ATC",
+    "radius": 0.00075
+  },
+  {
+    "type": 131,
+    "category": "rna",
+    "name": "ATA",
+    "radius": 0.00075
+  },
+  {
+    "type": 132,
+    "category": "rna",
+    "name": "ATG",
+    "radius": 0.00075
+  },
+  {
+    "type": 133,
+    "category": "rna",
+    "name": "ACT",
+    "radius": 0.00075
+  },
+  {
+    "type": 134,
+    "category": "rna",
+    "name": "ACC",
+    "radius": 0.00075
+  },
+  {
+    "type": 135,
+    "category": "rna",
+    "name": "ACA",
+    "radius": 0.00075
+  },
+  {
+    "type": 136,
+    "category": "rna",
+    "name": "ACG",
+    "radius": 0.00075
+  },
+  {
+    "type": 137,
+    "category": "rna",
+    "name": "AAT",
+    "radius": 0.00075
+  },
+  {
+    "type": 138,
+    "category": "rna",
+    "name": "AAC",
+    "radius": 0.00075
+  },
+  {
+    "type": 139,
+    "category": "rna",
+    "name": "AAA",
+    "radius": 0.00075
+  },
+  {
+    "type": 140,
+    "category": "rna",
+    "name": "AAG",
+    "radius": 0.00075
+  },
+  {
+    "type": 141,
+    "category": "rna",
+    "name": "AGT",
+    "radius": 0.00075
+  },
+  {
+    "type": 142,
+    "category": "rna",
+    "name": "AGC",
+    "radius": 0.00075
+  },
+  {
+    "type": 143,
+    "category": "rna",
+    "name": "AGA",
+    "radius": 0.00075
+  },
+  {
+    "type": 144,
+    "category": "rna",
+    "name": "AGG",
+    "radius": 0.00075
+  },
+  {
+    "type": 145,
+    "category": "rna",
+    "name": "GTT",
+    "radius": 0.00075
+  },
+  {
+    "type": 146,
+    "category": "rna",
+    "name": "GTC",
+    "radius": 0.00075
+  },
+  {
+    "type": 147,
+    "category": "rna",
+    "name": "GTA",
+    "radius": 0.00075
+  },
+  {
+    "type": 148,
+    "category": "rna",
+    "name": "GTG",
+    "radius": 0.00075
+  },
+  {
+    "type": 149,
+    "category": "rna",
+    "name": "GCT",
+    "radius": 0.00075
+  },
+  {
+    "type": 150,
+    "category": "rna",
+    "name": "GCC",
+    "radius": 0.00075
+  },
+  {
+    "type": 151,
+    "category": "rna",
+    "name": "GCA",
+    "radius": 0.00075
+  },
+  {
+    "type": 152,
+    "category": "rna",
+    "name": "GCG",
+    "radius": 0.00075
+  },
+  {
+    "type": 153,
+    "category": "rna",
+    "name": "GAT",
+    "radius": 0.00075
+  },
+  {
+    "type": 154,
+    "category": "rna",
+    "name": "GAC",
+    "radius": 0.00075
+  },
+  {
+    "type": 155,
+    "category": "rna",
+    "name": "GAA",
+    "radius": 0.00075
+  },
+  {
+    "type": 156,
+    "category": "rna",
+    "name": "GAG",
+    "radius": 0.00075
+  },
+  {
+    "type": 157,
+    "category": "rna",
+    "name": "GGT",
+    "radius": 0.00075
+  },
+  {
+    "type": 158,
+    "category": "rna",
+    "name": "GGC",
+    "radius": 0.00075
+  },
+  {
+    "type": 159,
+    "category": "rna",
+    "name": "GGA",
+    "radius": 0.00075
+  },
+  {
+    "type": 160,
+    "category": "rna",
+    "name": "GGG",
+    "radius": 0.00075
+  },
+  {
+    "type": 161,
+    "category": "rna",
+    "name": "TTG",
+    "radius": 0.00075
+  },
+  {
+    "type": 162,
+    "category": "rna",
+    "name": "CTG",
+    "radius": 0.00075
+  },
+  {
+    "type": 163,
+    "category": "rna",
+    "name": "ATG",
+    "radius": 0.00075
+  },
+  {
+    "type": 164,
+    "category": "rna",
+    "name": "TAA",
+    "radius": 0.00075
+  },
+  {
+    "type": 165,
+    "category": "rna",
+    "name": "TAG",
+    "radius": 0.00075
+  },
+  {
+    "type": 166,
+    "category": "rna",
+    "name": "TGA",
+    "radius": 0.00075
+  }
+]

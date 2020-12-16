@@ -377,7 +377,7 @@ relax(
                     if (dist < collisionDist) {
                         float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
                         constexpr float collisionRelaxationSpeed = 0.25f;
-                        moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed);
+                        //moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed);
                     }
 
                     /*
@@ -524,41 +524,85 @@ relax(
                     for (int k = 0; k < p.nActiveInteractions; k++) {
                         ParticleInteraction interaction = p.interactions[k];
                         if (interaction.partnerId == tp.id) {
-                            float distRatio = (interactionDistance - dist) / (dist + 1e-6);
-                            constexpr float collisionRelaxationSpeed = 0.25f;
-                            /*moveVec.x += -delta.x * distRatio * collisionRelaxationSpeed;
-                            moveVec.y += -delta.y * distRatio * collisionRelaxationSpeed;
-                            moveVec.z += -delta.z * distRatio * collisionRelaxationSpeed;*/
+                            if (interaction.type == 0) {
+                                float distRatio = (interactionDistance - dist) / (dist + 1e-6);
+                                constexpr float collisionRelaxationSpeed = 0.25f;
+                                /*moveVec.x += -delta.x * distRatio * collisionRelaxationSpeed;
+                                moveVec.y += -delta.y * distRatio * collisionRelaxationSpeed;
+                                moveVec.z += -delta.z * distRatio * collisionRelaxationSpeed;*/
 
-                            // Align relative orientation
-                            float4 targetRelativeOrientationDelta = mul(
-                                quaternion(VECTOR_UP, -PI / 6), 
-                                quaternion(VECTOR_RIGHT, PI / 6)
-                            );
-                            constexpr float relativeOrientationRelaxationSpeed = 0.2f;
-                            p.rot = slerp(
-                                p.rot, 
-                                getTargetRelativeOrientation(p, tp, targetRelativeOrientationDelta),
-                                relativeOrientationRelaxationSpeed
-                            );
+                                // Align relative orientation
+                                float4 targetRelativeOrientationDelta = mul(
+                                    quaternion(VECTOR_UP, -PI / 6),
+                                    quaternion(VECTOR_RIGHT, PI / 6)
+                                );
+                                constexpr float relativeOrientationRelaxationSpeed = 0.2f;
+                                p.rot = slerp(
+                                    p.rot,
+                                    getTargetRelativeOrientation(p, tp, targetRelativeOrientationDelta),
+                                    relativeOrientationRelaxationSpeed
+                                );
 
-                            // Align relative position
-                            float4 targetRelativePositionRotation = quaternion(VECTOR_FORWARD, -PI / 6);
-                            constexpr float relativePositionRelaxationSpeed = 0.2f;
-                            float3 relaxedRelativePosition = getRelaxedRelativePosition(
-                                p,
-                                tp,
-                                targetRelativeOrientationDelta,
-                                targetRelativePositionRotation,
-                                interactionDistance
-                            );
-                            moveVec.x += (relaxedRelativePosition.x - p.pos.x) * relativePositionRelaxationSpeed;
-                            moveVec.y += (relaxedRelativePosition.y - p.pos.y) * relativePositionRelaxationSpeed;
-                            moveVec.z += (relaxedRelativePosition.z - p.pos.z) * relativePositionRelaxationSpeed;
+                                // Align relative position
+                                float4 targetRelativePositionRotation = quaternion(VECTOR_FORWARD, -PI / 6);
+                                constexpr float relativePositionRelaxationSpeed = 0.2f;
+                                float3 relaxedRelativePosition = getRelaxedRelativePosition(
+                                    p,
+                                    tp,
+                                    targetRelativeOrientationDelta,
+                                    targetRelativePositionRotation,
+                                    interactionDistance
+                                );
+                                moveVec.x += (relaxedRelativePosition.x - p.pos.x) * relativePositionRelaxationSpeed;
+                                moveVec.y += (relaxedRelativePosition.y - p.pos.y) * relativePositionRelaxationSpeed;
+                                moveVec.z += (relaxedRelativePosition.z - p.pos.z) * relativePositionRelaxationSpeed;
 
-                            p.debugVector.x = (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
-                            p.debugVector.y = (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
-                            p.debugVector.z = (relaxedRelativePosition.z - p.pos.z) * (1.0 - relativePositionRelaxationSpeed);
+                                p.debugVector.x = (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
+                                p.debugVector.y = (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
+                                p.debugVector.z = (relaxedRelativePosition.z - p.pos.z) * (1.0 - relativePositionRelaxationSpeed);
+                            } else if (interaction.type == 1) {
+                                float deltaInteractionDist = -(interactionDistance - dist);
+                                constexpr float distanceRelaxationSpeed = 0.2f;
+                                //moveVec += normalizedDelta * (deltaInteractionDist * distanceRelaxationSpeed);
+
+                                constexpr float relativeOrientationRelaxationSpeed = 0.2f;
+                                // FIXME: the order should be determined not by ids, but by interaction parameters
+                                p.rot = slerp(
+                                    p.rot,
+                                    mul(quaternionFromTo(up, (p.id < tp.id ? -1 : 1) * normalizedDelta), p.rot),
+                                    relativeOrientationRelaxationSpeed
+                                );
+
+                                float targetRelativePositionAngle = PI;
+                                float targetRelativePositionAngleFlex = PI / 8;
+                                constexpr float relativePositionRelaxationSpeed = 0.35f;
+                                // FIXME: the order should be determined not by ids, but by interaction parameters
+                                float3 relPosVec = (p.id < tp.id ? 1 : -1) * (normalizedDelta);
+                                float3 relativePositionRelaxationAxis = normalize(cross(tup, relPosVec));
+                                float currentRelativePositionAngle = angle(tup, relPosVec);
+
+                                float3 relaxedRelativePosition = (p.id < tp.id ? -1 : 1) * transform_vector(
+                                    tup,
+                                    quaternion(
+                                        relativePositionRelaxationAxis,
+                                        min(
+                                            max(
+                                                currentRelativePositionAngle,
+                                                targetRelativePositionAngle - targetRelativePositionAngleFlex
+                                            ),
+                                            targetRelativePositionAngle + targetRelativePositionAngleFlex
+                                        )
+                                    )
+                                );
+                                relaxedRelativePosition *= interactionDistance;
+                                relaxedRelativePosition += tp.pos;
+                                // FIXME: the order should be determined not by ids, but by interaction parameters
+                                //if(k < 1 && p.nActiveInteractions > 1)
+                                moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
+                                p.debugVector.x = (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
+                                p.debugVector.y = (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
+                                p.debugVector.z = (relaxedRelativePosition.z - p.pos.z) * (1.0 - relativePositionRelaxationSpeed);
+                            }
                         }
                     }
                 }

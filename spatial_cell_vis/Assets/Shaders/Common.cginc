@@ -37,7 +37,7 @@ struct Particle {
     float4 rot;*/
     uint r_pos_rot[4];
     //float4 debugVector;
-    //uint debugVector[2];
+    uint debugVector[2];
 };
 
 //struct MetabolicParticle {
@@ -68,7 +68,7 @@ struct MetabolicParticle {
     float __padding1[2];
     float4 rot;*/
     uint r_pos_rot[4];
-    //uint debugVector[2];
+    uint debugVector[2];
     uint metabolites[REDUCED_NUM_METABOLITES / 2];
     //float metabolites[REDUCED_NUM_METABOLITES];
 };
@@ -128,7 +128,7 @@ transform_vector(float3 a, float4 q) {
     );
 }
 
-static const int colormapLength = 12;
+static const int colormapLength = 11;
 static const float4 colormap[] = {
     float4(0.6953125, 0.87109375, 0.5390625, 1),
     float4(0.74609375, 0.81640625, 0.828125, 1),
@@ -136,7 +136,7 @@ static const float4 colormap[] = {
     //float4(0.19921875, 0.625, 0.171875, 1),
     float4(0.52109375, 0.86875, 0.963125, 1),
     float4(0.98046875, 0.6015625, 0.59765625, 1),
-    float4(0.88671875, 0.1015625, 0.109375, 1),
+    //float4(0.88671875, 0.1015625, 0.109375, 1),
     float4(0.98828125, 0.74609375, 0.43359375, 1),
     float4(0.99609375, 0.49609375, 0, 1),
     float4(0.7890625, 0.6953125, 0.8359375, 1),

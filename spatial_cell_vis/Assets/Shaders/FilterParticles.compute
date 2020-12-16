@@ -1,0 +1,30 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+#include "Common.cginc"
+
+RWStructuredBuffer<Particle> particles;
+AppendStructuredBuffer<Particle> filteredParticles;
+int type;
+int count;
+
+[numthreads(8,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= count)
+        return;
+    Particle p = particles[id.x];
+
+    if (
+        !(p.flags & PARTICLE_FLAG_ACTIVE)
+    )
+        return;
+
+    if (p.type == type) {
+        filteredParticles.Append(p);
+
+        // Hide the filtered particle from the old representation
+        p.flags = p.flags & ~PARTICLE_FLAG_ACTIVE;
+        particles[id.x] = p;
+    }
+}
