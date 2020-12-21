@@ -13,6 +13,93 @@
 
 typedef std::chrono::high_resolution_clock::time_point time_point;
 
+struct ParticleTypeInfo {
+    std::string category;
+    std::string name;
+    float radius;
+
+    ParticleTypeInfo() {
+        //
+    }
+
+    ParticleTypeInfo(
+        std::string category,
+        std::string name,
+        float radius
+    ) : category(category),
+        name(name),
+        radius(radius)
+    {
+        //
+    }
+};
+
+struct ParticleInteractionInfo {
+    int id;
+    int firstPartnerType;
+    int secondPartnerType;
+    float4 relativeOrientation;
+    float3 relativePosition;
+
+    ParticleInteractionInfo() {
+        //
+    }
+
+    ParticleInteractionInfo(
+        int id,
+        int firstPartnerType,
+        int secondPartnerType,
+        float4 relativeOrientation,
+        float3 relativePosition
+    ) : id(id),
+        firstPartnerType(firstPartnerType),
+        secondPartnerType(secondPartnerType),
+        relativeOrientation(relativeOrientation),
+        relativePosition(relativePosition)
+    {
+        //
+    }
+};
+
+struct ComplexParticipantInfo {
+    int type;
+    float3 position;
+    float4 rotation;
+
+    ComplexParticipantInfo() {
+        //
+    }
+
+    ComplexParticipantInfo(
+        int type,
+        float3 position,
+        float4 rotation
+    ) : type(type),
+        position(position),
+        rotation(rotation)
+    {
+        //
+    }
+};
+
+struct ComplexInfo {
+    int nParticipants;
+    ComplexParticipantInfo* participants;
+
+    ComplexInfo() {
+        //
+    }
+
+    ComplexInfo(
+        int nParticipants,
+        ComplexParticipantInfo* participants
+    ) : nParticipants(nParticipants),
+        participants(participants)
+    {
+        //
+    }
+};
+
 struct ParticleInteraction {
     int type;
     int partnerId;
@@ -28,7 +115,7 @@ struct Particle {
     float3 velocity;
     float4 angularVelocity;
     int nActiveInteractions;
-    ParticleInteraction interactions[4];
+    ParticleInteraction interactions[8];
     float4 debugVector;
 
     __device__ __host__ Particle(
@@ -130,26 +217,5 @@ struct ReducedMetabolicParticle : ReducedParticle {
     {
         for (int i = 0; i < REDUCED_NUM_METABOLITES; i++)
             metabolites[i] = p.metabolites[i];
-    }
-};
-
-struct ParticleTypeInfo {
-    std::string category;
-    std::string name;
-    float radius;
-
-    ParticleTypeInfo() {
-        //
-    }
-
-    ParticleTypeInfo(
-        std::string category,
-        std::string name,
-        float radius
-    ) : category(category),
-        name(name),
-        radius(radius)
-    {
-        //
     }
 };

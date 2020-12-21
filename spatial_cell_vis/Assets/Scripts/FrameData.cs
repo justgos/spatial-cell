@@ -79,6 +79,7 @@ public class FrameData : MonoBehaviour
                 Debug.Log(string.Format("Filtered {0} particles of type {1}", args[0], typeId));
                 filteredBuffers.Add(typeId, buffer);
                 filteredBuffer_Sizes.Add(typeId, args[0]);
+                argBuffer.Dispose();
 
                 sw.Stop();
                 Debug.Log("Filtered particles in " + ((double)sw.ElapsedTicks / System.Diagnostics.Stopwatch.Frequency) + "s");
@@ -90,6 +91,7 @@ public class FrameData : MonoBehaviour
     void OnDestroy()
     {
         particleBuffer?.Dispose();
+        particleBuffer = null;
 
         foreach (var entry in filteredBuffers)
             entry.Value.Dispose();

@@ -5,11 +5,11 @@
 #include <json/json.h>
 
 #include "./types.cuh"
+    
 
-
-std::map<int, ParticleTypeInfo>*
+std::unordered_map<int, ParticleTypeInfo>*
 loadParticleTypeInfo() {
-    auto particleTypeInfo = new std::map<int, ParticleTypeInfo>();
+    auto particleTypeInfo = new std::unordered_map<int, ParticleTypeInfo>();
 
     std::ifstream largeMoleculeFile("../universe-config/gen/large-molecules.json");
     Json::Value largeMoleculeJson;

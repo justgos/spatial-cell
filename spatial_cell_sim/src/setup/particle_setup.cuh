@@ -16,7 +16,7 @@ fillParticlesUniform(
 	int type,
 	T* h_Particles,
 	int *h_nActiveParticles,
-    std::map<int, ParticleTypeInfo> *particleTypeInfo,
+    std::unordered_map<int, ParticleTypeInfo> *particleTypeInfo,
     const Config *config,
     std::function<double()> rng
 ) {
@@ -47,7 +47,7 @@ fillParticlesStraightLine(
     float3 dPos,
     T* h_Particles,
     int* h_nActiveParticles,
-    std::map<int, ParticleTypeInfo>* particleTypeInfo,
+    std::unordered_map<int, ParticleTypeInfo>* particleTypeInfo,
     const Config* config,
     std::function<double()> rng
 ) {
@@ -76,7 +76,7 @@ fillParticlesWrappedChain(
     float3 startPos,
     T* h_Particles,
     int* h_nActiveParticles,
-    std::map<int, ParticleTypeInfo>* particleTypeInfo,
+    std::unordered_map<int, ParticleTypeInfo>* particleTypeInfo,
     const Config* config,
     std::function<double()> rng
 ) {
@@ -118,7 +118,7 @@ fillParticlesPlane(
     float3 normal,
     T* h_Particles,
     int* h_nActiveParticles,
-    std::map<int, ParticleTypeInfo>* particleTypeInfo,
+    std::unordered_map<int, ParticleTypeInfo>* particleTypeInfo,
     const Config* config,
     std::function<double()> rng
 ) {
@@ -188,7 +188,7 @@ fillParticlesSphere(
     float3 center,
     T* h_Particles,
     int* h_nActiveParticles,
-    std::map<int, ParticleTypeInfo>* particleTypeInfo,
+    std::unordered_map<int, ParticleTypeInfo>* particleTypeInfo,
     const Config* config,
     std::function<double()> rng
 ) {
@@ -218,4 +218,36 @@ fillParticlesSphere(
         );
     }
     h_nActiveParticles[0] += count;
+}
+
+template <typename T> void
+instantiateComplex(
+    int id,
+    float3 center,
+    T* h_Particles,
+    int* h_nActiveParticles,
+    std::unordered_map<int, ParticleTypeInfo>* particleTypeInfo,
+    std::unordered_map<int, ComplexInfo> *complexInfo,
+    const Config* config,
+    std::function<double()> rng
+) {
+    ComplexInfo c = (*complexInfo)[id];
+    for (int i = h_nActiveParticles[0]; i < h_nActiveParticles[0] + c.nParticipants; i++)
+    {
+        ComplexParticipantInfo cp = c.participants[i - h_nActiveParticles[0]];
+        float3 pos = center + cp.position;
+        h_Particles[i] = T(
+            i,
+            cp.type,
+            0,
+            (*particleTypeInfo)[cp.type].radius,
+            make_float3(
+                min(max(pos.x, 0.0f), 1.0f),
+                min(max(pos.y, 0.0f), 1.0f),
+                min(max(pos.z, 0.0f), 1.0f)
+            ),
+            cp.rotation
+        );
+    }
+    h_nActiveParticles[0] += c.nParticipants;
 }

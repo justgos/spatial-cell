@@ -32,6 +32,7 @@ struct Config {
     float metaboliteMovementNoiseScale;
     float velocityDecay;
     float angularVelocityDecay;
+    int noiseCoordinationSteps;
     int relaxationSteps;
     int metaboliteDiffusionSteps;
 
@@ -52,6 +53,7 @@ struct Config {
         metaboliteMovementNoiseScale(configJson["metaboliteMovementNoiseScale"].asFloat()),
         velocityDecay(configJson["velocityDecay"].asFloat()),
         angularVelocityDecay(configJson["angularVelocityDecay"].asFloat()),
+        noiseCoordinationSteps(configJson["noiseCoordinationSteps"].asInt()),
         relaxationSteps(configJson["relaxationSteps"].asInt()),
         metaboliteDiffusionSteps(configJson["metaboliteDiffusionSteps"].asInt())
     {
@@ -77,6 +79,7 @@ struct Config {
         printf("rotationNoiseScale %f\n", rotationNoiseScale);
         printf("velocityDecay %f\n", velocityDecay);
         printf("angularVelocityDecay %f\n", angularVelocityDecay);
+        printf("noiseCoordinationSteps %d\n", noiseCoordinationSteps);
         printf("relaxationSteps %d\n", relaxationSteps);
         printf("metaboliteDiffusionSteps %d\n", metaboliteDiffusionSteps);
         printf("\n");

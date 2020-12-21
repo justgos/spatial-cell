@@ -153,7 +153,9 @@ public class Particles : MonoBehaviour
             Graphics.DrawMeshInstancedIndirect(debugVectorMesh, 0, debugVectorInstancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), debugVectorArgsBuffer);
         }
 
-        foreach(var entry in frameData.filteredBuffers)
+        // FIXME: `argsBuffer` is not read out immediately, and so the setting above gets rewritten
+        // and? ruins the previous render
+        foreach (var entry in frameData.filteredBuffers)
         {
             drawArgs[1] = (uint)frameData.filteredBuffer_Sizes[entry.Key];
             argsBuffer.SetData(drawArgs);

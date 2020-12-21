@@ -1,0 +1,3890 @@
+[
+  {
+    "id": 1001,
+    "firstPartnerType": 1001,
+    "secondPartnerType": 1005,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0004229339599609375,
+      -0.0012929534912109375,
+      -0.001482452392578125
+    ]
+  },
+  {
+    "id": 1002,
+    "firstPartnerType": 1001,
+    "secondPartnerType": 1006,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.002042218017578125,
+      -0.00120784912109375,
+      0.0018323638916015626
+    ]
+  },
+  {
+    "id": 1003,
+    "firstPartnerType": 1001,
+    "secondPartnerType": 1029,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0018558029174804687,
+      -0.0025251068115234375,
+      0.0017663925170898437
+    ]
+  },
+  {
+    "id": 1004,
+    "firstPartnerType": 1002,
+    "secondPartnerType": 1010,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.003022137451171875,
+      -0.0027183258056640625,
+      0.0024372512817382812
+    ]
+  },
+  {
+    "id": 1005,
+    "firstPartnerType": 1002,
+    "secondPartnerType": 1012,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0003097381591796875,
+      -0.004010430908203125,
+      0.0017798843383789063
+    ]
+  },
+  {
+    "id": 1006,
+    "firstPartnerType": 1002,
+    "secondPartnerType": 1038,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0006349868774414062,
+      0.0012148529052734376,
+      0.002251869201660156
+    ]
+  },
+  {
+    "id": 1007,
+    "firstPartnerType": 1003,
+    "secondPartnerType": 1007,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.004546086120605469,
+      -0.0025707733154296873,
+      -0.0018995346069335937
+    ]
+  },
+  {
+    "id": 1008,
+    "firstPartnerType": 1003,
+    "secondPartnerType": 1009,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0010278396606445313,
+      -0.00387216796875,
+      0.0033810897827148438
+    ]
+  },
+  {
+    "id": 1009,
+    "firstPartnerType": 1003,
+    "secondPartnerType": 1031,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.002667034912109375,
+      0.0018179412841796876,
+      0.0028891677856445314
+    ]
+  },
+  {
+    "id": 1010,
+    "firstPartnerType": 1004,
+    "secondPartnerType": 1028,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0003931976318359375,
+      0.00328431396484375,
+      0.0034057952880859376
+    ]
+  },
+  {
+    "id": 1011,
+    "firstPartnerType": 1004,
+    "secondPartnerType": 1029,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0028671722412109374,
+      0.001573724365234375,
+      -0.0010338546752929687
+    ]
+  },
+  {
+    "id": 1012,
+    "firstPartnerType": 1004,
+    "secondPartnerType": 1040,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.000838446044921875,
+      -0.0034481689453125,
+      -0.0017572341918945312
+    ]
+  },
+  {
+    "id": 1013,
+    "firstPartnerType": 1004,
+    "secondPartnerType": 1051,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.000118359375,
+      -0.0037042388916015624,
+      -7.44873046875e-05
+    ]
+  },
+  {
+    "id": 1014,
+    "firstPartnerType": 1005,
+    "secondPartnerType": 1029,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0014328689575195312,
+      -0.0012321533203125,
+      0.003248844909667969
+    ]
+  },
+  {
+    "id": 1015,
+    "firstPartnerType": 1005,
+    "secondPartnerType": 1054,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.004928453063964844,
+      -0.0016037750244140626,
+      -0.0010608779907226563
+    ]
+  },
+  {
+    "id": 1016,
+    "firstPartnerType": 1005,
+    "secondPartnerType": 1056,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.000341082763671875,
+      -0.004089297485351562,
+      -1.899261474609375e-05
+    ]
+  },
+  {
+    "id": 1017,
+    "firstPartnerType": 1006,
+    "secondPartnerType": 1013,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0022543960571289063,
+      6.59210205078125e-05,
+      0.0027360504150390624
+    ]
+  },
+  {
+    "id": 1018,
+    "firstPartnerType": 1006,
+    "secondPartnerType": 1031,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0006121810913085938,
+      -0.004682534790039062,
+      -0.000822479248046875
+    ]
+  },
+  {
+    "id": 1019,
+    "firstPartnerType": 1006,
+    "secondPartnerType": 1044,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0011195465087890624,
+      -0.0004399444580078125,
+      0.0017617523193359376
+    ]
+  },
+  {
+    "id": 1020,
+    "firstPartnerType": 1007,
+    "secondPartnerType": 1030,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0027147903442382815,
+      -0.00183582763671875,
+      0.00378406982421875
+    ]
+  },
+  {
+    "id": 1021,
+    "firstPartnerType": 1008,
+    "secondPartnerType": 1012,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.002023973083496094,
+      -0.0006306182861328125,
+      -0.004869268798828125
+    ]
+  },
+  {
+    "id": 1022,
+    "firstPartnerType": 1008,
+    "secondPartnerType": 1049,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -7.472076416015624e-05,
+      0.002120538330078125,
+      -0.0019081756591796874
+    ]
+  },
+  {
+    "id": 1023,
+    "firstPartnerType": 1008,
+    "secondPartnerType": 1053,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00306885986328125,
+      0.0037414520263671877,
+      -0.00093455810546875
+    ]
+  },
+  {
+    "id": 1024,
+    "firstPartnerType": 1009,
+    "secondPartnerType": 1012,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0016043807983398438,
+      0.0010900238037109375,
+      0.0030581939697265624
+    ]
+  },
+  {
+    "id": 1025,
+    "firstPartnerType": 1009,
+    "secondPartnerType": 1037,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0037521408081054686,
+      0.0005230010986328125,
+      0.0006551803588867187
+    ]
+  },
+  {
+    "id": 1026,
+    "firstPartnerType": 1010,
+    "secondPartnerType": 1012,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0027123992919921877,
+      -0.0012921051025390625,
+      -0.000657366943359375
+    ]
+  },
+  {
+    "id": 1027,
+    "firstPartnerType": 1010,
+    "secondPartnerType": 1049,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0006137054443359375,
+      0.001459051513671875,
+      0.0023037261962890626
+    ]
+  },
+  {
+    "id": 1028,
+    "firstPartnerType": 1011,
+    "secondPartnerType": 1038,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00089013671875,
+      -0.00303558349609375,
+      -0.0020070526123046875
+    ]
+  },
+  {
+    "id": 1029,
+    "firstPartnerType": 1011,
+    "secondPartnerType": 1044,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.003971759033203125,
+      0.0005818084716796875,
+      -0.003444921875
+    ]
+  },
+  {
+    "id": 1030,
+    "firstPartnerType": 1011,
+    "secondPartnerType": 1053,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0007899749755859375,
+      -0.0038887969970703125,
+      0.0014556732177734375
+    ]
+  },
+  {
+    "id": 1031,
+    "firstPartnerType": 1013,
+    "secondPartnerType": 1029,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0016436248779296875,
+      -0.0013831787109375,
+      -0.002802021789550781
+    ]
+  },
+  {
+    "id": 1032,
+    "firstPartnerType": 1013,
+    "secondPartnerType": 1044,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0011348495483398439,
+      -0.000505865478515625,
+      -0.000974298095703125
+    ]
+  },
+  {
+    "id": 1033,
+    "firstPartnerType": 1014,
+    "secondPartnerType": 1035,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0008073776245117188,
+      0.002393768310546875,
+      0.003616552734375
+    ]
+  },
+  {
+    "id": 1034,
+    "firstPartnerType": 1014,
+    "secondPartnerType": 1037,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0008845458984375,
+      -0.001700604248046875,
+      -0.002117881774902344
+    ]
+  },
+  {
+    "id": 1035,
+    "firstPartnerType": 1014,
+    "secondPartnerType": 1039,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0017334213256835938,
+      0.00061375732421875,
+      -0.00018203125
+    ]
+  },
+  {
+    "id": 1036,
+    "firstPartnerType": 1014,
+    "secondPartnerType": 1052,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0020442901611328126,
+      -0.000924981689453125,
+      0.001477764892578125
+    ]
+  },
+  {
+    "id": 1037,
+    "firstPartnerType": 1015,
+    "secondPartnerType": 1020,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00084185791015625,
+      0.000317108154296875,
+      0.002988700866699219
+    ]
+  },
+  {
+    "id": 1038,
+    "firstPartnerType": 1015,
+    "secondPartnerType": 1050,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.004202752685546875,
+      -0.00128707275390625,
+      0.000428985595703125
+    ]
+  },
+  {
+    "id": 1039,
+    "firstPartnerType": 1015,
+    "secondPartnerType": 1059,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0036840179443359375,
+      0.00334713134765625,
+      -0.00184195556640625
+    ]
+  },
+  {
+    "id": 1040,
+    "firstPartnerType": 1015,
+    "secondPartnerType": 1089,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.004699700927734375,
+      -0.012937564086914063,
+      0.008347340393066406
+    ]
+  },
+  {
+    "id": 1041,
+    "firstPartnerType": 1016,
+    "secondPartnerType": 1017,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0003451080322265625,
+      0.0002519012451171875,
+      -0.00474571533203125
+    ]
+  },
+  {
+    "id": 1042,
+    "firstPartnerType": 1016,
+    "secondPartnerType": 1022,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.002390362548828125,
+      -0.001002972412109375,
+      -0.0002661346435546875
+    ]
+  },
+  {
+    "id": 1043,
+    "firstPartnerType": 1016,
+    "secondPartnerType": 1023,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0003479888916015625,
+      -0.005899343872070312,
+      0.0006144287109375
+    ]
+  },
+  {
+    "id": 1044,
+    "firstPartnerType": 1016,
+    "secondPartnerType": 1058,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.001056195068359375,
+      -0.003984979248046875,
+      0.00222198486328125
+    ]
+  },
+  {
+    "id": 1045,
+    "firstPartnerType": 1017,
+    "secondPartnerType": 1018,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.005826580810546875,
+      -0.00534925537109375,
+      0.005261358642578125
+    ]
+  },
+  {
+    "id": 1046,
+    "firstPartnerType": 1017,
+    "secondPartnerType": 1022,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0020452545166015626,
+      -0.0012548736572265626,
+      0.004479580688476563
+    ]
+  },
+  {
+    "id": 1047,
+    "firstPartnerType": 1017,
+    "secondPartnerType": 1023,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      2.880859375e-06,
+      -0.0061512451171875,
+      0.00536014404296875
+    ]
+  },
+  {
+    "id": 1048,
+    "firstPartnerType": 1018,
+    "secondPartnerType": 1020,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00263338623046875,
+      0.0013284149169921875,
+      -0.0017477142333984376
+    ]
+  },
+  {
+    "id": 1049,
+    "firstPartnerType": 1018,
+    "secondPartnerType": 1021,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0025608428955078127,
+      -0.0003742462158203125,
+      0.0017557403564453125
+    ]
+  },
+  {
+    "id": 1050,
+    "firstPartnerType": 1018,
+    "secondPartnerType": 1033,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.001383251953125,
+      -0.00283414306640625,
+      -0.001936151123046875
+    ]
+  },
+  {
+    "id": 1051,
+    "firstPartnerType": 1019,
+    "secondPartnerType": 1032,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.003925668334960938,
+      -0.000894854736328125,
+      0.0011985870361328125
+    ]
+  },
+  {
+    "id": 1052,
+    "firstPartnerType": 1019,
+    "secondPartnerType": 1047,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00091217041015625,
+      -0.0024171661376953123,
+      0.003938717651367187
+    ]
+  },
+  {
+    "id": 1053,
+    "firstPartnerType": 1020,
+    "secondPartnerType": 1022,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0011479400634765624,
+      0.002765966796875,
+      0.000965936279296875
+    ]
+  },
+  {
+    "id": 1054,
+    "firstPartnerType": 1020,
+    "secondPartnerType": 1028,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.001587445068359375,
+      -0.0030962066650390627,
+      -0.00120362548828125
+    ]
+  },
+  {
+    "id": 1055,
+    "firstPartnerType": 1021,
+    "secondPartnerType": 1023,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0032628570556640624,
+      -0.0004277435302734375,
+      -0.0016569549560546874
+    ]
+  },
+  {
+    "id": 1056,
+    "firstPartnerType": 1021,
+    "secondPartnerType": 1028,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0016599884033203125,
+      -0.0013935455322265625,
+      -0.004707080078125
+    ]
+  },
+  {
+    "id": 1057,
+    "firstPartnerType": 1021,
+    "secondPartnerType": 1048,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00199974365234375,
+      -0.00376158447265625,
+      -0.002262274169921875
+    ]
+  },
+  {
+    "id": 1058,
+    "firstPartnerType": 1022,
+    "secondPartnerType": 1028,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0004395050048828125,
+      -0.005862173461914063,
+      -0.002169561767578125
+    ]
+  },
+  {
+    "id": 1059,
+    "firstPartnerType": 1023,
+    "secondPartnerType": 1058,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0014041839599609376,
+      0.0019143646240234375,
+      0.00160755615234375
+    ]
+  },
+  {
+    "id": 1060,
+    "firstPartnerType": 1024,
+    "secondPartnerType": 1027,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0013043487548828126,
+      -0.0032775360107421877,
+      -0.0016673385620117188
+    ]
+  },
+  {
+    "id": 1061,
+    "firstPartnerType": 1024,
+    "secondPartnerType": 1047,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.001573590087890625,
+      -0.001682763671875,
+      -0.0020172210693359376
+    ]
+  },
+  {
+    "id": 1062,
+    "firstPartnerType": 1024,
+    "secondPartnerType": 1050,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00046434326171875,
+      0.0048517578125,
+      -0.0015935836791992188
+    ]
+  },
+  {
+    "id": 1063,
+    "firstPartnerType": 1025,
+    "secondPartnerType": 1026,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00055091552734375,
+      0.00109229736328125,
+      0.0033689300537109376
+    ]
+  },
+  {
+    "id": 1064,
+    "firstPartnerType": 1025,
+    "secondPartnerType": 1027,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -1.32568359375e-05,
+      0.000634130859375,
+      -0.00041232757568359377
+    ]
+  },
+  {
+    "id": 1065,
+    "firstPartnerType": 1026,
+    "secondPartnerType": 1041,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00241431884765625,
+      0.0010109893798828126,
+      0.0013028289794921875
+    ]
+  },
+  {
+    "id": 1066,
+    "firstPartnerType": 1027,
+    "secondPartnerType": 1032,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00195989990234375,
+      0.003117083740234375,
+      -0.003090013122558594
+    ]
+  },
+  {
+    "id": 1067,
+    "firstPartnerType": 1027,
+    "secondPartnerType": 1047,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0028779388427734374,
+      0.0015947723388671875,
+      -0.00034988250732421875
+    ]
+  },
+  {
+    "id": 1068,
+    "firstPartnerType": 1030,
+    "secondPartnerType": 1034,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.003730419921875,
+      0.0029234527587890624,
+      0.0011780899047851563
+    ]
+  },
+  {
+    "id": 1069,
+    "firstPartnerType": 1030,
+    "secondPartnerType": 1042,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0026262847900390624,
+      0.00292132568359375,
+      0.0019512359619140625
+    ]
+  },
+  {
+    "id": 1070,
+    "firstPartnerType": 1030,
+    "secondPartnerType": 1046,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0025314804077148437,
+      0.00287381591796875,
+      0.002040205383300781
+    ]
+  },
+  {
+    "id": 1071,
+    "firstPartnerType": 1031,
+    "secondPartnerType": 1039,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0007916091918945313,
+      -0.00285274658203125,
+      0.003082952880859375
+    ]
+  },
+  {
+    "id": 1072,
+    "firstPartnerType": 1031,
+    "secondPartnerType": 1056,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.002194053649902344,
+      0.0005081329345703125,
+      -0.0025113296508789064
+    ]
+  },
+  {
+    "id": 1073,
+    "firstPartnerType": 1032,
+    "secondPartnerType": 1045,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.003656915283203125,
+      -0.0010493896484375,
+      -0.002884385681152344
+    ]
+  },
+  {
+    "id": 1074,
+    "firstPartnerType": 1032,
+    "secondPartnerType": 1055,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00173043212890625,
+      9.18182373046875e-05,
+      -0.006389585876464844
+    ]
+  },
+  {
+    "id": 1075,
+    "firstPartnerType": 1033,
+    "secondPartnerType": 1048,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0019443511962890625,
+      -0.0013016876220703125,
+      0.0014296173095703125
+    ]
+  },
+  {
+    "id": 1076,
+    "firstPartnerType": 1033,
+    "secondPartnerType": 1050,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.001027972412109375,
+      0.0025583770751953124,
+      -0.0023712783813476562
+    ]
+  },
+  {
+    "id": 1077,
+    "firstPartnerType": 1034,
+    "secondPartnerType": 1040,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0013328033447265624,
+      0.0016444732666015625,
+      -0.0001403289794921875
+    ]
+  },
+  {
+    "id": 1078,
+    "firstPartnerType": 1034,
+    "secondPartnerType": 1042,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0011041351318359376,
+      -2.1270751953125e-06,
+      0.0007731460571289063
+    ]
+  },
+  {
+    "id": 1079,
+    "firstPartnerType": 1034,
+    "secondPartnerType": 1045,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0016028167724609374,
+      0.0038073822021484375,
+      -0.00238154296875
+    ]
+  },
+  {
+    "id": 1080,
+    "firstPartnerType": 1035,
+    "secondPartnerType": 1057,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0014542465209960937,
+      -0.0002891571044921875,
+      -0.0019875579833984374
+    ]
+  },
+  {
+    "id": 1081,
+    "firstPartnerType": 1035,
+    "secondPartnerType": 1060,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0012009597778320313,
+      0.0006145416259765625,
+      0.0016073516845703125
+    ]
+  },
+  {
+    "id": 1082,
+    "firstPartnerType": 1035,
+    "secondPartnerType": 1062,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0003226715087890625,
+      -0.000310443115234375,
+      0.0007654388427734375
+    ]
+  },
+  {
+    "id": 1083,
+    "firstPartnerType": 1036,
+    "secondPartnerType": 1041,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0002422393798828125,
+      -0.0023505859375,
+      0.001372027587890625
+    ]
+  },
+  {
+    "id": 1084,
+    "firstPartnerType": 1036,
+    "secondPartnerType": 1048,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -3.99322509765625e-05,
+      0.0004494873046875,
+      0.000162591552734375
+    ]
+  },
+  {
+    "id": 1085,
+    "firstPartnerType": 1037,
+    "secondPartnerType": 1039,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0008488754272460938,
+      0.002314361572265625,
+      0.0019358505249023438
+    ]
+  },
+  {
+    "id": 1086,
+    "firstPartnerType": 1037,
+    "secondPartnerType": 1046,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.002005094909667969,
+      0.0018163818359375,
+      -0.000111529541015625
+    ]
+  },
+  {
+    "id": 1087,
+    "firstPartnerType": 1038,
+    "secondPartnerType": 1053,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0001001617431640625,
+      -0.0008532135009765626,
+      0.003462725830078125
+    ]
+  },
+  {
+    "id": 1088,
+    "firstPartnerType": 1039,
+    "secondPartnerType": 1052,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.003777711486816406,
+      -0.001538739013671875,
+      0.001659796142578125
+    ]
+  },
+  {
+    "id": 1089,
+    "firstPartnerType": 1040,
+    "secondPartnerType": 1042,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.000228668212890625,
+      -0.001646600341796875,
+      0.0009134750366210937
+    ]
+  },
+  {
+    "id": 1090,
+    "firstPartnerType": 1040,
+    "secondPartnerType": 1045,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.000270013427734375,
+      0.002162908935546875,
+      -0.0022412139892578125
+    ]
+  },
+  {
+    "id": 1091,
+    "firstPartnerType": 1042,
+    "secondPartnerType": 1051,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0011854736328125,
+      0.0013905303955078125,
+      0.0007692718505859375
+    ]
+  },
+  {
+    "id": 1092,
+    "firstPartnerType": 1043,
+    "secondPartnerType": 1060,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.002900115966796875,
+      0.0033189544677734374,
+      0.0011572479248046874
+    ]
+  },
+  {
+    "id": 1093,
+    "firstPartnerType": 1044,
+    "secondPartnerType": 1063,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0007709365844726562,
+      -0.000644329833984375,
+      0.005243826293945313
+    ]
+  },
+  {
+    "id": 1094,
+    "firstPartnerType": 1045,
+    "secondPartnerType": 1054,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      5.9979248046875e-05,
+      0.0024873626708984374,
+      -0.00134512939453125
+    ]
+  },
+  {
+    "id": 1095,
+    "firstPartnerType": 1046,
+    "secondPartnerType": 1051,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.003972291564941406,
+      0.0014380401611328124,
+      0.0006803024291992187
+    ]
+  },
+  {
+    "id": 1096,
+    "firstPartnerType": 1046,
+    "secondPartnerType": 1056,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0001316925048828125,
+      0.0038588592529296877,
+      -0.0035469024658203127
+    ]
+  },
+  {
+    "id": 1097,
+    "firstPartnerType": 1049,
+    "secondPartnerType": 1053,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.003143580627441406,
+      0.0016209136962890625,
+      0.0009736175537109375
+    ]
+  },
+  {
+    "id": 1098,
+    "firstPartnerType": 1051,
+    "secondPartnerType": 1052,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0030485504150390627,
+      -0.0024787994384765626,
+      0.003026873779296875
+    ]
+  },
+  {
+    "id": 1099,
+    "firstPartnerType": 1052,
+    "secondPartnerType": 1057,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.000217333984375,
+      0.0030295928955078127,
+      0.0001512298583984375
+    ]
+  },
+  {
+    "id": 1100,
+    "firstPartnerType": 1054,
+    "secondPartnerType": 1055,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00186650390625,
+      -0.00134615478515625,
+      -0.00216007080078125
+    ]
+  },
+  {
+    "id": 1101,
+    "firstPartnerType": 1056,
+    "secondPartnerType": 1061,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0005854415893554687,
+      0.001253265380859375,
+      -0.003797969055175781
+    ]
+  },
+  {
+    "id": 1102,
+    "firstPartnerType": 1057,
+    "secondPartnerType": 1062,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0017769180297851563,
+      -2.12860107421875e-05,
+      0.002752996826171875
+    ]
+  },
+  {
+    "id": 1103,
+    "firstPartnerType": 1057,
+    "secondPartnerType": 1063,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00192513427734375,
+      0.0049601531982421876,
+      0.0029340789794921876
+    ]
+  },
+  {
+    "id": 1104,
+    "firstPartnerType": 1060,
+    "secondPartnerType": 1062,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0015236312866210937,
+      -0.0009249847412109375,
+      -0.000841912841796875
+    ]
+  },
+  {
+    "id": 1105,
+    "firstPartnerType": 1062,
+    "secondPartnerType": 1063,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00014821624755859375,
+      0.004981439208984375,
+      0.0001810821533203125
+    ]
+  },
+  {
+    "id": 1106,
+    "firstPartnerType": 1064,
+    "secondPartnerType": 1088,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.003235247802734375,
+      -0.002325666809082031,
+      0.000218072509765625
+    ]
+  },
+  {
+    "id": 1107,
+    "firstPartnerType": 1064,
+    "secondPartnerType": 1089,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0034604034423828126,
+      0.00342132568359375,
+      -0.0012616607666015626
+    ]
+  },
+  {
+    "id": 1108,
+    "firstPartnerType": 1064,
+    "secondPartnerType": 1116,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0006337249755859375,
+      -4.4586181640625e-06,
+      0.00205107421875
+    ]
+  },
+  {
+    "id": 1109,
+    "firstPartnerType": 1064,
+    "secondPartnerType": 1121,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0022373199462890625,
+      0.0020116378784179687,
+      0.001565191650390625
+    ]
+  },
+  {
+    "id": 1110,
+    "firstPartnerType": 1065,
+    "secondPartnerType": 1075,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0010918731689453125,
+      -0.00043082122802734377,
+      0.00027437591552734376
+    ]
+  },
+  {
+    "id": 1111,
+    "firstPartnerType": 1065,
+    "secondPartnerType": 1113,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0017088104248046876,
+      -0.0005253097534179687,
+      -0.002355596923828125
+    ]
+  },
+  {
+    "id": 1112,
+    "firstPartnerType": 1065,
+    "secondPartnerType": 1130,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0021038238525390627,
+      -0.0018042999267578125,
+      0.0014558181762695313
+    ]
+  },
+  {
+    "id": 1113,
+    "firstPartnerType": 1065,
+    "secondPartnerType": 1146,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0006949310302734375,
+      0.0017678497314453125,
+      0.003212254333496094
+    ]
+  },
+  {
+    "id": 1114,
+    "firstPartnerType": 1066,
+    "secondPartnerType": 1087,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0021251998901367186,
+      0.00148189697265625,
+      0.00122613525390625
+    ]
+  },
+  {
+    "id": 1115,
+    "firstPartnerType": 1066,
+    "secondPartnerType": 1123,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.002510223388671875,
+      -0.00017138824462890626,
+      0.0037712982177734375
+    ]
+  },
+  {
+    "id": 1116,
+    "firstPartnerType": 1066,
+    "secondPartnerType": 1130,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0006336456298828125,
+      0.002267335510253906,
+      -0.0012267913818359375
+    ]
+  },
+  {
+    "id": 1117,
+    "firstPartnerType": 1066,
+    "secondPartnerType": 1139,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00596998291015625,
+      -0.0001292572021484375,
+      0.0032225677490234374
+    ]
+  },
+  {
+    "id": 1118,
+    "firstPartnerType": 1067,
+    "secondPartnerType": 1095,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.001533221435546875,
+      0.002302020263671875,
+      0.00085738525390625
+    ]
+  },
+  {
+    "id": 1119,
+    "firstPartnerType": 1067,
+    "secondPartnerType": 1097,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.000476556396484375,
+      0.0005438949584960938,
+      0.0013056793212890625
+    ]
+  },
+  {
+    "id": 1120,
+    "firstPartnerType": 1067,
+    "secondPartnerType": 1109,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0013732940673828126,
+      -0.0034942733764648437,
+      -0.00026331787109375
+    ]
+  },
+  {
+    "id": 1121,
+    "firstPartnerType": 1067,
+    "secondPartnerType": 1120,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0024224517822265625,
+      -0.0010224884033203125,
+      2.4664306640625e-05
+    ]
+  },
+  {
+    "id": 1122,
+    "firstPartnerType": 1068,
+    "secondPartnerType": 1089,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00059271240234375,
+      0.00021337890625,
+      0.001124053955078125
+    ]
+  },
+  {
+    "id": 1123,
+    "firstPartnerType": 1068,
+    "secondPartnerType": 1093,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0024502105712890625,
+      0.0016734832763671875,
+      0.000575299072265625
+    ]
+  },
+  {
+    "id": 1124,
+    "firstPartnerType": 1068,
+    "secondPartnerType": 1110,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0043478759765625,
+      -0.0013522048950195312,
+      0.00023677978515625
+    ]
+  },
+  {
+    "id": 1125,
+    "firstPartnerType": 1068,
+    "secondPartnerType": 1133,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0004420989990234375,
+      0.000706591796875,
+      0.000439300537109375
+    ]
+  },
+  {
+    "id": 1126,
+    "firstPartnerType": 1069,
+    "secondPartnerType": 1081,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0017773834228515626,
+      0.000166302490234375,
+      -0.002646685791015625
+    ]
+  },
+  {
+    "id": 1127,
+    "firstPartnerType": 1069,
+    "secondPartnerType": 1085,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0022459976196289064,
+      -0.0024521652221679686,
+      3.2476806640625e-05
+    ]
+  },
+  {
+    "id": 1128,
+    "firstPartnerType": 1069,
+    "secondPartnerType": 1103,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.004804216003417969,
+      0.00076190185546875,
+      -0.000777691650390625
+    ]
+  },
+  {
+    "id": 1129,
+    "firstPartnerType": 1069,
+    "secondPartnerType": 1108,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.000962359619140625,
+      -0.00301971435546875,
+      -0.0006164337158203125
+    ]
+  },
+  {
+    "id": 1130,
+    "firstPartnerType": 1070,
+    "secondPartnerType": 1106,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0029630218505859373,
+      -0.002241644287109375,
+      0.0009059234619140625
+    ]
+  },
+  {
+    "id": 1131,
+    "firstPartnerType": 1070,
+    "secondPartnerType": 1119,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.001056781005859375,
+      -0.0018959732055664061,
+      0.0023485992431640625
+    ]
+  },
+  {
+    "id": 1132,
+    "firstPartnerType": 1070,
+    "secondPartnerType": 1128,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.001534478759765625,
+      -0.00201728515625,
+      -0.004898565673828125
+    ]
+  },
+  {
+    "id": 1133,
+    "firstPartnerType": 1071,
+    "secondPartnerType": 1079,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0009472808837890625,
+      -0.0008119064331054687,
+      0.0011782257080078125
+    ]
+  },
+  {
+    "id": 1134,
+    "firstPartnerType": 1071,
+    "secondPartnerType": 1094,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00185775146484375,
+      -0.0007522384643554687,
+      0.002923809814453125
+    ]
+  },
+  {
+    "id": 1135,
+    "firstPartnerType": 1071,
+    "secondPartnerType": 1098,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0014921417236328125,
+      0.00047045745849609376,
+      -0.001964581298828125
+    ]
+  },
+  {
+    "id": 1136,
+    "firstPartnerType": 1071,
+    "secondPartnerType": 1103,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.004450518798828125,
+      0.0016597320556640625,
+      0.0013213134765625
+    ]
+  },
+  {
+    "id": 1137,
+    "firstPartnerType": 1072,
+    "secondPartnerType": 1078,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0016231292724609376,
+      -0.0038593292236328127,
+      0.0009311279296875
+    ]
+  },
+  {
+    "id": 1138,
+    "firstPartnerType": 1072,
+    "secondPartnerType": 1096,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0021409881591796876,
+      0.0014574310302734375,
+      0.00229188232421875
+    ]
+  },
+  {
+    "id": 1139,
+    "firstPartnerType": 1072,
+    "secondPartnerType": 1142,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0017405746459960938,
+      0.0012730621337890624,
+      0.001066912841796875
+    ]
+  },
+  {
+    "id": 1140,
+    "firstPartnerType": 1073,
+    "secondPartnerType": 1082,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0013083984375,
+      -0.0010937255859375,
+      -0.002277215576171875
+    ]
+  },
+  {
+    "id": 1141,
+    "firstPartnerType": 1073,
+    "secondPartnerType": 1104,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00066080322265625,
+      -0.005013658142089844,
+      0.0014406219482421875
+    ]
+  },
+  {
+    "id": 1142,
+    "firstPartnerType": 1073,
+    "secondPartnerType": 1132,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0006987228393554687,
+      -0.00048828125,
+      0.001118597412109375
+    ]
+  },
+  {
+    "id": 1143,
+    "firstPartnerType": 1074,
+    "secondPartnerType": 1109,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0002352752685546875,
+      0.0010145263671875,
+      0.0042084228515625
+    ]
+  },
+  {
+    "id": 1144,
+    "firstPartnerType": 1074,
+    "secondPartnerType": 1123,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0001832611083984375,
+      -0.0014330307006835937,
+      -0.000834564208984375
+    ]
+  },
+  {
+    "id": 1145,
+    "firstPartnerType": 1074,
+    "secondPartnerType": 1126,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0019535675048828124,
+      -0.0003863311767578125,
+      0.0001412139892578125
+    ]
+  },
+  {
+    "id": 1146,
+    "firstPartnerType": 1074,
+    "secondPartnerType": 1139,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0036430206298828124,
+      -0.001390899658203125,
+      -0.001383294677734375
+    ]
+  },
+  {
+    "id": 1147,
+    "firstPartnerType": 1075,
+    "secondPartnerType": 1113,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00280068359375,
+      -9.4488525390625e-05,
+      -0.0026299728393554688
+    ]
+  },
+  {
+    "id": 1148,
+    "firstPartnerType": 1075,
+    "secondPartnerType": 1134,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0012543121337890626,
+      -0.00016166229248046874,
+      0.001104931640625
+    ]
+  },
+  {
+    "id": 1149,
+    "firstPartnerType": 1075,
+    "secondPartnerType": 1146,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.000396942138671875,
+      0.002198670959472656,
+      0.00293787841796875
+    ]
+  },
+  {
+    "id": 1150,
+    "firstPartnerType": 1076,
+    "secondPartnerType": 1077,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.002567266845703125,
+      0.0007889862060546875,
+      -0.0028401763916015626
+    ]
+  },
+  {
+    "id": 1151,
+    "firstPartnerType": 1076,
+    "secondPartnerType": 1099,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0007445159912109375,
+      -0.0001317535400390625,
+      0.00166976318359375
+    ]
+  },
+  {
+    "id": 1152,
+    "firstPartnerType": 1076,
+    "secondPartnerType": 1100,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.000445050048828125,
+      0.0008566619873046875,
+      0.0024598785400390625
+    ]
+  },
+  {
+    "id": 1153,
+    "firstPartnerType": 1077,
+    "secondPartnerType": 1125,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0010114227294921875,
+      -6.07513427734375e-05,
+      -0.001434381103515625
+    ]
+  },
+  {
+    "id": 1154,
+    "firstPartnerType": 1078,
+    "secondPartnerType": 1084,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0020617401123046875,
+      -0.00254542236328125,
+      0.001970098876953125
+    ]
+  },
+  {
+    "id": 1155,
+    "firstPartnerType": 1078,
+    "secondPartnerType": 1091,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -3.13262939453125e-06,
+      -0.0016892852783203125,
+      0.0019219085693359375
+    ]
+  },
+  {
+    "id": 1156,
+    "firstPartnerType": 1078,
+    "secondPartnerType": 1132,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0027381317138671876,
+      0.0018462188720703124,
+      -3.306884765625e-05
+    ]
+  },
+  {
+    "id": 1157,
+    "firstPartnerType": 1079,
+    "secondPartnerType": 1094,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0009104705810546875,
+      5.966796875e-05,
+      0.0017455841064453125
+    ]
+  },
+  {
+    "id": 1158,
+    "firstPartnerType": 1079,
+    "secondPartnerType": 1098,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00054486083984375,
+      0.0012823638916015625,
+      -0.0031428070068359377
+    ]
+  },
+  {
+    "id": 1159,
+    "firstPartnerType": 1079,
+    "secondPartnerType": 1126,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0003386810302734375,
+      -0.003133348083496094,
+      0.0004180084228515625
+    ]
+  },
+  {
+    "id": 1160,
+    "firstPartnerType": 1080,
+    "secondPartnerType": 1125,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0004234954833984375,
+      0.003919082641601563,
+      0.0015674102783203125
+    ]
+  },
+  {
+    "id": 1161,
+    "firstPartnerType": 1080,
+    "secondPartnerType": 1144,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0004744293212890625,
+      -0.00229652099609375,
+      -9.45068359375e-05
+    ]
+  },
+  {
+    "id": 1162,
+    "firstPartnerType": 1081,
+    "secondPartnerType": 1124,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0003162261962890625,
+      0.00026643829345703127,
+      -0.0028937042236328123
+    ]
+  },
+  {
+    "id": 1163,
+    "firstPartnerType": 1081,
+    "secondPartnerType": 1136,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0018014572143554687,
+      -0.00153099365234375,
+      -0.0027374114990234375
+    ]
+  },
+  {
+    "id": 1164,
+    "firstPartnerType": 1081,
+    "secondPartnerType": 1137,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00022762451171875,
+      0.0024694580078125,
+      -0.0022654998779296875
+    ]
+  },
+  {
+    "id": 1165,
+    "firstPartnerType": 1082,
+    "secondPartnerType": 1118,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0027171859741210937,
+      -0.001217877197265625,
+      0.0005069915771484375
+    ]
+  },
+  {
+    "id": 1166,
+    "firstPartnerType": 1082,
+    "secondPartnerType": 1122,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0022623306274414065,
+      -0.00014053802490234375,
+      -0.001699017333984375
+    ]
+  },
+  {
+    "id": 1167,
+    "firstPartnerType": 1083,
+    "secondPartnerType": 1084,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0009186553955078125,
+      0.000103485107421875,
+      0.000912005615234375
+    ]
+  },
+  {
+    "id": 1168,
+    "firstPartnerType": 1083,
+    "secondPartnerType": 1092,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0004620147705078125,
+      0.00330531005859375,
+      0.0005123199462890625
+    ]
+  },
+  {
+    "id": 1169,
+    "firstPartnerType": 1083,
+    "secondPartnerType": 1097,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0027437835693359374,
+      0.0006597747802734375,
+      0.000459686279296875
+    ]
+  },
+  {
+    "id": 1170,
+    "firstPartnerType": 1083,
+    "secondPartnerType": 1109,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0018470458984375,
+      -0.0033783935546875,
+      -0.0011093109130859374
+    ]
+  },
+  {
+    "id": 1171,
+    "firstPartnerType": 1084,
+    "secondPartnerType": 1091,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0020648727416992187,
+      0.0008561370849609375,
+      -4.81903076171875e-05
+    ]
+  },
+  {
+    "id": 1172,
+    "firstPartnerType": 1084,
+    "secondPartnerType": 1092,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.000456640625,
+      0.003201824951171875,
+      -0.0003996856689453125
+    ]
+  },
+  {
+    "id": 1173,
+    "firstPartnerType": 1085,
+    "secondPartnerType": 1103,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0025582183837890623,
+      0.003214067077636719,
+      -0.00081016845703125
+    ]
+  },
+  {
+    "id": 1174,
+    "firstPartnerType": 1085,
+    "secondPartnerType": 1108,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0032083572387695313,
+      -0.0005675491333007812,
+      -0.0006489105224609375
+    ]
+  },
+  {
+    "id": 1175,
+    "firstPartnerType": 1085,
+    "secondPartnerType": 1115,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.000257537841796875,
+      -0.0019157608032226562,
+      0.0021851837158203126
+    ]
+  },
+  {
+    "id": 1176,
+    "firstPartnerType": 1086,
+    "secondPartnerType": 1087,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0008295181274414063,
+      -0.000799945068359375,
+      0.00138779296875
+    ]
+  },
+  {
+    "id": 1177,
+    "firstPartnerType": 1086,
+    "secondPartnerType": 1090,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0001895782470703125,
+      0.0004789154052734375,
+      -0.00130460205078125
+    ]
+  },
+  {
+    "id": 1178,
+    "firstPartnerType": 1086,
+    "secondPartnerType": 1130,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0035883636474609375,
+      -1.450653076171875e-05,
+      -0.0010651336669921874
+    ]
+  },
+  {
+    "id": 1179,
+    "firstPartnerType": 1087,
+    "secondPartnerType": 1090,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0010190963745117187,
+      0.0012788604736328126,
+      -0.00269239501953125
+    ]
+  },
+  {
+    "id": 1180,
+    "firstPartnerType": 1087,
+    "secondPartnerType": 1115,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0014691452026367186,
+      -0.000131427001953125,
+      0.006241372680664063
+    ]
+  },
+  {
+    "id": 1181,
+    "firstPartnerType": 1088,
+    "secondPartnerType": 1106,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0006580657958984375,
+      -0.0007653640747070313,
+      -0.003968453979492187
+    ]
+  },
+  {
+    "id": 1182,
+    "firstPartnerType": 1088,
+    "secondPartnerType": 1119,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.001248175048828125,
+      -0.0004196929931640625,
+      -0.0025257781982421876
+    ]
+  },
+  {
+    "id": 1183,
+    "firstPartnerType": 1088,
+    "secondPartnerType": 1120,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0033591827392578126,
+      -0.0018898101806640625,
+      0.0022462127685546874
+    ]
+  },
+  {
+    "id": 1184,
+    "firstPartnerType": 1089,
+    "secondPartnerType": 1133,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0001506134033203125,
+      0.000493212890625,
+      -0.00068475341796875
+    ]
+  },
+  {
+    "id": 1185,
+    "firstPartnerType": 1090,
+    "secondPartnerType": 1130,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00377794189453125,
+      -0.0004934219360351562,
+      0.0002394683837890625
+    ]
+  },
+  {
+    "id": 1186,
+    "firstPartnerType": 1090,
+    "secondPartnerType": 1136,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.002414434814453125,
+      0.0015929473876953124,
+      0.0013320098876953125
+    ]
+  },
+  {
+    "id": 1187,
+    "firstPartnerType": 1091,
+    "secondPartnerType": 1092,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0025215133666992187,
+      0.0023456878662109376,
+      -0.000351495361328125
+    ]
+  },
+  {
+    "id": 1188,
+    "firstPartnerType": 1091,
+    "secondPartnerType": 1104,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.002772918701171875,
+      -0.0009898727416992187,
+      -0.001632952880859375
+    ]
+  },
+  {
+    "id": 1189,
+    "firstPartnerType": 1092,
+    "secondPartnerType": 1112,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0022366851806640627,
+      0.0028965240478515627,
+      0.001458270263671875
+    ]
+  },
+  {
+    "id": 1190,
+    "firstPartnerType": 1093,
+    "secondPartnerType": 1110,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0018976654052734374,
+      -0.003025688171386719,
+      -0.000338519287109375
+    ]
+  },
+  {
+    "id": 1191,
+    "firstPartnerType": 1093,
+    "secondPartnerType": 1133,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.002008111572265625,
+      -0.0009668914794921875,
+      -0.00013599853515625
+    ]
+  },
+  {
+    "id": 1192,
+    "firstPartnerType": 1094,
+    "secondPartnerType": 1120,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00035775146484375,
+      0.00067962646484375,
+      0.0030276153564453125
+    ]
+  },
+  {
+    "id": 1193,
+    "firstPartnerType": 1094,
+    "secondPartnerType": 1126,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.001249151611328125,
+      -0.0031930160522460936,
+      -0.00132757568359375
+    ]
+  },
+  {
+    "id": 1194,
+    "firstPartnerType": 1095,
+    "secondPartnerType": 1097,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0010566650390625,
+      -0.0017581253051757813,
+      0.0004482940673828125
+    ]
+  },
+  {
+    "id": 1195,
+    "firstPartnerType": 1095,
+    "secondPartnerType": 1131,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0031837188720703125,
+      0.0009190078735351562,
+      0.001530120849609375
+    ]
+  },
+  {
+    "id": 1196,
+    "firstPartnerType": 1095,
+    "secondPartnerType": 1143,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.000745660400390625,
+      0.0018538894653320312,
+      -0.0005158050537109375
+    ]
+  },
+  {
+    "id": 1197,
+    "firstPartnerType": 1096,
+    "secondPartnerType": 1112,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.000799554443359375,
+      -0.0017638336181640625,
+      0.0016679290771484374
+    ]
+  },
+  {
+    "id": 1198,
+    "firstPartnerType": 1096,
+    "secondPartnerType": 1135,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00025235443115234374,
+      -0.000677587890625,
+      0.0003974151611328125
+    ]
+  },
+  {
+    "id": 1199,
+    "firstPartnerType": 1096,
+    "secondPartnerType": 1142,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0004004135131835937,
+      -0.000184368896484375,
+      -0.001224969482421875
+    ]
+  },
+  {
+    "id": 1200,
+    "firstPartnerType": 1097,
+    "secondPartnerType": 1131,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0021270538330078123,
+      0.0026771331787109375,
+      0.0010818267822265625
+    ]
+  },
+  {
+    "id": 1201,
+    "firstPartnerType": 1098,
+    "secondPartnerType": 1134,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -8.04168701171875e-05,
+      -0.001811871337890625,
+      -0.00248956298828125
+    ]
+  },
+  {
+    "id": 1202,
+    "firstPartnerType": 1099,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -8.4783935546875e-05,
+      0.0010154266357421875,
+      0.0028811248779296874
+    ]
+  },
+  {
+    "id": 1203,
+    "firstPartnerType": 1103,
+    "secondPartnerType": 1143,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0019646881103515625,
+      0.0034460540771484374,
+      0.004947027587890625
+    ]
+  },
+  {
+    "id": 1204,
+    "firstPartnerType": 1104,
+    "secondPartnerType": 1115,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0019174606323242188,
+      -0.0042738418579101566,
+      -0.00168695068359375
+    ]
+  },
+  {
+    "id": 1205,
+    "firstPartnerType": 1104,
+    "secondPartnerType": 1132,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      3.791961669921875e-05,
+      0.004525376892089844,
+      -0.0003220245361328125
+    ]
+  },
+  {
+    "id": 1206,
+    "firstPartnerType": 1105,
+    "secondPartnerType": 1127,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0018039260864257812,
+      0.002413883972167969,
+      0.003893598937988281
+    ]
+  },
+  {
+    "id": 1207,
+    "firstPartnerType": 1105,
+    "secondPartnerType": 1129,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.002199224853515625,
+      -0.00455445556640625,
+      0.000816357421875
+    ]
+  },
+  {
+    "id": 1208,
+    "firstPartnerType": 1105,
+    "secondPartnerType": 1138,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0033785400390625,
+      1.51611328125e-05,
+      -0.000883367919921875
+    ]
+  },
+  {
+    "id": 1209,
+    "firstPartnerType": 1106,
+    "secondPartnerType": 1110,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00332225341796875,
+      0.004946772766113282,
+      0.001601446533203125
+    ]
+  },
+  {
+    "id": 1210,
+    "firstPartnerType": 1106,
+    "secondPartnerType": 1119,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0019062408447265626,
+      0.00034567108154296875,
+      0.00144267578125
+    ]
+  },
+  {
+    "id": 1211,
+    "firstPartnerType": 1107,
+    "secondPartnerType": 1111,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0032218780517578125,
+      -0.0015688735961914063,
+      0.00247760009765625
+    ]
+  },
+  {
+    "id": 1212,
+    "firstPartnerType": 1108,
+    "secondPartnerType": 1114,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0005718719482421875,
+      -0.0008445724487304687,
+      -0.0018093841552734376
+    ]
+  },
+  {
+    "id": 1213,
+    "firstPartnerType": 1108,
+    "secondPartnerType": 1115,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.002950819396972656,
+      -0.001348211669921875,
+      0.00283409423828125
+    ]
+  },
+  {
+    "id": 1214,
+    "firstPartnerType": 1109,
+    "secondPartnerType": 1123,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.000418536376953125,
+      -0.0024475570678710937,
+      -0.005042987060546875
+    ]
+  },
+  {
+    "id": 1215,
+    "firstPartnerType": 1111,
+    "secondPartnerType": 1128,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.002142596435546875,
+      0.0012456954956054688,
+      -0.0004240478515625
+    ]
+  },
+  {
+    "id": 1216,
+    "firstPartnerType": 1111,
+    "secondPartnerType": 1140,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00258179931640625,
+      0.0026660598754882814,
+      -1.7578125e-06
+    ]
+  },
+  {
+    "id": 1217,
+    "firstPartnerType": 1112,
+    "secondPartnerType": 1135,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0010519088745117187,
+      0.0010862457275390624,
+      -0.001270513916015625
+    ]
+  },
+  {
+    "id": 1218,
+    "firstPartnerType": 1112,
+    "secondPartnerType": 1142,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.00039914093017578127,
+      0.0015794647216796874,
+      -0.0028928985595703125
+    ]
+  },
+  {
+    "id": 1219,
+    "firstPartnerType": 1113,
+    "secondPartnerType": 1138,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.001481011962890625,
+      0.0014690582275390625,
+      -0.00179949951171875
+    ]
+  },
+  {
+    "id": 1220,
+    "firstPartnerType": 1114,
+    "secondPartnerType": 1136,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0015583053588867188,
+      0.002499595642089844,
+      -0.0029582794189453123
+    ]
+  },
+  {
+    "id": 1221,
+    "firstPartnerType": 1114,
+    "secondPartnerType": 1147,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.002365074157714844,
+      -0.0011153427124023438,
+      -0.0009064788818359374
+    ]
+  },
+  {
+    "id": 1222,
+    "firstPartnerType": 1116,
+    "secondPartnerType": 1121,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.001603594970703125,
+      0.0020160964965820313,
+      -0.000485882568359375
+    ]
+  },
+  {
+    "id": 1223,
+    "firstPartnerType": 1116,
+    "secondPartnerType": 1131,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.000262164306640625,
+      3.24981689453125e-05,
+      0.0027760528564453124
+    ]
+  },
+  {
+    "id": 1224,
+    "firstPartnerType": 1116,
+    "secondPartnerType": 1145,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0022780670166015625,
+      -0.00018712158203125,
+      -0.0015162384033203125
+    ]
+  },
+  {
+    "id": 1225,
+    "firstPartnerType": 1117,
+    "secondPartnerType": 1122,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00044575347900390627,
+      0.0011561981201171875,
+      0.00384857177734375
+    ]
+  },
+  {
+    "id": 1226,
+    "firstPartnerType": 1117,
+    "secondPartnerType": 1137,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0026012786865234373,
+      0.00010664825439453125,
+      0.0004486297607421875
+    ]
+  },
+  {
+    "id": 1227,
+    "firstPartnerType": 1117,
+    "secondPartnerType": 1141,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0034522308349609373,
+      0.0004135223388671875,
+      -0.0016317123413085938
+    ]
+  },
+  {
+    "id": 1228,
+    "firstPartnerType": 1118,
+    "secondPartnerType": 1122,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0004548553466796875,
+      0.0010773391723632813,
+      -0.0022060089111328126
+    ]
+  },
+  {
+    "id": 1229,
+    "firstPartnerType": 1119,
+    "secondPartnerType": 1146,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0045660400390625,
+      -0.0003785858154296875,
+      -0.0038006317138671876
+    ]
+  },
+  {
+    "id": 1230,
+    "firstPartnerType": 1121,
+    "secondPartnerType": 1143,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0025879486083984376,
+      -0.0010487167358398438,
+      0.001216009521484375
+    ]
+  },
+  {
+    "id": 1231,
+    "firstPartnerType": 1121,
+    "secondPartnerType": 1145,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0006744720458984375,
+      -0.002203218078613281,
+      -0.0010303558349609376
+    ]
+  },
+  {
+    "id": 1232,
+    "firstPartnerType": 1124,
+    "secondPartnerType": 1127,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00140914306640625,
+      0.001262969970703125,
+      -0.001770196533203125
+    ]
+  },
+  {
+    "id": 1233,
+    "firstPartnerType": 1124,
+    "secondPartnerType": 1136,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0014852310180664063,
+      -0.0017974319458007812,
+      0.000156292724609375
+    ]
+  },
+  {
+    "id": 1234,
+    "firstPartnerType": 1124,
+    "secondPartnerType": 1137,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0005438507080078126,
+      0.002203019714355469,
+      0.000628204345703125
+    ]
+  },
+  {
+    "id": 1235,
+    "firstPartnerType": 1126,
+    "secondPartnerType": 1139,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.001689453125,
+      -0.0010045684814453126,
+      -0.0015245086669921875
+    ]
+  },
+  {
+    "id": 1236,
+    "firstPartnerType": 1127,
+    "secondPartnerType": 1141,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0011020416259765625,
+      0.001246923828125,
+      0.00031805877685546876
+    ]
+  },
+  {
+    "id": 1237,
+    "firstPartnerType": 1128,
+    "secondPartnerType": 1134,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0003235260009765625,
+      -0.002617607116699219,
+      0.00161358642578125
+    ]
+  },
+  {
+    "id": 1238,
+    "firstPartnerType": 1128,
+    "secondPartnerType": 1140,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.000439202880859375,
+      0.0014203643798828124,
+      0.0004222900390625
+    ]
+  },
+  {
+    "id": 1239,
+    "firstPartnerType": 1132,
+    "secondPartnerType": 1135,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.001967918395996094,
+      0.0027929534912109373,
+      0.0017912384033203126
+    ]
+  },
+  {
+    "id": 1240,
+    "firstPartnerType": 1134,
+    "secondPartnerType": 1146,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.0016512542724609375,
+      0.002360333251953125,
+      0.00183294677734375
+    ]
+  },
+  {
+    "id": 1241,
+    "firstPartnerType": 1135,
+    "secondPartnerType": 1142,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0006527679443359375,
+      0.000493218994140625,
+      -0.0016223846435546876
+    ]
+  },
+  {
+    "id": 1242,
+    "firstPartnerType": 1137,
+    "secondPartnerType": 1141,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0008509521484375,
+      0.00030687408447265625,
+      -0.0020803421020507812
+    ]
+  },
+  {
+    "id": 1243,
+    "firstPartnerType": 1144,
+    "secondPartnerType": 1145,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.00151092529296875,
+      -0.0012848724365234375,
+      0.000444775390625
+    ]
+  }
+]

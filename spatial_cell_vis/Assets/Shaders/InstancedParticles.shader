@@ -13,7 +13,6 @@
         LOD 200
 
         CGPROGRAM
-        // Physically based Standard lighting model, and enable shadows on all light types
         #pragma surface surf Lambert noshadow vertex:vert
         #pragma instancing_options procedural:setup
         #pragma target 3.0

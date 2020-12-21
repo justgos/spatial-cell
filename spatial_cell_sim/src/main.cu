@@ -23,6 +23,7 @@
 //#include <windows.h>
 #include <future>
 #include <vector>
+#include <unordered_map>
 
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
@@ -89,6 +90,17 @@ persistFrame(
     return getDuration(t1, t2);
 }
 
+void
+checkForCudaErrors(std::string message) {
+    cudaError_t err = cudaSuccess;
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        fprintf(stderr, "Failed to launch kernel (error code %s)! %s\n", cudaGetErrorString(err), message);
+        exit(EXIT_FAILURE);
+    }
+}
+
 /**
  * Host main routine
  */
@@ -110,7 +122,22 @@ main(void)
         printf("WARNING! The maxDiffusionDistance (%f) is less than gridCellSize (%f).\nMetabolite diffusion may play out as intended\n", config.maxDiffusionDistance, config.gridCellSize);
     }
 
+    printf("Loading particle type info...\n");
     auto particleTypeInfo = loadParticleTypeInfo();
+    printf("Loading complexification info...\n");
+    auto complexificationInfo = loadComplexificationInfo();
+    // Used for finding interactions by id (it's equivalent to the array index)
+    auto flatComplexificationInfo = flattenComplexificationInfo(complexificationInfo);
+    flatComplexificationInfo->copyToDevice();
+    // Used for finding interactions for a specific molecule type
+    auto partnerMappedInteractions = partnerMappedComplexificationInfo(complexificationInfo);
+    partnerMappedInteractions.first->copyToDevice();
+    partnerMappedInteractions.second->copyToDevice();
+
+    printf("Loading complex info...\n");
+    auto complexInfo = loadComplexInfo();
+
+    printf("\n");
 
     // TODO: check that the maxDiffusionDistance doesn't span the lipid layer width + metabolite-lipid collision distance
 
@@ -237,9 +264,6 @@ main(void)
     // Copy the config into the device constant memory
     cudaMemcpyToSymbol(d_Config, &config, sizeof(Config), 0, cudaMemcpyHostToDevice);
 
-    int numTypes = 2;
-    int lastType1ParticleIdx = -1;
-
     // Initialize the particles
     fillParticlesUniform<Particle>(
         config.numParticles * 0.1,
@@ -287,7 +311,7 @@ main(void)
     int chainStartIdx = nActiveParticles.h_Current[0];
     fillParticlesWrappedChain(
         &chainMembers,
-        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
+        make_float3(0.2 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
         particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
     );
     int chainEndIdx = nActiveParticles.h_Current[0];
@@ -296,6 +320,12 @@ main(void)
         chainEndIdx,
         1,
         particles.h_Current, &config, rng
+    );
+
+    instantiateComplex(
+        1,
+        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
+        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, complexInfo, &config, rng
     );
 
     /*fillParticlesSphere(
@@ -443,12 +473,26 @@ main(void)
     CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
     memBufPtr += size;*/
 
+    // Create initial complex-interactions
+    particles.clearNextOnDevice();
+    complexify KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+        -1,
+        rngState.d_Current,
+        particles.d_Current,
+        particles.d_Next,
+        nActiveParticles.h_Current[0],
+        gridRanges.d_Current,
+        partnerMappedInteractions.first->d_Current,
+        partnerMappedInteractions.second->d_Current
+    );
+    particles.swap();
+
     printf("\n");
     printf("[Simulating...]\n");
     
     // The simulation loop
     time_point t0 = now();
-    for (int i = 0; i < config.steps; i++) {
+    for (int step = 0; step < config.steps; step++) {
         // Order particles by their grid positions
         time_point t1 = now();
         updateGridAndSort(
@@ -492,7 +536,7 @@ main(void)
         time_point t5 = now();
         particles.clearNextOnDevice();
         move KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-            i,
+            step,
             rngState.d_Current,
             particles.d_Current,
             particles.d_Next,
@@ -505,7 +549,7 @@ main(void)
         particles.swap();
 
         brownianMovementAndRotation<Particle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-            i,
+            step,
             rngState.d_Current,
             particles.d_Current,
             nActiveParticles.h_Current[0],
@@ -519,7 +563,7 @@ main(void)
         time_point t6 = now();
         metabolicParticles.clearNextOnDevice();
         moveMetabolicParticles KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-            i,
+            step,
             metabolicParticleRngState.d_Current,
             metabolicParticles.d_Current,
             metabolicParticles.d_Next,
@@ -529,7 +573,7 @@ main(void)
         metabolicParticles.swap();
 
         brownianMovementAndRotation<MetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-            i,
+            step,
             metabolicParticleRngState.d_Current,
             metabolicParticles.d_Current,
             nActiveMetabolicParticles.h_Current[0],
@@ -539,21 +583,13 @@ main(void)
         cudaDeviceSynchronize();
         //nActiveParticles.copyToHost();
 
-        time_point t6_1 = now();
-        float stepFraction = 1.0f / config.relaxationSteps;
-        for (int j = 0; j < config.relaxationSteps; j++) {
-            // Relax the accumulated tensions - Particles
+        // Co-ordinate noise for interacting partners
+        time_point t6_00 = now();
+        for (int j = 0; j < config.noiseCoordinationSteps; j++) {
             particles.clearNextOnDevice();
-            applyVelocities<Particle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-                i,
-                rngState.d_Current,
-                particles.d_Current,
-                nActiveParticles.h_Current[0],
-                stepFraction
-            );
 
-            relax KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-                i,
+            coordinateNoise KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                step,
                 rngState.d_Current,
                 particles.d_Current,
                 particles.d_Next,
@@ -562,10 +598,37 @@ main(void)
             );
             particles.swap();
 
+            cudaDeviceSynchronize();
+        }
+
+        time_point t6_1 = now();
+        float stepFraction = 1.0f / config.relaxationSteps;
+        for (int j = 0; j < config.relaxationSteps; j++) {
+            // Relax the accumulated tensions - Particles
+            particles.clearNextOnDevice();
+            applyVelocities<Particle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                step,
+                rngState.d_Current,
+                particles.d_Current,
+                nActiveParticles.h_Current[0],
+                stepFractiont
+            );
+
+            relax KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                step,
+                rngState.d_Current,
+                particles.d_Current,
+                particles.d_Next,
+                nActiveParticles.h_Current[0],
+                gridRanges.d_Current,
+                flatComplexificationInfo->d_Current
+            );
+            particles.swap();
+
             // Relax the accumulated tensions - MetabolicParticles
             metabolicParticles.clearNextOnDevice();
             applyVelocities<MetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-                i,
+                step,
                 metabolicParticleRngState.d_Current,
                 metabolicParticles.d_Current,
                 nActiveMetabolicParticles.h_Current[0],
@@ -573,7 +636,7 @@ main(void)
             );
 
             relaxMetabolicParticles KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-                i,
+                step,
                 metabolicParticleRngState.d_Current,
                 metabolicParticles.d_Current,
                 metabolicParticles.d_Next,
@@ -587,7 +650,7 @@ main(void)
             // Relax the metabolic-plain particle tensions
             particles.clearNextOnDevice();
             relaxMetabolicParticlePartners KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-                i,
+                step,
                 rngState.d_Current,
                 particles.d_Current,
                 particles.d_Next,
@@ -602,18 +665,29 @@ main(void)
         }
 
         time_point t6_2 = now();
-        //for (int j = 0; j < config.relaxationSteps; j++) {
-        //    // Relax the accumulated metabolic particle tensions
-        //    
-        //    cudaDeviceSynchronize();
-        //}
+
+        // Create complex-interactions
+        particles.clearNextOnDevice();
+        complexify KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            step,
+            rngState.d_Current,
+            particles.d_Current,
+            particles.d_Next,
+            nActiveParticles.h_Current[0],
+            gridRanges.d_Current,
+            partnerMappedInteractions.first->d_Current,
+            partnerMappedInteractions.second->d_Current
+        );
+        particles.swap();
+
+        cudaDeviceSynchronize();
 
         time_point t6_3 = now();
         // Diffuse metabolites a bit faster
         for (int j = 0; j < config.metaboliteDiffusionSteps; j++) {
             metabolicParticles.clearNextOnDevice();
             diffuseMetabolites KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-                i,
+                step,
                 metabolicParticleRngState.d_Current,
                 metabolicParticles.d_Current,
                 metabolicParticles.d_Next,
@@ -628,6 +702,14 @@ main(void)
         time_point t7 = now();
         /*particles.copyToHost();
         metabolicParticles.copyToHost();*/
+
+        /*particles.copyToHost();
+        printf("[");
+        for (unsigned int i = 0; i < nActiveParticles.h_Current[0]; i++) {
+            printf(" %d", particles.h_Current[i].nActiveInteractions);
+        }
+        printf(" ]\n");
+        break;*/
 
         time_point t8 = now();
 
@@ -661,7 +743,7 @@ main(void)
 
         time_point t9 = now();
 
-        if (i % 10 == 0) {
+        if (step % 10 == 0) {
             //time_point t7 = now();
             //particles.copyToHost();
             //metabolicParticles.copyToHost();
@@ -690,18 +772,19 @@ main(void)
 
             //time_point t9 = now();
 
-            printf("step %d, nActiveParticles %d, updateGridAndSort %f, move %f, moveMetabolicParticles %f, relax %f, diffuseMetabolites %f, persistFrame (previous) %f, reduceParticles %f, full step time %f\n",
-                i,
-                nActiveParticles.h_Current[0],
-                getDuration(t1, t5),
-                getDuration(t5, t6),
-                getDuration(t6, t6_1),
-                getDuration(t6_1, t6_2),
-                getDuration(t6_3, t7),
-                persistFrameDuration,
-                getDuration(t8, t9),
-                getDuration(t1, t9)
-            );
+            printf("step %d", step);
+            printf(", nActiveParticles %d", nActiveParticles.h_Current[0]);
+            printf(", move %f", getDuration(t1, t5));
+            printf(", moveMetabolicParticles %f", getDuration(t5, t6));
+            printf(", coordinateNoise %f", getDuration(t6, t6_00));
+            printf(", relax %f", getDuration(t6_00, t6_1));
+            printf(", complexify %f", getDuration(t6_1, t6_2));
+            printf(", diffuseMetabolites %f", getDuration(t6_2, t6_3));
+            printf(", persistFrame (previous) %f", getDuration(t6_3, t8));
+            printf(", reduceParticles %f", persistFrameDuration);
+            printf(", reduceParticles %f", getDuration(t8, t9));
+            printf(", full step time %f", getDuration(t1, t9));
+            printf("\n");
         }
     }
     cudaDeviceSynchronize();
