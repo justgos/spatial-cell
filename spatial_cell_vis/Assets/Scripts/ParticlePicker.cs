@@ -102,7 +102,7 @@ public class ParticlePicker : MonoBehaviour
             if(targetParticle != null)
             {
                 SimData.Particle tp = (SimData.Particle)targetParticle;
-                Debug.Log("Target particle " + tp.id);
+                LogParticleState(tp.id);
 
                 foreach (var particleRenderer in particleRenderers)
                 {

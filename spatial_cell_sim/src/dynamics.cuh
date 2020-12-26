@@ -176,7 +176,7 @@ brownianMovementAndRotation(
         mul(p.velocity, d_Config.velocityDecay),
         mul(
             transform_vector(VECTOR_UP, random_rotation(&rngState[idx])),
-            fabs(curand_normal(&rngState[idx])) * movementNoiseScale
+            fabs(curand_normal(&rngState[idx])) * movementNoiseScale / (p.radius / 2.5)
         )
     );
     //float3 noisePos = p.pos + step * make_float3(0.1, 0.1, 0.1) * 100.0;
@@ -198,7 +198,7 @@ brownianMovementAndRotation(
     p.angularVelocity = slerp(
         slerp(p.angularVelocity, QUATERNION_IDENTITY, d_Config.angularVelocityDecay),
         random_rotation(&rngState[idx]),
-        d_Config.rotationNoiseScale
+        d_Config.rotationNoiseScale / (p.radius / 2.5)
     );
     
     particles[idx] = p;
@@ -312,7 +312,7 @@ coordinateNoise(
                             // Noise should act on the interacting partners as if they were one
                             p.velocity = lerp(p.velocity, tp.velocity, 0.49f / (p.nActiveInteractions + tp.nActiveInteractions));
 
-                            p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.5;
+                            //p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.5;
 
                             p.angularVelocity = slerp(
                                 p.angularVelocity,
@@ -576,7 +576,7 @@ relax(
                                 );*/
                                 float3 relativePositionDelta = relaxedRelativePosition - p.pos;
                                 //moveVec += relativePositionDelta * relativePositionRelaxationSpeed;
-                                moveVec += relativePositionDelta * 0.99f / (p.nActiveInteractions + tp.nActiveInteractions);
+                                moveVec += relativePositionDelta * 0.99f / (p.nActiveInteractions + tp.nActiveInteractions);  // *(p.radius / (p.radius + tp.radius));
                             }
 
                             // Interaction testing code
@@ -669,7 +669,7 @@ relax(
                     //    if (dist < collisionDist) {
                     //        float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
                     //        constexpr float collisionRelaxationSpeed = 0.25f;
-                    //        moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed);
+                    //        moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed) * p.radius / (p.radius + tp.radius);
                     //    }
                     //}
                 }

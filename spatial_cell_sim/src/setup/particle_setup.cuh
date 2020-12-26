@@ -60,9 +60,9 @@ fillParticlesStraightLine(
             0,
             (*particleTypeInfo)[type].radius,
             make_float3(
-                min(max(pos.x, 0.0f), 1.0f),
-                min(max(pos.y, 0.0f), 1.0f),
-                min(max(pos.z, 0.0f), 1.0f)
+                min(max(pos.x, 0.0f), config->simSize),
+                min(max(pos.y, 0.0f), config->simSize),
+                min(max(pos.z, 0.0f), config->simSize)
             ),
             random_rotation_host(rng)
         );
@@ -100,9 +100,9 @@ fillParticlesWrappedChain(
             0,
             radius,
             make_float3(
-                min(max(pos.x, 0.0f), 1.0f),
-                min(max(pos.y, 0.0f), 1.0f),
-                min(max(pos.z, 0.0f), 1.0f)
+                min(max(pos.x, 0.0f), config->simSize),
+                min(max(pos.y, 0.0f), config->simSize),
+                min(max(pos.z, 0.0f), config->simSize)
             ),
             rotation
         );
@@ -148,9 +148,9 @@ fillParticlesPlane(
             0,
             (*particleTypeInfo)[type].radius,
             make_float3(
-                min(max(pos.x, 0.0f), 1.0f),
-                min(max(pos.y, 0.0f), 1.0f),
-                min(max(pos.z, 0.0f), 1.0f)
+                min(max(pos.x, 0.0f), config->simSize),
+                min(max(pos.y, 0.0f), config->simSize),
+                min(max(pos.z, 0.0f), config->simSize)
             ),
             //random_rotation_host(rng)
             quaternionFromTo(VECTOR_UP, normal)
@@ -193,7 +193,7 @@ fillParticlesSphere(
     std::function<double()> rng
 ) {
     std::vector<float3> pointsOnTheSphere = fibonacci_spiral_sphere(count);
-    float r = sqrt(count / 1000.0 * pow((*particleTypeInfo)[type].radius / 0.0025, 2.0)) * 0.04;
+    float r = sqrt(count / 1000.0 * pow((*particleTypeInfo)[type].radius / 2.5, 2.0)) * 0.04;
     for (int i = h_nActiveParticles[0]; i < h_nActiveParticles[0] + count; i++)
     {
         float3 pos = add(
@@ -208,9 +208,9 @@ fillParticlesSphere(
             0,
             (*particleTypeInfo)[type].radius,
             make_float3(
-                min(max(pos.x, 0.0f), 1.0f),
-                min(max(pos.y, 0.0f), 1.0f),
-                min(max(pos.z, 0.0f), 1.0f)
+                min(max(pos.x, 0.0f), config->simSize),
+                min(max(pos.y, 0.0f), config->simSize),
+                min(max(pos.z, 0.0f), config->simSize)
             ),
             //random_rotation_host(rng)
             quaternionFromTo(VECTOR_UP, posDirection)
@@ -242,9 +242,9 @@ instantiateComplex(
             0,
             (*particleTypeInfo)[cp.type].radius,
             make_float3(
-                min(max(pos.x, 0.0f), 1.0f),
-                min(max(pos.y, 0.0f), 1.0f),
-                min(max(pos.z, 0.0f), 1.0f)
+                min(max(pos.x, 0.0f), config->simSize),
+                min(max(pos.y, 0.0f), config->simSize),
+                min(max(pos.z, 0.0f), config->simSize)
             ),
             cp.rotation
         );

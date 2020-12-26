@@ -240,8 +240,11 @@ public class SimData : MonoBehaviour
             var br = new BinaryReader(fs);
             simSize = br.ReadSingle();
             particleVisibleRangeXSlider.MaxValue = simSize;
+            particleVisibleRangeXSlider.HighValue = particleVisibleRangeXSlider.MaxValue;
             particleVisibleRangeYSlider.MaxValue = simSize;
+            particleVisibleRangeYSlider.HighValue = particleVisibleRangeYSlider.MaxValue;
             particleVisibleRangeZSlider.MaxValue = simSize;
+            particleVisibleRangeZSlider.HighValue = particleVisibleRangeZSlider.MaxValue;
 
             particleBufferSize = br.ReadInt32();
             particleStructSize = Marshal.SizeOf(typeof(Particle));
@@ -617,6 +620,7 @@ public class SimData : MonoBehaviour
             else
                 entry.Value.SetData<Particle>(null, 0, null);
         }
+
         //particleFrameData.SetData(frames[(int)frameNum].particles, frames[(int)frameNum].particles.Length, frames[(int)frameNum]);
         metabolicParticleFrameData.SetData<MetabolicParticle>(frame.Value.metabolicParticles, frame.Value.metabolicParticles.Length, frame);
         frameNumberText.text = frameSlider.value.ToString();

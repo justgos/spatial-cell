@@ -3,1296 +3,1302 @@
     "type": 0,
     "category": "lipid",
     "name": "Generic lipid",
-    "radius": 0.0025
+    "radius": 2.0
   },
   {
     "type": 1,
     "category": "dummy",
     "name": "Generic molecule",
-    "radius": 0.0025
+    "radius": 2.5
+  },
+  {
+    "type": 1000,
+    "category": "metabolic",
+    "name": "Metabolite carrier",
+    "radius": 2.5
   },
   {
     "type": 100,
     "category": "rna",
     "name": "TTT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 101,
     "category": "rna",
     "name": "TTC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 102,
     "category": "rna",
     "name": "TTA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 103,
     "category": "rna",
     "name": "TTG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 104,
     "category": "rna",
     "name": "TCT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 105,
     "category": "rna",
     "name": "TCC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 106,
     "category": "rna",
     "name": "TCA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 107,
     "category": "rna",
     "name": "TCG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 108,
     "category": "rna",
     "name": "TAT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 109,
     "category": "rna",
     "name": "TAC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 110,
     "category": "rna",
     "name": "TGT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 111,
     "category": "rna",
     "name": "TGC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 112,
     "category": "rna",
     "name": "TGG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 113,
     "category": "rna",
     "name": "CTT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 114,
     "category": "rna",
     "name": "CTC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 115,
     "category": "rna",
     "name": "CTA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 116,
     "category": "rna",
     "name": "CTG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 117,
     "category": "rna",
     "name": "CCT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 118,
     "category": "rna",
     "name": "CCC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 119,
     "category": "rna",
     "name": "CCA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 120,
     "category": "rna",
     "name": "CCG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 121,
     "category": "rna",
     "name": "CAT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 122,
     "category": "rna",
     "name": "CAC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 123,
     "category": "rna",
     "name": "CAA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 124,
     "category": "rna",
     "name": "CAG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 125,
     "category": "rna",
     "name": "CGT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 126,
     "category": "rna",
     "name": "CGC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 127,
     "category": "rna",
     "name": "CGA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 128,
     "category": "rna",
     "name": "CGG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 129,
     "category": "rna",
     "name": "ATT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 130,
     "category": "rna",
     "name": "ATC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 131,
     "category": "rna",
     "name": "ATA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 132,
     "category": "rna",
     "name": "ATG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 133,
     "category": "rna",
     "name": "ACT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 134,
     "category": "rna",
     "name": "ACC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 135,
     "category": "rna",
     "name": "ACA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 136,
     "category": "rna",
     "name": "ACG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 137,
     "category": "rna",
     "name": "AAT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 138,
     "category": "rna",
     "name": "AAC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 139,
     "category": "rna",
     "name": "AAA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 140,
     "category": "rna",
     "name": "AAG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 141,
     "category": "rna",
     "name": "AGT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 142,
     "category": "rna",
     "name": "AGC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 143,
     "category": "rna",
     "name": "AGA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 144,
     "category": "rna",
     "name": "AGG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 145,
     "category": "rna",
     "name": "GTT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 146,
     "category": "rna",
     "name": "GTC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 147,
     "category": "rna",
     "name": "GTA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 148,
     "category": "rna",
     "name": "GTG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 149,
     "category": "rna",
     "name": "GCT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 150,
     "category": "rna",
     "name": "GCC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 151,
     "category": "rna",
     "name": "GCA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 152,
     "category": "rna",
     "name": "GCG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 153,
     "category": "rna",
     "name": "GAT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 154,
     "category": "rna",
     "name": "GAC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 155,
     "category": "rna",
     "name": "GAA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 156,
     "category": "rna",
     "name": "GAG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 157,
     "category": "rna",
     "name": "GGT",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 158,
     "category": "rna",
     "name": "GGC",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 159,
     "category": "rna",
     "name": "GGA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 160,
     "category": "rna",
     "name": "GGG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 161,
     "category": "rna",
     "name": "TTG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 162,
     "category": "rna",
     "name": "CTG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 163,
     "category": "rna",
     "name": "ATG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 164,
     "category": "rna",
     "name": "TAA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 165,
     "category": "rna",
     "name": "TAG",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 166,
     "category": "rna",
     "name": "TGA",
-    "radius": 0.00075
+    "radius": 0.75
   },
   {
     "type": 1001,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.006409854125976562
+    "radius": 6.409854125976563
   },
   {
     "type": 1002,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004642939376831055
+    "radius": 4.6429393768310545
   },
   {
     "type": 1003,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0029643903732299807
+    "radius": 2.9643903732299806
   },
   {
     "type": 1004,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003111664390563965
+    "radius": 3.111664390563965
   },
   {
     "type": 1005,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003133160400390625
+    "radius": 3.133160400390625
   },
   {
     "type": 1006,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.00368107795715332
+    "radius": 3.6810779571533203
   },
   {
     "type": 1007,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002242486000061035
+    "radius": 2.242486000061035
   },
   {
     "type": 1008,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0028064020156860353
+    "radius": 2.806402015686035
   },
   {
     "type": 1009,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.00245801944732666
+    "radius": 2.4580194473266603
   },
   {
     "type": 1010,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0029149200439453123
+    "radius": 2.9149200439453127
   },
   {
     "type": 1011,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002830997657775879
+    "radius": 2.830997657775879
   },
   {
     "type": 1012,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0025587446212768554
+    "radius": 2.5587446212768556
   },
   {
     "type": 1013,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0024076316833496095
+    "radius": 2.407631683349609
   },
   {
     "type": 1014,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0020691438674926756
+    "radius": 2.069143867492676
   },
   {
     "type": 1015,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.005900635147094727
+    "radius": 5.900635147094727
   },
   {
     "type": 1016,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0049007583618164065
+    "radius": 4.900758361816406
   },
   {
     "type": 1017,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003981670761108398
+    "radius": 3.9816707611083983
   },
   {
     "type": 1018,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004798591995239258
+    "radius": 4.798591995239258
   },
   {
     "type": 1019,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004044731521606446
+    "radius": 4.044731521606446
   },
   {
     "type": 1020,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004551804733276367
+    "radius": 4.551804733276367
   },
   {
     "type": 1021,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0032706741333007813
+    "radius": 3.270674133300781
   },
   {
     "type": 1022,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0032878673553466795
+    "radius": 3.2878673553466795
   },
   {
     "type": 1023,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0026315900802612304
+    "radius": 2.6315900802612306
   },
   {
     "type": 1024,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0030570755004882813
+    "radius": 3.0570755004882812
   },
   {
     "type": 1025,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003012986755371094
+    "radius": 3.012986755371094
   },
   {
     "type": 1026,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002604839897155762
+    "radius": 2.604839897155762
   },
   {
     "type": 1027,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0022926773071289064
+    "radius": 2.292677307128906
   },
   {
     "type": 1028,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003264046859741211
+    "radius": 3.264046859741211
   },
   {
     "type": 1029,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004215230941772461
+    "radius": 4.215230941772461
   },
   {
     "type": 1030,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0022152132034301756
+    "radius": 2.2152132034301757
   },
   {
     "type": 1031,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003367531204223633
+    "radius": 3.3675312042236327
   },
   {
     "type": 1032,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0042325778961181644
+    "radius": 4.232577896118164
   },
   {
     "type": 1033,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.00469653434753418
+    "radius": 4.69653434753418
   },
   {
     "type": 1034,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004578734970092774
+    "radius": 4.578734970092773
   },
   {
     "type": 1035,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0015261265754699708
+    "radius": 1.5261265754699707
   },
   {
     "type": 1036,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0024730215072631834
+    "radius": 2.4730215072631836
   },
   {
     "type": 1037,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003683281707763672
+    "radius": 3.6832817077636717
   },
   {
     "type": 1038,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0028267257690429686
+    "radius": 2.8267257690429686
   },
   {
     "type": 1039,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003009721374511719
+    "radius": 3.009721374511719
   },
   {
     "type": 1040,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004263187026977539
+    "radius": 4.263187026977539
   },
   {
     "type": 1041,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002167301368713379
+    "radius": 2.167301368713379
   },
   {
     "type": 1042,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0030616270065307615
+    "radius": 3.061627006530762
   },
   {
     "type": 1043,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0021777170181274414
+    "radius": 2.1777170181274412
   },
   {
     "type": 1044,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004220550537109375
+    "radius": 4.220550537109375
   },
   {
     "type": 1045,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004259605407714844
+    "radius": 4.259605407714844
   },
   {
     "type": 1046,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.007583681488037109
+    "radius": 7.58368148803711
   },
   {
     "type": 1047,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0030697837829589845
+    "radius": 3.0697837829589845
   },
   {
     "type": 1048,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0035901630401611326
+    "radius": 3.5901630401611326
   },
   {
     "type": 1049,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0026937231063842776
+    "radius": 2.6937231063842773
   },
   {
     "type": 1050,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0052675479888916014
+    "radius": 5.267547988891602
   },
   {
     "type": 1051,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0033563220977783203
+    "radius": 3.35632209777832
   },
   {
     "type": 1052,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002123351860046387
+    "radius": 2.1233518600463865
   },
   {
     "type": 1053,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004105691146850586
+    "radius": 4.105691146850586
   },
   {
     "type": 1054,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.00233676700592041
+    "radius": 2.33676700592041
   },
   {
     "type": 1055,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002419808769226074
+    "radius": 2.419808769226074
   },
   {
     "type": 1056,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.00555430908203125
+    "radius": 5.55430908203125
   },
   {
     "type": 1057,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0062002685546875
+    "radius": 6.2002685546875
   },
   {
     "type": 1058,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0005029039859771728
+    "radius": 0.5029039859771729
   },
   {
     "type": 1059,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0006460052490234375
+    "radius": 0.6460052490234375
   },
   {
     "type": 1060,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0013833126068115234
+    "radius": 1.3833126068115233
   },
   {
     "type": 1061,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0005770604610443116
+    "radius": 0.5770604610443115
   },
   {
     "type": 1062,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0021229753494262696
+    "radius": 2.1229753494262695
   },
   {
     "type": 1063,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0013538661003112793
+    "radius": 1.3538661003112793
   },
   {
     "type": 1064,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0023147392272949217
+    "radius": 2.314739227294922
   },
   {
     "type": 1065,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0034825069427490236
+    "radius": 3.4825069427490236
   },
   {
     "type": 1066,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004406563949584961
+    "radius": 4.406563949584961
   },
   {
     "type": 1067,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0028371206283569336
+    "radius": 2.8371206283569337
   },
   {
     "type": 1068,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0037288410186767577
+    "radius": 3.728841018676758
   },
   {
     "type": 1069,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0020497690200805664
+    "radius": 2.0497690200805665
   },
   {
     "type": 1070,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0016572362899780273
+    "radius": 1.6572362899780273
   },
   {
     "type": 1071,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002860411071777344
+    "radius": 2.8604110717773437
   },
   {
     "type": 1072,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0013558876037597656
+    "radius": 1.3558876037597656
   },
   {
     "type": 1073,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0031223108291625976
+    "radius": 3.122310829162598
   },
   {
     "type": 1074,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.00367087516784668
+    "radius": 3.6708751678466798
   },
   {
     "type": 1075,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0032240482330322265
+    "radius": 3.2240482330322267
   },
   {
     "type": 1076,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0027256256103515624
+    "radius": 2.7256256103515626
   },
   {
     "type": 1077,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0031248628616333007
+    "radius": 3.124862861633301
   },
   {
     "type": 1078,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0020243511199951173
+    "radius": 2.024351119995117
   },
   {
     "type": 1079,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004735451889038086
+    "radius": 4.735451889038086
   },
   {
     "type": 1080,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.001724191665649414
+    "radius": 1.724191665649414
   },
   {
     "type": 1081,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0022455810546875
+    "radius": 2.2455810546875
   },
   {
     "type": 1082,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0018172933578491212
+    "radius": 1.817293357849121
   },
   {
     "type": 1083,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003573360061645508
+    "radius": 3.573360061645508
   },
   {
     "type": 1084,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.00283096866607666
+    "radius": 2.83096866607666
   },
   {
     "type": 1085,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0035485218048095703
+    "radius": 3.54852180480957
   },
   {
     "type": 1086,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.00295474796295166
+    "radius": 2.95474796295166
   },
   {
     "type": 1087,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.005595012283325196
+    "radius": 5.595012283325195
   },
   {
     "type": 1088,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003581096649169922
+    "radius": 3.581096649169922
   },
   {
     "type": 1089,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003120822334289551
+    "radius": 3.1208223342895507
   },
   {
     "type": 1090,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0022363698959350586
+    "radius": 2.2363698959350584
   },
   {
     "type": 1091,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0028433082580566404
+    "radius": 2.8433082580566404
   },
   {
     "type": 1092,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.00603603630065918
+    "radius": 6.0360363006591795
   },
   {
     "type": 1093,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0030331329345703126
+    "radius": 3.0331329345703124
   },
   {
     "type": 1094,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0031485895156860354
+    "radius": 3.148589515686035
   },
   {
     "type": 1095,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0035473445892333986
+    "radius": 3.5473445892333983
   },
   {
     "type": 1096,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0032645263671875
+    "radius": 3.2645263671875
   },
   {
     "type": 1097,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003038636589050293
+    "radius": 3.038636589050293
   },
   {
     "type": 1098,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.005035133743286133
+    "radius": 5.035133743286133
   },
   {
     "type": 1099,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002488910484313965
+    "radius": 2.4889104843139647
   },
   {
     "type": 1100,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0010888195991516113
+    "radius": 1.0888195991516114
   },
   {
     "type": 1101,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0010752928733825684
+    "radius": 1.0752928733825684
   },
   {
     "type": 1102,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0010415653228759765
+    "radius": 1.0415653228759765
   },
   {
     "type": 1103,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0064641632080078126
+    "radius": 6.464163208007813
   },
   {
     "type": 1104,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003517891311645508
+    "radius": 3.5178913116455077
   },
   {
     "type": 1105,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002900459289550781
+    "radius": 2.9004592895507812
   },
   {
     "type": 1106,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002657649803161621
+    "radius": 2.657649803161621
   },
   {
     "type": 1107,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0024425722122192383
+    "radius": 2.4425722122192384
   },
   {
     "type": 1108,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003625095748901367
+    "radius": 3.625095748901367
   },
   {
     "type": 1109,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0034832164764404296
+    "radius": 3.48321647644043
   },
   {
     "type": 1110,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0025371726989746094
+    "radius": 2.5371726989746093
   },
   {
     "type": 1111,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0023646263122558595
+    "radius": 2.3646263122558593
   },
   {
     "type": 1112,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002892616844177246
+    "radius": 2.892616844177246
   },
   {
     "type": 1113,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003278707504272461
+    "radius": 3.278707504272461
   },
   {
     "type": 1114,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.004687429809570313
+    "radius": 4.687429809570313
   },
   {
     "type": 1115,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.00248070068359375
+    "radius": 2.48070068359375
   },
   {
     "type": 1116,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0041800006866455075
+    "radius": 4.180000686645508
   },
   {
     "type": 1117,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0022867706298828126
+    "radius": 2.2867706298828123
   },
   {
     "type": 1118,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0018413789749145508
+    "radius": 1.8413789749145508
   },
   {
     "type": 1119,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0037352359771728517
+    "radius": 3.7352359771728514
   },
   {
     "type": 1120,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0018622608184814453
+    "radius": 1.8622608184814453
   },
   {
     "type": 1121,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0023848182678222656
+    "radius": 2.384818267822266
   },
   {
     "type": 1122,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0014938433647155762
+    "radius": 1.4938433647155762
   },
   {
     "type": 1123,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0032165225982666015
+    "radius": 3.2165225982666015
   },
   {
     "type": 1124,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0034291397094726563
+    "radius": 3.4291397094726563
   },
   {
     "type": 1125,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0025383453369140626
+    "radius": 2.5383453369140625
   },
   {
     "type": 1126,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.003323480987548828
+    "radius": 3.323480987548828
   },
   {
     "type": 1127,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0017013864517211913
+    "radius": 1.7013864517211914
   },
   {
     "type": 1128,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0027681913375854493
+    "radius": 2.768191337585449
   },
   {
     "type": 1129,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0018932973861694336
+    "radius": 1.8932973861694335
   },
   {
     "type": 1130,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0028532514572143556
+    "radius": 2.8532514572143555
   },
   {
     "type": 1131,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.001479921054840088
+    "radius": 1.4799210548400878
   },
   {
     "type": 1132,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0025838478088378906
+    "radius": 2.5838478088378904
   },
   {
     "type": 1133,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.002005487823486328
+    "radius": 2.005487823486328
   },
   {
     "type": 1134,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0018638059616088868
+    "radius": 1.8638059616088867
   },
   {
     "type": 1135,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0018017820358276367
+    "radius": 1.8017820358276366
   },
   {
     "type": 1136,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0019410894393920898
+    "radius": 1.9410894393920899
   },
   {
     "type": 1137,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0018409454345703125
+    "radius": 1.8409454345703125
   },
   {
     "type": 1138,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0015645894050598144
+    "radius": 1.5645894050598144
   },
   {
     "type": 1139,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0022234819412231444
+    "radius": 2.2234819412231444
   },
   {
     "type": 1140,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0008941573143005371
+    "radius": 0.8941573143005371
   },
   {
     "type": 1141,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0032238311767578123
+    "radius": 3.2238311767578125
   },
   {
     "type": 1142,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.00111748685836792
+    "radius": 1.1174868583679198
   },
   {
     "type": 1143,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0011517200469970703
+    "radius": 1.1517200469970703
   },
   {
     "type": 1144,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0011131141662597656
+    "radius": 1.1131141662597657
   },
   {
     "type": 1145,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0007385164737701416
+    "radius": 0.7385164737701416
   },
   {
     "type": 1146,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0008838144302368164
+    "radius": 0.8838144302368164
   },
   {
     "type": 1147,
     "category": "protein",
     "name": "Part of 6hiv",
-    "radius": 0.0007911981105804443
+    "radius": 0.7911981105804443
   }
 ]

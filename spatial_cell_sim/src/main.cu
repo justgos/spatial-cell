@@ -611,7 +611,7 @@ main(void)
                 rngState.d_Current,
                 particles.d_Current,
                 nActiveParticles.h_Current[0],
-                stepFractiont
+                stepFraction
             );
 
             relax KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
@@ -774,14 +774,14 @@ main(void)
 
             printf("step %d", step);
             printf(", nActiveParticles %d", nActiveParticles.h_Current[0]);
-            printf(", move %f", getDuration(t1, t5));
-            printf(", moveMetabolicParticles %f", getDuration(t5, t6));
-            printf(", coordinateNoise %f", getDuration(t6, t6_00));
-            printf(", relax %f", getDuration(t6_00, t6_1));
-            printf(", complexify %f", getDuration(t6_1, t6_2));
-            printf(", diffuseMetabolites %f", getDuration(t6_2, t6_3));
-            printf(", persistFrame (previous) %f", getDuration(t6_3, t8));
-            printf(", reduceParticles %f", persistFrameDuration);
+            printf(", updateGridAndSort %f", getDuration(t1, t5));
+            printf(", move %f", getDuration(t5, t6));
+            printf(", moveMetabolicParticles %f", getDuration(t6, t6_00));
+            printf(", coordinateNoise %f", getDuration(t6_00, t6_1));
+            printf(", relax %f", getDuration(t6_1, t6_2));
+            printf(", complexify %f", getDuration(t6_2, t6_3));
+            printf(", diffuseMetabolites %f", getDuration(t6_3, t8));
+            printf(", persistFrame (previous) %f", persistFrameDuration);
             printf(", reduceParticles %f", getDuration(t8, t9));
             printf(", full step time %f", getDuration(t1, t9));
             printf("\n");

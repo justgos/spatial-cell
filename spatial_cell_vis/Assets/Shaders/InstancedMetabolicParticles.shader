@@ -61,10 +61,16 @@
             /*float rotation = data.w * data.w * _Time.y * 0.5f;
             rotate2D(data.xz, rotation);*/
 
+            float3 pos = float3(
+                decodeHighUintToFloat16(p.r_pos_rot[0]),
+                decodeLowUintToFloat16(p.r_pos_rot[1]),
+                decodeHighUintToFloat16(p.r_pos_rot[1])
+            );
+
             unity_ObjectToWorld._11_21_31_41 = float4(meshScale / 10 * scale, 0, 0, 0);
             unity_ObjectToWorld._12_22_32_42 = float4(0, meshScale / 10 * scale, 0, 0);
             unity_ObjectToWorld._13_23_33_43 = float4(0, 0, meshScale / 10 * scale, 0);
-            unity_ObjectToWorld._14_24_34_44 = float4(p.pos.xyz * scale, 1);
+            unity_ObjectToWorld._14_24_34_44 = float4(pos.xyz * scale, 1);
             unity_WorldToObject = unity_ObjectToWorld;
             unity_WorldToObject._14_24_34 *= -1;
             unity_WorldToObject._11_22_33 = 1.0f / unity_WorldToObject._11_22_33;
@@ -85,10 +91,22 @@
 
             //v.vertex.xyz *= min(max(log(1 + p.metabolites[0]) / log(100.0), 0.0), 1.0);
 
-            v.vertex.xyz = transform_vector(v.vertex.xyz, p.rot);
-            v.normal.xyz = transform_vector(v.normal.xyz, p.rot);
-            float4 pos = mul(baseTransform,
-                float4(p.pos * scale, 1)
+            float3 pos = float3(
+                decodeHighUintToFloat16(p.r_pos_rot[0]),
+                decodeLowUintToFloat16(p.r_pos_rot[1]),
+                decodeHighUintToFloat16(p.r_pos_rot[1])
+            );
+            float4 rot = float4(
+                decodeLowUintToFloat16(p.r_pos_rot[2]),
+                decodeHighUintToFloat16(p.r_pos_rot[2]),
+                decodeLowUintToFloat16(p.r_pos_rot[3]),
+                decodeHighUintToFloat16(p.r_pos_rot[3])
+            );
+
+            v.vertex.xyz = transform_vector(v.vertex.xyz, rot);
+            v.normal.xyz = transform_vector(v.normal.xyz, rot);
+            pos = mul(baseTransform,
+                float4(pos * scale, 1)
             );
             float3 clippedCameraPos = float3(
                 min(max(_WorldSpaceCameraPos.x, 0.0), simSize * scale),
