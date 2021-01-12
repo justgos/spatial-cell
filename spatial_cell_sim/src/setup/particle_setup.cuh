@@ -193,7 +193,7 @@ fillParticlesSphere(
     std::function<double()> rng
 ) {
     std::vector<float3> pointsOnTheSphere = fibonacci_spiral_sphere(count);
-    float r = sqrt(count / 1000.0 * pow((*particleTypeInfo)[type].radius / 2.5, 2.0)) * 0.04;
+    float r = sqrt(count / 1000.0 * pow((*particleTypeInfo)[type].radius / 2.5, 2.0)) * 40.0;
     for (int i = h_nActiveParticles[0]; i < h_nActiveParticles[0] + count; i++)
     {
         float3 pos = add(

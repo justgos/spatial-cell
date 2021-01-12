@@ -176,7 +176,7 @@ brownianMovementAndRotation(
         mul(p.velocity, d_Config.velocityDecay),
         mul(
             transform_vector(VECTOR_UP, random_rotation(&rngState[idx])),
-            fabs(curand_normal(&rngState[idx])) * movementNoiseScale / (p.radius / 2.5)
+            fabs(curand_normal(&rngState[idx])) * movementNoiseScale / max(p.radius / 2.5, 1.0f)
         )
     );
     //float3 noisePos = p.pos + step * make_float3(0.1, 0.1, 0.1) * 100.0;
@@ -308,16 +308,33 @@ coordinateNoise(
 
                     for (int k = 0; k < p.nActiveInteractions; k++) {
                         ParticleInteraction interaction = p.interactions[k];
+
+                        // Non-rigid interactions (e.g. RNA chain) should not be coordinated
+                        if (interaction.type < 10)
+                            continue;
+
                         if (interaction.partnerId == tp.id) {
                             // Noise should act on the interacting partners as if they were one
+                            float pVelocityMag = length(p.velocity);
+                            float tpVelocityMag = length(tp.velocity);
                             p.velocity = lerp(p.velocity, tp.velocity, 0.49f / (p.nActiveInteractions + tp.nActiveInteractions));
+                            // Restore some of the impulse
+                            p.velocity *= 1.0f + ((pVelocityMag + tpVelocityMag) / 2.0f / length(p.velocity) - 1.0f) * 0.5f;
 
                             //p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.5;
 
-                            p.angularVelocity = slerp(
+                            /*p.angularVelocity = slerp(
                                 p.angularVelocity,
                                 tp.angularVelocity,
                                 0.49f / (p.nActiveInteractions + tp.nActiveInteractions)
+                            );*/
+
+                            // Angular noise is too messy for particle complexes - it'll be taken care of
+                            // when the particles will attempt to realign after applying the position noise
+                            p.angularVelocity = slerp(
+                                p.angularVelocity,
+                                QUATERNION_IDENTITY,
+                                0.4f / (p.nActiveInteractions + tp.nActiveInteractions)
                             );
                         }
                     }
@@ -353,6 +370,9 @@ relax(
 
     float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
     //float4 rotQuat = QUATERNION_IDENTITY;
+    float3 targetPos = p.pos;
+    float countedInteractions = 0.0f;
+    float countedInteractionWeight = 0.0f;
 
     // Grid cell index of the current particle
     const int cgx = getGridIdx(p.pos.x),
@@ -576,7 +596,12 @@ relax(
                                 );*/
                                 float3 relativePositionDelta = relaxedRelativePosition - p.pos;
                                 //moveVec += relativePositionDelta * relativePositionRelaxationSpeed;
-                                moveVec += relativePositionDelta * 0.99f / (p.nActiveInteractions + tp.nActiveInteractions);  // *(p.radius / (p.radius + tp.radius));
+                                //moveVec += relativePositionDelta * 0.99f / (p.nActiveInteractions + tp.nActiveInteractions);  // *(p.radius / (p.radius + tp.radius));
+                                float interactionWeight = tp.radius;
+                                countedInteractions += 1.0f;
+                                countedInteractionWeight += interactionWeight;
+                                //targetPos += (relaxedRelativePosition - targetPos) * (p.radius / countedInteractionWeight);
+                                targetPos += (relaxedRelativePosition - targetPos) / countedInteractions;
                             }
 
                             // Interaction testing code
@@ -662,16 +687,16 @@ relax(
                         }
                     }
 
-                    //// Do not process collisions for the interacting particles,
-                    //// the interaction alignment code takes care of this
-                    //if (!interactionPartners) {
-                    //    float collisionDist = p.radius + tp.radius;
-                    //    if (dist < collisionDist) {
-                    //        float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
-                    //        constexpr float collisionRelaxationSpeed = 0.25f;
-                    //        moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed) * p.radius / (p.radius + tp.radius);
-                    //    }
-                    //}
+                    // Do not process collisions for the interacting particles,
+                    // the interaction alignment code takes care of this
+                    if (!interactionPartners) {
+                        float collisionDist = p.radius + tp.radius;
+                        if (dist < collisionDist) {
+                            float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
+                            constexpr float collisionRelaxationSpeed = 0.25f;
+                            moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed) * p.radius / (p.radius + tp.radius);
+                        }
+                    }
                 }
             }
         }
@@ -679,10 +704,7 @@ relax(
 
     // Move the particle
     p.pos = clamp(
-        add(
-            p.pos,
-            moveVec
-        ),
+        p.pos + (targetPos - p.pos) * 0.99f + moveVec,
         0.0f, d_Config.simSize
     );
 

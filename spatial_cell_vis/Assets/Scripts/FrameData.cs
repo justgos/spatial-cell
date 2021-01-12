@@ -17,7 +17,7 @@ public class FrameData : MonoBehaviour
 
     public ComputeShader filterParticles;
     public Dictionary<int, ComputeBuffer> filteredBuffers = new Dictionary<int, ComputeBuffer>();
-    public Dictionary<int, int> filteredBuffer_Sizes = new Dictionary<int, int>();
+    public Dictionary<int, ComputeBuffer> filteredBufferArgs = new Dictionary<int, ComputeBuffer>();
 
     void Start()
     {
@@ -56,12 +56,9 @@ public class FrameData : MonoBehaviour
                 sw.Start();
 
                 // TODO: dynamically grow/clear instead of re-creating
-                foreach (var entry in filteredBuffers)
-                {
-                    entry.Value.Dispose();
-                }
-                filteredBuffers.Clear();
-                filteredBuffer_Sizes.Clear();
+                StartCoroutine(ClearBuffers(filteredBuffers, filteredBufferArgs));
+                filteredBuffers = new Dictionary<int, ComputeBuffer>();
+                filteredBufferArgs = new Dictionary<int, ComputeBuffer>();
 
                 var typeId = 110;
                 var buffer = new ComputeBuffer(bufferSize, Marshal.SizeOf(typeof(T)), ComputeBufferType.Append);
@@ -77,9 +74,10 @@ public class FrameData : MonoBehaviour
                 ComputeBuffer.CopyCount(buffer, argBuffer, 0);
                 argBuffer.GetData(args);
                 Debug.Log(string.Format("Filtered {0} particles of type {1}", args[0], typeId));
+                args[1] = args[0];
+                argBuffer.SetData(args);
                 filteredBuffers.Add(typeId, buffer);
-                filteredBuffer_Sizes.Add(typeId, args[0]);
-                argBuffer.Dispose();
+                filteredBufferArgs.Add(typeId, argBuffer);
 
                 sw.Stop();
                 Debug.Log("Filtered particles in " + ((double)sw.ElapsedTicks / System.Diagnostics.Stopwatch.Frequency) + "s");
@@ -88,12 +86,24 @@ public class FrameData : MonoBehaviour
         frame = simFrame;
     }
 
+    IEnumerator ClearBuffers(Dictionary<int, ComputeBuffer> filteredBuffers, Dictionary<int, ComputeBuffer> filteredBufferArgs)
+    {
+        yield return new WaitForEndOfFrame();
+
+        foreach (var entry in filteredBuffers)
+            entry.Value.Dispose();
+        foreach (var entry in filteredBufferArgs)
+            entry.Value.Dispose();
+    }
+
     void OnDestroy()
     {
         particleBuffer?.Dispose();
         particleBuffer = null;
 
         foreach (var entry in filteredBuffers)
+            entry.Value.Dispose();
+        foreach (var entry in filteredBufferArgs)
             entry.Value.Dispose();
     }
 }

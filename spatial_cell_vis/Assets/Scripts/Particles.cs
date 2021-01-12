@@ -16,6 +16,7 @@ public class Particles : MonoBehaviour
     private float meshScale;
     public Material instancedMaterial;
     public Material material;
+    public Dictionary<int, Material> filteredInstancedMaterials = new Dictionary<int, Material>();
 
     public GameObject debugVectorModel;
     private Mesh debugVectorMesh;
@@ -42,6 +43,11 @@ public class Particles : MonoBehaviour
 
     uint[] debugVectorDrawArgs;
     ComputeBuffer debugVectorArgsBuffer;
+
+    uint[] tmpDrawArgs;
+
+    private float drawScale = 0.01f;
+    public float DrawScale { get { return drawScale; } }
 
     void Start()
     {
@@ -82,6 +88,8 @@ public class Particles : MonoBehaviour
         debugVectorDrawArgs[3] = (uint)debugVectorMesh.GetBaseVertex(0);
         debugVectorArgsBuffer = new ComputeBuffer(1, debugVectorDrawArgs.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
         debugVectorArgsBuffer.SetData(debugVectorDrawArgs);
+
+        tmpDrawArgs = new uint[5] { 0, 0, 0, 0, 0 };
     }
 
     public void SetModel(GameObject model)
@@ -123,7 +131,7 @@ public class Particles : MonoBehaviour
         if (drawInstanced)
         {
             instancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
-            instancedMaterial.SetFloat("scale", 0.001f);
+            instancedMaterial.SetFloat("scale", drawScale);
             instancedMaterial.SetFloat("meshScale", meshScale);
             instancedMaterial.SetFloat("simSize", simData.SimSize);
             instancedMaterial.SetFloat("visibleMinX", particleVisibleRangeXSlider.LowValue);
@@ -135,10 +143,10 @@ public class Particles : MonoBehaviour
             instancedMaterial.SetInt("particleTypeFilter", particleTypeFilter);
             instancedMaterial.SetInt("targetParticleId", targetParticleId);
             instancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
-            Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), argsBuffer);
+            Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.one * simData.SimSize * drawScale * 0.5f, Vector3.one * simData.SimSize * drawScale), argsBuffer);
 
             debugVectorInstancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
-            debugVectorInstancedMaterial.SetFloat("scale", 0.001f);
+            debugVectorInstancedMaterial.SetFloat("scale", drawScale);
             debugVectorInstancedMaterial.SetFloat("meshScale", debugVectorMeshScale);
             debugVectorInstancedMaterial.SetFloat("meshHeight", debugVectorMeshHeight);
             debugVectorInstancedMaterial.SetFloat("simSize", simData.SimSize);
@@ -150,34 +158,45 @@ public class Particles : MonoBehaviour
             debugVectorInstancedMaterial.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
             debugVectorInstancedMaterial.SetInt("particleTypeFilter", particleTypeFilter);
             debugVectorInstancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
-            Graphics.DrawMeshInstancedIndirect(debugVectorMesh, 0, debugVectorInstancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), debugVectorArgsBuffer);
+            Graphics.DrawMeshInstancedIndirect(debugVectorMesh, 0, debugVectorInstancedMaterial, new Bounds(Vector3.one * simData.SimSize * drawScale * 0.5f, Vector3.one * simData.SimSize * drawScale), debugVectorArgsBuffer);
         }
 
-        //// FIXME: `argsBuffer` is not read out immediately, and so the setting above gets rewritten
-        //// and? ruins the previous render
-        //foreach (var entry in frameData.filteredBuffers)
-        //{
-        //    drawArgs[1] = (uint)frameData.filteredBuffer_Sizes[entry.Key];
-        //    argsBuffer.SetData(drawArgs);
+        // FIXME: `argsBuffer` is not read out immediately, and so the setting above gets rewritten
+        // and? ruins the previous render
+        foreach (var entry in frameData.filteredBuffers)
+        {
+            var tmpArgBuffer = frameData.filteredBufferArgs[entry.Key];
+            tmpArgBuffer.GetData(tmpDrawArgs);
+            tmpDrawArgs[0] = (uint)mesh.GetIndexCount(0);
+            tmpDrawArgs[2] = (uint)mesh.GetIndexStart(0);
+            tmpDrawArgs[3] = (uint)mesh.GetBaseVertex(0);
+            tmpArgBuffer.SetData(tmpDrawArgs);
 
-        //    instancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
-        //    instancedMaterial.SetFloat("scale", 0.001f);
-        //    instancedMaterial.SetFloat("meshScale", meshScale);
-        //    instancedMaterial.SetFloat("simSize", simData.SimSize);
-        //    instancedMaterial.SetFloat("visibleMinX", particleVisibleRangeXSlider.LowValue);
-        //    instancedMaterial.SetFloat("visibleMaxX", particleVisibleRangeXSlider.HighValue);
-        //    instancedMaterial.SetFloat("visibleMinY", particleVisibleRangeYSlider.LowValue);
-        //    instancedMaterial.SetFloat("visibleMaxY", particleVisibleRangeYSlider.HighValue);
-        //    instancedMaterial.SetFloat("visibleMinZ", particleVisibleRangeZSlider.LowValue);
-        //    instancedMaterial.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
-        //    instancedMaterial.SetInt("particleTypeFilter", particleTypeFilter);
-        //    instancedMaterial.SetInt("targetParticleId", targetParticleId);
-        //    instancedMaterial.SetBuffer("particles", entry.Value);
-        //    Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.one * simData.SimSize * 10.0f * 0.5f, Vector3.one * simData.SimSize * 10.0f), argsBuffer);
-        //}
+            Material mat;
+            if(!filteredInstancedMaterials.TryGetValue(entry.Key, out mat))
+            {
+                mat = Instantiate(instancedMaterial);
+                filteredInstancedMaterials.Add(entry.Key, mat);
+            }
+
+            mat.SetMatrix("baseTransform", Matrix4x4.identity);
+            mat.SetFloat("scale", drawScale);
+            mat.SetFloat("meshScale", meshScale);
+            mat.SetFloat("simSize", simData.SimSize);
+            mat.SetFloat("visibleMinX", particleVisibleRangeXSlider.LowValue);
+            mat.SetFloat("visibleMaxX", particleVisibleRangeXSlider.HighValue);
+            mat.SetFloat("visibleMinY", particleVisibleRangeYSlider.LowValue);
+            mat.SetFloat("visibleMaxY", particleVisibleRangeYSlider.HighValue);
+            mat.SetFloat("visibleMinZ", particleVisibleRangeZSlider.LowValue);
+            mat.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
+            mat.SetInt("particleTypeFilter", particleTypeFilter);
+            mat.SetInt("targetParticleId", targetParticleId);
+            mat.SetBuffer("particles", entry.Value);
+            Graphics.DrawMeshInstancedIndirect(mesh, 0, mat, new Bounds(Vector3.one * simData.SimSize * drawScale * 0.5f, Vector3.one * simData.SimSize * drawScale), tmpArgBuffer);
+        }
 
         //debugVectorInstancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
-        //debugVectorInstancedMaterial.SetFloat("scale", 0.001f);
+        //debugVectorInstancedMaterial.SetFloat("scale", drawScale);
         //debugVectorInstancedMaterial.SetFloat("meshScale", debugVectorMeshScale);
         //debugVectorInstancedMaterial.SetFloat("meshHeight", debugVectorMeshHeight);
         //debugVectorInstancedMaterial.SetFloat("simSize", simData.SimSize);
@@ -200,7 +219,7 @@ public class Particles : MonoBehaviour
             material.SetBuffer("quadPoints", quadPoints);
             material.SetBuffer("quadUVs", quadUVs);
             material.SetBuffer("particles", frameData.ParticleBuffer);
-            material.SetFloat("scale", 0.01f);
+            material.SetFloat("scale", drawScale);
             material.SetFloat("simSize", simData.SimSize);
             material.SetFloat("visibleMinX", particleVisibleRangeXSlider.LowValue);
             material.SetFloat("visibleMaxX", particleVisibleRangeXSlider.HighValue);

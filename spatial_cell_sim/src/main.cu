@@ -299,6 +299,7 @@ main(void)
         make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
         particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
     );*/
+
     std::vector<int> chainMembers;
     for (int i = 0; i < 3; i++) {
         for (auto it = particleTypeInfo->begin(); it != particleTypeInfo->end(); it++) {
@@ -602,8 +603,10 @@ main(void)
         }
 
         time_point t6_1 = now();
-        float stepFraction = 1.0f / config.relaxationSteps;
+        //float stepFraction = 1.0f / config.relaxationSteps;
         for (int j = 0; j < config.relaxationSteps; j++) {
+            // Step fraction scales as a decreasing arithmetic progression
+            float stepFraction = (config.relaxationSteps - j) * 1.0f / ((1.0f + config.relaxationSteps) * config.relaxationSteps / 2.0f);
             // Relax the accumulated tensions - Particles
             particles.clearNextOnDevice();
             applyVelocities<Particle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (

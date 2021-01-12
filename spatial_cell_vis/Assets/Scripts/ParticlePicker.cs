@@ -77,9 +77,9 @@ public class ParticlePicker : MonoBehaviour
                             continue;
                         }
                         var pPos = p.pos.UnityVector();
-                        var particlePos = particleRenderer.transform.position + pPos * 10;
-                        //Debug.Log("particlePos " + p.id + ", " + particlePos.ToString("F4"));
-                        if (IntersectRaySphere(ray, particlePos, p.radius * 10))
+                        var particlePos = particleRenderer.transform.position + pPos * particleRenderer.DrawScale;
+                        //Debug.Log("particlePos " + p.id + ", " + particlePos.ToString("F4") + ", r " + p.radius * 10);
+                        if (IntersectRaySphere(ray, particlePos, p.radius * particleRenderer.DrawScale))
                         {
                             var particleDist = (ray.origin - particlePos).magnitude;
                             if (particleDist < targetParticleDist)

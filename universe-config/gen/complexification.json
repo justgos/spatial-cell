@@ -33,22 +33,6 @@
   },
   {
     "id": 1003,
-    "firstPartnerType": 1001,
-    "secondPartnerType": 1029,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      1.8558029174804687,
-      -2.5251068115234374,
-      1.7663925170898438
-    ]
-  },
-  {
-    "id": 1004,
     "firstPartnerType": 1002,
     "secondPartnerType": 1010,
     "relativeOrientation": [
@@ -64,7 +48,7 @@
     ]
   },
   {
-    "id": 1005,
+    "id": 1004,
     "firstPartnerType": 1002,
     "secondPartnerType": 1012,
     "relativeOrientation": [
@@ -80,7 +64,7 @@
     ]
   },
   {
-    "id": 1006,
+    "id": 1005,
     "firstPartnerType": 1002,
     "secondPartnerType": 1038,
     "relativeOrientation": [
@@ -96,7 +80,7 @@
     ]
   },
   {
-    "id": 1007,
+    "id": 1006,
     "firstPartnerType": 1003,
     "secondPartnerType": 1007,
     "relativeOrientation": [
@@ -112,7 +96,7 @@
     ]
   },
   {
-    "id": 1008,
+    "id": 1007,
     "firstPartnerType": 1003,
     "secondPartnerType": 1009,
     "relativeOrientation": [
@@ -128,7 +112,7 @@
     ]
   },
   {
-    "id": 1009,
+    "id": 1008,
     "firstPartnerType": 1003,
     "secondPartnerType": 1031,
     "relativeOrientation": [
@@ -144,7 +128,7 @@
     ]
   },
   {
-    "id": 1010,
+    "id": 1009,
     "firstPartnerType": 1004,
     "secondPartnerType": 1028,
     "relativeOrientation": [
@@ -160,7 +144,7 @@
     ]
   },
   {
-    "id": 1011,
+    "id": 1010,
     "firstPartnerType": 1004,
     "secondPartnerType": 1029,
     "relativeOrientation": [
@@ -176,9 +160,9 @@
     ]
   },
   {
-    "id": 1012,
+    "id": 1011,
     "firstPartnerType": 1004,
-    "secondPartnerType": 1040,
+    "secondPartnerType": 1032,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -186,13 +170,13 @@
       1.0
     ],
     "relativePosition": [
-      0.838446044921875,
-      -3.4481689453125,
-      -1.7572341918945313
+      4.225347900390625,
+      -0.235870361328125,
+      -1.1140625
     ]
   },
   {
-    "id": 1013,
+    "id": 1012,
     "firstPartnerType": 1004,
     "secondPartnerType": 1051,
     "relativeOrientation": [
@@ -208,7 +192,7 @@
     ]
   },
   {
-    "id": 1014,
+    "id": 1013,
     "firstPartnerType": 1005,
     "secondPartnerType": 1029,
     "relativeOrientation": [
@@ -224,7 +208,7 @@
     ]
   },
   {
-    "id": 1015,
+    "id": 1014,
     "firstPartnerType": 1005,
     "secondPartnerType": 1054,
     "relativeOrientation": [
@@ -240,7 +224,7 @@
     ]
   },
   {
-    "id": 1016,
+    "id": 1015,
     "firstPartnerType": 1005,
     "secondPartnerType": 1056,
     "relativeOrientation": [
@@ -256,7 +240,7 @@
     ]
   },
   {
-    "id": 1017,
+    "id": 1016,
     "firstPartnerType": 1006,
     "secondPartnerType": 1013,
     "relativeOrientation": [
@@ -272,23 +256,7 @@
     ]
   },
   {
-    "id": 1018,
-    "firstPartnerType": 1006,
-    "secondPartnerType": 1031,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      0.6121810913085938,
-      -4.682534790039062,
-      -0.822479248046875
-    ]
-  },
-  {
-    "id": 1019,
+    "id": 1017,
     "firstPartnerType": 1006,
     "secondPartnerType": 1044,
     "relativeOrientation": [
@@ -304,7 +272,7 @@
     ]
   },
   {
-    "id": 1020,
+    "id": 1018,
     "firstPartnerType": 1007,
     "secondPartnerType": 1030,
     "relativeOrientation": [
@@ -320,7 +288,23 @@
     ]
   },
   {
-    "id": 1021,
+    "id": 1019,
+    "firstPartnerType": 1007,
+    "secondPartnerType": 1046,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.1833099365234375,
+      1.03798828125,
+      5.824275207519531
+    ]
+  },
+  {
+    "id": 1020,
     "firstPartnerType": 1008,
     "secondPartnerType": 1012,
     "relativeOrientation": [
@@ -336,7 +320,7 @@
     ]
   },
   {
-    "id": 1022,
+    "id": 1021,
     "firstPartnerType": 1008,
     "secondPartnerType": 1049,
     "relativeOrientation": [
@@ -352,7 +336,7 @@
     ]
   },
   {
-    "id": 1023,
+    "id": 1022,
     "firstPartnerType": 1008,
     "secondPartnerType": 1053,
     "relativeOrientation": [
@@ -368,7 +352,7 @@
     ]
   },
   {
-    "id": 1024,
+    "id": 1023,
     "firstPartnerType": 1009,
     "secondPartnerType": 1012,
     "relativeOrientation": [
@@ -384,7 +368,7 @@
     ]
   },
   {
-    "id": 1025,
+    "id": 1024,
     "firstPartnerType": 1009,
     "secondPartnerType": 1037,
     "relativeOrientation": [
@@ -400,7 +384,7 @@
     ]
   },
   {
-    "id": 1026,
+    "id": 1025,
     "firstPartnerType": 1010,
     "secondPartnerType": 1012,
     "relativeOrientation": [
@@ -416,7 +400,7 @@
     ]
   },
   {
-    "id": 1027,
+    "id": 1026,
     "firstPartnerType": 1010,
     "secondPartnerType": 1049,
     "relativeOrientation": [
@@ -432,7 +416,7 @@
     ]
   },
   {
-    "id": 1028,
+    "id": 1027,
     "firstPartnerType": 1011,
     "secondPartnerType": 1038,
     "relativeOrientation": [
@@ -448,23 +432,7 @@
     ]
   },
   {
-    "id": 1029,
-    "firstPartnerType": 1011,
-    "secondPartnerType": 1044,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      3.971759033203125,
-      0.5818084716796875,
-      -3.444921875
-    ]
-  },
-  {
-    "id": 1030,
+    "id": 1028,
     "firstPartnerType": 1011,
     "secondPartnerType": 1053,
     "relativeOrientation": [
@@ -480,7 +448,7 @@
     ]
   },
   {
-    "id": 1031,
+    "id": 1029,
     "firstPartnerType": 1013,
     "secondPartnerType": 1029,
     "relativeOrientation": [
@@ -496,7 +464,7 @@
     ]
   },
   {
-    "id": 1032,
+    "id": 1030,
     "firstPartnerType": 1013,
     "secondPartnerType": 1044,
     "relativeOrientation": [
@@ -512,7 +480,23 @@
     ]
   },
   {
-    "id": 1033,
+    "id": 1031,
+    "firstPartnerType": 1014,
+    "secondPartnerType": 1031,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.9418121337890625,
+      3.46650390625,
+      -3.264984130859375
+    ]
+  },
+  {
+    "id": 1032,
     "firstPartnerType": 1014,
     "secondPartnerType": 1035,
     "relativeOrientation": [
@@ -528,7 +512,7 @@
     ]
   },
   {
-    "id": 1034,
+    "id": 1033,
     "firstPartnerType": 1014,
     "secondPartnerType": 1037,
     "relativeOrientation": [
@@ -544,7 +528,7 @@
     ]
   },
   {
-    "id": 1035,
+    "id": 1034,
     "firstPartnerType": 1014,
     "secondPartnerType": 1039,
     "relativeOrientation": [
@@ -560,7 +544,7 @@
     ]
   },
   {
-    "id": 1036,
+    "id": 1035,
     "firstPartnerType": 1014,
     "secondPartnerType": 1052,
     "relativeOrientation": [
@@ -576,7 +560,7 @@
     ]
   },
   {
-    "id": 1037,
+    "id": 1036,
     "firstPartnerType": 1015,
     "secondPartnerType": 1020,
     "relativeOrientation": [
@@ -592,7 +576,7 @@
     ]
   },
   {
-    "id": 1038,
+    "id": 1037,
     "firstPartnerType": 1015,
     "secondPartnerType": 1050,
     "relativeOrientation": [
@@ -608,7 +592,7 @@
     ]
   },
   {
-    "id": 1039,
+    "id": 1038,
     "firstPartnerType": 1015,
     "secondPartnerType": 1059,
     "relativeOrientation": [
@@ -624,7 +608,7 @@
     ]
   },
   {
-    "id": 1040,
+    "id": 1039,
     "firstPartnerType": 1015,
     "secondPartnerType": 1089,
     "relativeOrientation": [
@@ -640,7 +624,7 @@
     ]
   },
   {
-    "id": 1041,
+    "id": 1040,
     "firstPartnerType": 1016,
     "secondPartnerType": 1017,
     "relativeOrientation": [
@@ -656,7 +640,7 @@
     ]
   },
   {
-    "id": 1042,
+    "id": 1041,
     "firstPartnerType": 1016,
     "secondPartnerType": 1022,
     "relativeOrientation": [
@@ -672,23 +656,7 @@
     ]
   },
   {
-    "id": 1043,
-    "firstPartnerType": 1016,
-    "secondPartnerType": 1023,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      0.3479888916015625,
-      -5.899343872070313,
-      0.6144287109375
-    ]
-  },
-  {
-    "id": 1044,
+    "id": 1042,
     "firstPartnerType": 1016,
     "secondPartnerType": 1058,
     "relativeOrientation": [
@@ -704,9 +672,9 @@
     ]
   },
   {
-    "id": 1045,
+    "id": 1043,
     "firstPartnerType": 1017,
-    "secondPartnerType": 1018,
+    "secondPartnerType": 1020,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -714,13 +682,13 @@
       1.0
     ],
     "relativePosition": [
-      5.826580810546875,
-      -5.34925537109375,
-      5.261358642578125
+      3.193194580078125,
+      -4.020840454101562,
+      3.5136444091796877
     ]
   },
   {
-    "id": 1046,
+    "id": 1044,
     "firstPartnerType": 1017,
     "secondPartnerType": 1022,
     "relativeOrientation": [
@@ -736,39 +704,7 @@
     ]
   },
   {
-    "id": 1047,
-    "firstPartnerType": 1017,
-    "secondPartnerType": 1023,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      0.002880859375,
-      -6.1512451171875,
-      5.36014404296875
-    ]
-  },
-  {
-    "id": 1048,
-    "firstPartnerType": 1018,
-    "secondPartnerType": 1020,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      -2.63338623046875,
-      1.3284149169921875,
-      -1.7477142333984375
-    ]
-  },
-  {
-    "id": 1049,
+    "id": 1045,
     "firstPartnerType": 1018,
     "secondPartnerType": 1021,
     "relativeOrientation": [
@@ -784,7 +720,7 @@
     ]
   },
   {
-    "id": 1050,
+    "id": 1046,
     "firstPartnerType": 1018,
     "secondPartnerType": 1033,
     "relativeOrientation": [
@@ -800,7 +736,23 @@
     ]
   },
   {
-    "id": 1051,
+    "id": 1047,
+    "firstPartnerType": 1018,
+    "secondPartnerType": 1050,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      2.411224365234375,
+      -0.2757659912109375,
+      -4.307429504394531
+    ]
+  },
+  {
+    "id": 1048,
     "firstPartnerType": 1019,
     "secondPartnerType": 1032,
     "relativeOrientation": [
@@ -816,7 +768,7 @@
     ]
   },
   {
-    "id": 1052,
+    "id": 1049,
     "firstPartnerType": 1019,
     "secondPartnerType": 1047,
     "relativeOrientation": [
@@ -832,7 +784,7 @@
     ]
   },
   {
-    "id": 1053,
+    "id": 1050,
     "firstPartnerType": 1020,
     "secondPartnerType": 1022,
     "relativeOrientation": [
@@ -848,7 +800,7 @@
     ]
   },
   {
-    "id": 1054,
+    "id": 1051,
     "firstPartnerType": 1020,
     "secondPartnerType": 1028,
     "relativeOrientation": [
@@ -864,7 +816,7 @@
     ]
   },
   {
-    "id": 1055,
+    "id": 1052,
     "firstPartnerType": 1021,
     "secondPartnerType": 1023,
     "relativeOrientation": [
@@ -880,7 +832,7 @@
     ]
   },
   {
-    "id": 1056,
+    "id": 1053,
     "firstPartnerType": 1021,
     "secondPartnerType": 1028,
     "relativeOrientation": [
@@ -896,39 +848,7 @@
     ]
   },
   {
-    "id": 1057,
-    "firstPartnerType": 1021,
-    "secondPartnerType": 1048,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      1.99974365234375,
-      -3.76158447265625,
-      -2.262274169921875
-    ]
-  },
-  {
-    "id": 1058,
-    "firstPartnerType": 1022,
-    "secondPartnerType": 1028,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      -0.4395050048828125,
-      -5.862173461914063,
-      -2.169561767578125
-    ]
-  },
-  {
-    "id": 1059,
+    "id": 1054,
     "firstPartnerType": 1023,
     "secondPartnerType": 1058,
     "relativeOrientation": [
@@ -944,9 +864,9 @@
     ]
   },
   {
-    "id": 1060,
+    "id": 1055,
     "firstPartnerType": 1024,
-    "secondPartnerType": 1027,
+    "secondPartnerType": 1033,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -954,13 +874,13 @@
       1.0
     ],
     "relativePosition": [
-      -1.3043487548828125,
-      -3.2775360107421876,
-      -1.6673385620117187
+      -1.492315673828125,
+      2.2933807373046875,
+      0.7776947021484375
     ]
   },
   {
-    "id": 1061,
+    "id": 1056,
     "firstPartnerType": 1024,
     "secondPartnerType": 1047,
     "relativeOrientation": [
@@ -976,7 +896,23 @@
     ]
   },
   {
-    "id": 1062,
+    "id": 1057,
+    "firstPartnerType": 1024,
+    "secondPartnerType": 1048,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -3.4366668701171874,
+      0.991693115234375,
+      2.20731201171875
+    ]
+  },
+  {
+    "id": 1058,
     "firstPartnerType": 1024,
     "secondPartnerType": 1050,
     "relativeOrientation": [
@@ -992,7 +928,7 @@
     ]
   },
   {
-    "id": 1063,
+    "id": 1059,
     "firstPartnerType": 1025,
     "secondPartnerType": 1026,
     "relativeOrientation": [
@@ -1008,7 +944,7 @@
     ]
   },
   {
-    "id": 1064,
+    "id": 1060,
     "firstPartnerType": 1025,
     "secondPartnerType": 1027,
     "relativeOrientation": [
@@ -1024,7 +960,7 @@
     ]
   },
   {
-    "id": 1065,
+    "id": 1061,
     "firstPartnerType": 1026,
     "secondPartnerType": 1041,
     "relativeOrientation": [
@@ -1040,7 +976,7 @@
     ]
   },
   {
-    "id": 1066,
+    "id": 1062,
     "firstPartnerType": 1027,
     "secondPartnerType": 1032,
     "relativeOrientation": [
@@ -1056,7 +992,7 @@
     ]
   },
   {
-    "id": 1067,
+    "id": 1063,
     "firstPartnerType": 1027,
     "secondPartnerType": 1047,
     "relativeOrientation": [
@@ -1072,7 +1008,7 @@
     ]
   },
   {
-    "id": 1068,
+    "id": 1064,
     "firstPartnerType": 1030,
     "secondPartnerType": 1034,
     "relativeOrientation": [
@@ -1088,7 +1024,7 @@
     ]
   },
   {
-    "id": 1069,
+    "id": 1065,
     "firstPartnerType": 1030,
     "secondPartnerType": 1042,
     "relativeOrientation": [
@@ -1104,7 +1040,7 @@
     ]
   },
   {
-    "id": 1070,
+    "id": 1066,
     "firstPartnerType": 1030,
     "secondPartnerType": 1046,
     "relativeOrientation": [
@@ -1120,7 +1056,7 @@
     ]
   },
   {
-    "id": 1071,
+    "id": 1067,
     "firstPartnerType": 1031,
     "secondPartnerType": 1039,
     "relativeOrientation": [
@@ -1136,7 +1072,7 @@
     ]
   },
   {
-    "id": 1072,
+    "id": 1068,
     "firstPartnerType": 1031,
     "secondPartnerType": 1056,
     "relativeOrientation": [
@@ -1152,23 +1088,7 @@
     ]
   },
   {
-    "id": 1073,
-    "firstPartnerType": 1032,
-    "secondPartnerType": 1045,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      -3.656915283203125,
-      -1.0493896484375,
-      -2.884385681152344
-    ]
-  },
-  {
-    "id": 1074,
+    "id": 1069,
     "firstPartnerType": 1032,
     "secondPartnerType": 1055,
     "relativeOrientation": [
@@ -1184,7 +1104,7 @@
     ]
   },
   {
-    "id": 1075,
+    "id": 1070,
     "firstPartnerType": 1033,
     "secondPartnerType": 1048,
     "relativeOrientation": [
@@ -1200,7 +1120,7 @@
     ]
   },
   {
-    "id": 1076,
+    "id": 1071,
     "firstPartnerType": 1033,
     "secondPartnerType": 1050,
     "relativeOrientation": [
@@ -1216,7 +1136,7 @@
     ]
   },
   {
-    "id": 1077,
+    "id": 1072,
     "firstPartnerType": 1034,
     "secondPartnerType": 1040,
     "relativeOrientation": [
@@ -1232,7 +1152,7 @@
     ]
   },
   {
-    "id": 1078,
+    "id": 1073,
     "firstPartnerType": 1034,
     "secondPartnerType": 1042,
     "relativeOrientation": [
@@ -1248,7 +1168,7 @@
     ]
   },
   {
-    "id": 1079,
+    "id": 1074,
     "firstPartnerType": 1034,
     "secondPartnerType": 1045,
     "relativeOrientation": [
@@ -1264,7 +1184,7 @@
     ]
   },
   {
-    "id": 1080,
+    "id": 1075,
     "firstPartnerType": 1035,
     "secondPartnerType": 1057,
     "relativeOrientation": [
@@ -1280,7 +1200,7 @@
     ]
   },
   {
-    "id": 1081,
+    "id": 1076,
     "firstPartnerType": 1035,
     "secondPartnerType": 1060,
     "relativeOrientation": [
@@ -1296,7 +1216,7 @@
     ]
   },
   {
-    "id": 1082,
+    "id": 1077,
     "firstPartnerType": 1035,
     "secondPartnerType": 1062,
     "relativeOrientation": [
@@ -1312,7 +1232,7 @@
     ]
   },
   {
-    "id": 1083,
+    "id": 1078,
     "firstPartnerType": 1036,
     "secondPartnerType": 1041,
     "relativeOrientation": [
@@ -1328,7 +1248,7 @@
     ]
   },
   {
-    "id": 1084,
+    "id": 1079,
     "firstPartnerType": 1036,
     "secondPartnerType": 1048,
     "relativeOrientation": [
@@ -1344,7 +1264,7 @@
     ]
   },
   {
-    "id": 1085,
+    "id": 1080,
     "firstPartnerType": 1037,
     "secondPartnerType": 1039,
     "relativeOrientation": [
@@ -1360,7 +1280,7 @@
     ]
   },
   {
-    "id": 1086,
+    "id": 1081,
     "firstPartnerType": 1037,
     "secondPartnerType": 1046,
     "relativeOrientation": [
@@ -1376,23 +1296,7 @@
     ]
   },
   {
-    "id": 1087,
-    "firstPartnerType": 1038,
-    "secondPartnerType": 1053,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      0.1001617431640625,
-      -0.8532135009765625,
-      3.462725830078125
-    ]
-  },
-  {
-    "id": 1088,
+    "id": 1082,
     "firstPartnerType": 1039,
     "secondPartnerType": 1052,
     "relativeOrientation": [
@@ -1408,7 +1312,7 @@
     ]
   },
   {
-    "id": 1089,
+    "id": 1083,
     "firstPartnerType": 1040,
     "secondPartnerType": 1042,
     "relativeOrientation": [
@@ -1424,7 +1328,7 @@
     ]
   },
   {
-    "id": 1090,
+    "id": 1084,
     "firstPartnerType": 1040,
     "secondPartnerType": 1045,
     "relativeOrientation": [
@@ -1440,7 +1344,7 @@
     ]
   },
   {
-    "id": 1091,
+    "id": 1085,
     "firstPartnerType": 1042,
     "secondPartnerType": 1051,
     "relativeOrientation": [
@@ -1456,7 +1360,7 @@
     ]
   },
   {
-    "id": 1092,
+    "id": 1086,
     "firstPartnerType": 1043,
     "secondPartnerType": 1060,
     "relativeOrientation": [
@@ -1472,7 +1376,7 @@
     ]
   },
   {
-    "id": 1093,
+    "id": 1087,
     "firstPartnerType": 1044,
     "secondPartnerType": 1063,
     "relativeOrientation": [
@@ -1488,7 +1392,7 @@
     ]
   },
   {
-    "id": 1094,
+    "id": 1088,
     "firstPartnerType": 1045,
     "secondPartnerType": 1054,
     "relativeOrientation": [
@@ -1504,7 +1408,23 @@
     ]
   },
   {
-    "id": 1095,
+    "id": 1089,
+    "firstPartnerType": 1045,
+    "secondPartnerType": 1055,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      1.926483154296875,
+      1.1412078857421875,
+      -3.5052001953125
+    ]
+  },
+  {
+    "id": 1090,
     "firstPartnerType": 1046,
     "secondPartnerType": 1051,
     "relativeOrientation": [
@@ -1520,23 +1440,7 @@
     ]
   },
   {
-    "id": 1096,
-    "firstPartnerType": 1046,
-    "secondPartnerType": 1056,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      0.1316925048828125,
-      3.8588592529296877,
-      -3.5469024658203123
-    ]
-  },
-  {
-    "id": 1097,
+    "id": 1091,
     "firstPartnerType": 1049,
     "secondPartnerType": 1053,
     "relativeOrientation": [
@@ -1552,7 +1456,7 @@
     ]
   },
   {
-    "id": 1098,
+    "id": 1092,
     "firstPartnerType": 1051,
     "secondPartnerType": 1052,
     "relativeOrientation": [
@@ -1568,7 +1472,7 @@
     ]
   },
   {
-    "id": 1099,
+    "id": 1093,
     "firstPartnerType": 1052,
     "secondPartnerType": 1057,
     "relativeOrientation": [
@@ -1584,7 +1488,7 @@
     ]
   },
   {
-    "id": 1100,
+    "id": 1094,
     "firstPartnerType": 1054,
     "secondPartnerType": 1055,
     "relativeOrientation": [
@@ -1600,7 +1504,7 @@
     ]
   },
   {
-    "id": 1101,
+    "id": 1095,
     "firstPartnerType": 1056,
     "secondPartnerType": 1061,
     "relativeOrientation": [
@@ -1616,7 +1520,7 @@
     ]
   },
   {
-    "id": 1102,
+    "id": 1096,
     "firstPartnerType": 1057,
     "secondPartnerType": 1062,
     "relativeOrientation": [
@@ -1632,7 +1536,7 @@
     ]
   },
   {
-    "id": 1103,
+    "id": 1097,
     "firstPartnerType": 1057,
     "secondPartnerType": 1063,
     "relativeOrientation": [
@@ -1648,7 +1552,7 @@
     ]
   },
   {
-    "id": 1104,
+    "id": 1098,
     "firstPartnerType": 1060,
     "secondPartnerType": 1062,
     "relativeOrientation": [
@@ -1664,7 +1568,7 @@
     ]
   },
   {
-    "id": 1105,
+    "id": 1099,
     "firstPartnerType": 1062,
     "secondPartnerType": 1063,
     "relativeOrientation": [
@@ -1680,7 +1584,7 @@
     ]
   },
   {
-    "id": 1106,
+    "id": 1100,
     "firstPartnerType": 1064,
     "secondPartnerType": 1088,
     "relativeOrientation": [
@@ -1696,7 +1600,7 @@
     ]
   },
   {
-    "id": 1107,
+    "id": 1101,
     "firstPartnerType": 1064,
     "secondPartnerType": 1089,
     "relativeOrientation": [
@@ -1712,7 +1616,7 @@
     ]
   },
   {
-    "id": 1108,
+    "id": 1102,
     "firstPartnerType": 1064,
     "secondPartnerType": 1116,
     "relativeOrientation": [
@@ -1728,7 +1632,7 @@
     ]
   },
   {
-    "id": 1109,
+    "id": 1103,
     "firstPartnerType": 1064,
     "secondPartnerType": 1121,
     "relativeOrientation": [
@@ -1744,7 +1648,7 @@
     ]
   },
   {
-    "id": 1110,
+    "id": 1104,
     "firstPartnerType": 1065,
     "secondPartnerType": 1075,
     "relativeOrientation": [
@@ -1760,7 +1664,7 @@
     ]
   },
   {
-    "id": 1111,
+    "id": 1105,
     "firstPartnerType": 1065,
     "secondPartnerType": 1113,
     "relativeOrientation": [
@@ -1776,7 +1680,7 @@
     ]
   },
   {
-    "id": 1112,
+    "id": 1106,
     "firstPartnerType": 1065,
     "secondPartnerType": 1130,
     "relativeOrientation": [
@@ -1792,7 +1696,7 @@
     ]
   },
   {
-    "id": 1113,
+    "id": 1107,
     "firstPartnerType": 1065,
     "secondPartnerType": 1146,
     "relativeOrientation": [
@@ -1808,7 +1712,7 @@
     ]
   },
   {
-    "id": 1114,
+    "id": 1108,
     "firstPartnerType": 1066,
     "secondPartnerType": 1087,
     "relativeOrientation": [
@@ -1824,7 +1728,7 @@
     ]
   },
   {
-    "id": 1115,
+    "id": 1109,
     "firstPartnerType": 1066,
     "secondPartnerType": 1123,
     "relativeOrientation": [
@@ -1840,7 +1744,7 @@
     ]
   },
   {
-    "id": 1116,
+    "id": 1110,
     "firstPartnerType": 1066,
     "secondPartnerType": 1130,
     "relativeOrientation": [
@@ -1856,7 +1760,7 @@
     ]
   },
   {
-    "id": 1117,
+    "id": 1111,
     "firstPartnerType": 1066,
     "secondPartnerType": 1139,
     "relativeOrientation": [
@@ -1872,23 +1776,7 @@
     ]
   },
   {
-    "id": 1118,
-    "firstPartnerType": 1067,
-    "secondPartnerType": 1095,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      -1.533221435546875,
-      2.302020263671875,
-      0.85738525390625
-    ]
-  },
-  {
-    "id": 1119,
+    "id": 1112,
     "firstPartnerType": 1067,
     "secondPartnerType": 1097,
     "relativeOrientation": [
@@ -1904,7 +1792,7 @@
     ]
   },
   {
-    "id": 1120,
+    "id": 1113,
     "firstPartnerType": 1067,
     "secondPartnerType": 1109,
     "relativeOrientation": [
@@ -1920,7 +1808,7 @@
     ]
   },
   {
-    "id": 1121,
+    "id": 1114,
     "firstPartnerType": 1067,
     "secondPartnerType": 1120,
     "relativeOrientation": [
@@ -1936,7 +1824,23 @@
     ]
   },
   {
-    "id": 1122,
+    "id": 1115,
+    "firstPartnerType": 1067,
+    "secondPartnerType": 1131,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      1.6504974365234375,
+      3.221028137207031,
+      2.387506103515625
+    ]
+  },
+  {
+    "id": 1116,
     "firstPartnerType": 1068,
     "secondPartnerType": 1089,
     "relativeOrientation": [
@@ -1952,7 +1856,7 @@
     ]
   },
   {
-    "id": 1123,
+    "id": 1117,
     "firstPartnerType": 1068,
     "secondPartnerType": 1093,
     "relativeOrientation": [
@@ -1968,7 +1872,7 @@
     ]
   },
   {
-    "id": 1124,
+    "id": 1118,
     "firstPartnerType": 1068,
     "secondPartnerType": 1110,
     "relativeOrientation": [
@@ -1984,7 +1888,7 @@
     ]
   },
   {
-    "id": 1125,
+    "id": 1119,
     "firstPartnerType": 1068,
     "secondPartnerType": 1133,
     "relativeOrientation": [
@@ -2000,7 +1904,7 @@
     ]
   },
   {
-    "id": 1126,
+    "id": 1120,
     "firstPartnerType": 1069,
     "secondPartnerType": 1081,
     "relativeOrientation": [
@@ -2016,7 +1920,7 @@
     ]
   },
   {
-    "id": 1127,
+    "id": 1121,
     "firstPartnerType": 1069,
     "secondPartnerType": 1085,
     "relativeOrientation": [
@@ -2032,7 +1936,7 @@
     ]
   },
   {
-    "id": 1128,
+    "id": 1122,
     "firstPartnerType": 1069,
     "secondPartnerType": 1103,
     "relativeOrientation": [
@@ -2048,7 +1952,7 @@
     ]
   },
   {
-    "id": 1129,
+    "id": 1123,
     "firstPartnerType": 1069,
     "secondPartnerType": 1108,
     "relativeOrientation": [
@@ -2064,7 +1968,23 @@
     ]
   },
   {
-    "id": 1130,
+    "id": 1124,
+    "firstPartnerType": 1070,
+    "secondPartnerType": 1098,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -1.777587890625,
+      -2.8230209350585938,
+      -0.795416259765625
+    ]
+  },
+  {
+    "id": 1125,
     "firstPartnerType": 1070,
     "secondPartnerType": 1106,
     "relativeOrientation": [
@@ -2080,7 +2000,7 @@
     ]
   },
   {
-    "id": 1131,
+    "id": 1126,
     "firstPartnerType": 1070,
     "secondPartnerType": 1119,
     "relativeOrientation": [
@@ -2096,23 +2016,7 @@
     ]
   },
   {
-    "id": 1132,
-    "firstPartnerType": 1070,
-    "secondPartnerType": 1128,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      -1.534478759765625,
-      -2.01728515625,
-      -4.898565673828125
-    ]
-  },
-  {
-    "id": 1133,
+    "id": 1127,
     "firstPartnerType": 1071,
     "secondPartnerType": 1079,
     "relativeOrientation": [
@@ -2128,23 +2032,7 @@
     ]
   },
   {
-    "id": 1134,
-    "firstPartnerType": 1071,
-    "secondPartnerType": 1094,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      1.85775146484375,
-      -0.7522384643554687,
-      2.923809814453125
-    ]
-  },
-  {
-    "id": 1135,
+    "id": 1128,
     "firstPartnerType": 1071,
     "secondPartnerType": 1098,
     "relativeOrientation": [
@@ -2160,7 +2048,7 @@
     ]
   },
   {
-    "id": 1136,
+    "id": 1129,
     "firstPartnerType": 1071,
     "secondPartnerType": 1103,
     "relativeOrientation": [
@@ -2176,7 +2064,7 @@
     ]
   },
   {
-    "id": 1137,
+    "id": 1130,
     "firstPartnerType": 1072,
     "secondPartnerType": 1078,
     "relativeOrientation": [
@@ -2192,7 +2080,7 @@
     ]
   },
   {
-    "id": 1138,
+    "id": 1131,
     "firstPartnerType": 1072,
     "secondPartnerType": 1096,
     "relativeOrientation": [
@@ -2208,7 +2096,7 @@
     ]
   },
   {
-    "id": 1139,
+    "id": 1132,
     "firstPartnerType": 1072,
     "secondPartnerType": 1142,
     "relativeOrientation": [
@@ -2224,7 +2112,7 @@
     ]
   },
   {
-    "id": 1140,
+    "id": 1133,
     "firstPartnerType": 1073,
     "secondPartnerType": 1082,
     "relativeOrientation": [
@@ -2240,23 +2128,7 @@
     ]
   },
   {
-    "id": 1141,
-    "firstPartnerType": 1073,
-    "secondPartnerType": 1104,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      0.66080322265625,
-      -5.013658142089843,
-      1.4406219482421876
-    ]
-  },
-  {
-    "id": 1142,
+    "id": 1134,
     "firstPartnerType": 1073,
     "secondPartnerType": 1132,
     "relativeOrientation": [
@@ -2272,23 +2144,7 @@
     ]
   },
   {
-    "id": 1143,
-    "firstPartnerType": 1074,
-    "secondPartnerType": 1109,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      -0.2352752685546875,
-      1.0145263671875,
-      4.2084228515625
-    ]
-  },
-  {
-    "id": 1144,
+    "id": 1135,
     "firstPartnerType": 1074,
     "secondPartnerType": 1123,
     "relativeOrientation": [
@@ -2304,7 +2160,7 @@
     ]
   },
   {
-    "id": 1145,
+    "id": 1136,
     "firstPartnerType": 1074,
     "secondPartnerType": 1126,
     "relativeOrientation": [
@@ -2320,7 +2176,7 @@
     ]
   },
   {
-    "id": 1146,
+    "id": 1137,
     "firstPartnerType": 1074,
     "secondPartnerType": 1139,
     "relativeOrientation": [
@@ -2336,9 +2192,9 @@
     ]
   },
   {
-    "id": 1147,
+    "id": 1138,
     "firstPartnerType": 1075,
-    "secondPartnerType": 1113,
+    "secondPartnerType": 1128,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -2346,13 +2202,13 @@
       1.0
     ],
     "relativePosition": [
-      -2.80068359375,
-      -0.094488525390625,
-      -2.6299728393554687
+      1.577838134765625,
+      2.45594482421875,
+      -0.50865478515625
     ]
   },
   {
-    "id": 1148,
+    "id": 1139,
     "firstPartnerType": 1075,
     "secondPartnerType": 1134,
     "relativeOrientation": [
@@ -2368,7 +2224,7 @@
     ]
   },
   {
-    "id": 1149,
+    "id": 1140,
     "firstPartnerType": 1075,
     "secondPartnerType": 1146,
     "relativeOrientation": [
@@ -2384,7 +2240,7 @@
     ]
   },
   {
-    "id": 1150,
+    "id": 1141,
     "firstPartnerType": 1076,
     "secondPartnerType": 1077,
     "relativeOrientation": [
@@ -2400,7 +2256,7 @@
     ]
   },
   {
-    "id": 1151,
+    "id": 1142,
     "firstPartnerType": 1076,
     "secondPartnerType": 1099,
     "relativeOrientation": [
@@ -2416,7 +2272,7 @@
     ]
   },
   {
-    "id": 1152,
+    "id": 1143,
     "firstPartnerType": 1076,
     "secondPartnerType": 1100,
     "relativeOrientation": [
@@ -2432,7 +2288,7 @@
     ]
   },
   {
-    "id": 1153,
+    "id": 1144,
     "firstPartnerType": 1077,
     "secondPartnerType": 1125,
     "relativeOrientation": [
@@ -2448,23 +2304,7 @@
     ]
   },
   {
-    "id": 1154,
-    "firstPartnerType": 1078,
-    "secondPartnerType": 1084,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      2.0617401123046877,
-      -2.54542236328125,
-      1.970098876953125
-    ]
-  },
-  {
-    "id": 1155,
+    "id": 1145,
     "firstPartnerType": 1078,
     "secondPartnerType": 1091,
     "relativeOrientation": [
@@ -2480,7 +2320,23 @@
     ]
   },
   {
-    "id": 1156,
+    "id": 1146,
+    "firstPartnerType": 1078,
+    "secondPartnerType": 1092,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      2.5183807373046876,
+      0.656402587890625,
+      1.5704132080078126
+    ]
+  },
+  {
+    "id": 1147,
     "firstPartnerType": 1078,
     "secondPartnerType": 1132,
     "relativeOrientation": [
@@ -2496,7 +2352,7 @@
     ]
   },
   {
-    "id": 1157,
+    "id": 1148,
     "firstPartnerType": 1079,
     "secondPartnerType": 1094,
     "relativeOrientation": [
@@ -2512,23 +2368,7 @@
     ]
   },
   {
-    "id": 1158,
-    "firstPartnerType": 1079,
-    "secondPartnerType": 1098,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      0.54486083984375,
-      1.2823638916015625,
-      -3.1428070068359375
-    ]
-  },
-  {
-    "id": 1159,
+    "id": 1149,
     "firstPartnerType": 1079,
     "secondPartnerType": 1126,
     "relativeOrientation": [
@@ -2544,7 +2384,39 @@
     ]
   },
   {
-    "id": 1160,
+    "id": 1150,
+    "firstPartnerType": 1079,
+    "secondPartnerType": 1139,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      1.3507720947265625,
+      -4.137916564941406,
+      -1.106500244140625
+    ]
+  },
+  {
+    "id": 1151,
+    "firstPartnerType": 1080,
+    "secondPartnerType": 1121,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      1.710968017578125,
+      -1.3781753540039063,
+      1.3806243896484376
+    ]
+  },
+  {
+    "id": 1152,
     "firstPartnerType": 1080,
     "secondPartnerType": 1125,
     "relativeOrientation": [
@@ -2560,7 +2432,7 @@
     ]
   },
   {
-    "id": 1161,
+    "id": 1153,
     "firstPartnerType": 1080,
     "secondPartnerType": 1144,
     "relativeOrientation": [
@@ -2576,7 +2448,7 @@
     ]
   },
   {
-    "id": 1162,
+    "id": 1154,
     "firstPartnerType": 1081,
     "secondPartnerType": 1124,
     "relativeOrientation": [
@@ -2592,7 +2464,7 @@
     ]
   },
   {
-    "id": 1163,
+    "id": 1155,
     "firstPartnerType": 1081,
     "secondPartnerType": 1136,
     "relativeOrientation": [
@@ -2608,7 +2480,7 @@
     ]
   },
   {
-    "id": 1164,
+    "id": 1156,
     "firstPartnerType": 1081,
     "secondPartnerType": 1137,
     "relativeOrientation": [
@@ -2624,7 +2496,7 @@
     ]
   },
   {
-    "id": 1165,
+    "id": 1157,
     "firstPartnerType": 1082,
     "secondPartnerType": 1118,
     "relativeOrientation": [
@@ -2640,7 +2512,7 @@
     ]
   },
   {
-    "id": 1166,
+    "id": 1158,
     "firstPartnerType": 1082,
     "secondPartnerType": 1122,
     "relativeOrientation": [
@@ -2656,7 +2528,7 @@
     ]
   },
   {
-    "id": 1167,
+    "id": 1159,
     "firstPartnerType": 1083,
     "secondPartnerType": 1084,
     "relativeOrientation": [
@@ -2672,7 +2544,7 @@
     ]
   },
   {
-    "id": 1168,
+    "id": 1160,
     "firstPartnerType": 1083,
     "secondPartnerType": 1092,
     "relativeOrientation": [
@@ -2688,7 +2560,7 @@
     ]
   },
   {
-    "id": 1169,
+    "id": 1161,
     "firstPartnerType": 1083,
     "secondPartnerType": 1097,
     "relativeOrientation": [
@@ -2704,7 +2576,7 @@
     ]
   },
   {
-    "id": 1170,
+    "id": 1162,
     "firstPartnerType": 1083,
     "secondPartnerType": 1109,
     "relativeOrientation": [
@@ -2720,7 +2592,7 @@
     ]
   },
   {
-    "id": 1171,
+    "id": 1163,
     "firstPartnerType": 1084,
     "secondPartnerType": 1091,
     "relativeOrientation": [
@@ -2736,7 +2608,7 @@
     ]
   },
   {
-    "id": 1172,
+    "id": 1164,
     "firstPartnerType": 1084,
     "secondPartnerType": 1092,
     "relativeOrientation": [
@@ -2752,7 +2624,7 @@
     ]
   },
   {
-    "id": 1173,
+    "id": 1165,
     "firstPartnerType": 1085,
     "secondPartnerType": 1103,
     "relativeOrientation": [
@@ -2768,23 +2640,7 @@
     ]
   },
   {
-    "id": 1174,
-    "firstPartnerType": 1085,
-    "secondPartnerType": 1108,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      -3.208357238769531,
-      -0.5675491333007813,
-      -0.6489105224609375
-    ]
-  },
-  {
-    "id": 1175,
+    "id": 1166,
     "firstPartnerType": 1085,
     "secondPartnerType": 1115,
     "relativeOrientation": [
@@ -2800,7 +2656,7 @@
     ]
   },
   {
-    "id": 1176,
+    "id": 1167,
     "firstPartnerType": 1086,
     "secondPartnerType": 1087,
     "relativeOrientation": [
@@ -2816,7 +2672,7 @@
     ]
   },
   {
-    "id": 1177,
+    "id": 1168,
     "firstPartnerType": 1086,
     "secondPartnerType": 1090,
     "relativeOrientation": [
@@ -2832,23 +2688,7 @@
     ]
   },
   {
-    "id": 1178,
-    "firstPartnerType": 1086,
-    "secondPartnerType": 1130,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      3.5883636474609375,
-      -0.01450653076171875,
-      -1.0651336669921876
-    ]
-  },
-  {
-    "id": 1179,
+    "id": 1169,
     "firstPartnerType": 1087,
     "secondPartnerType": 1090,
     "relativeOrientation": [
@@ -2864,9 +2704,9 @@
     ]
   },
   {
-    "id": 1180,
+    "id": 1170,
     "firstPartnerType": 1087,
-    "secondPartnerType": 1115,
+    "secondPartnerType": 1129,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -2874,13 +2714,13 @@
       1.0
     ],
     "relativePosition": [
-      -1.4691452026367187,
-      -0.131427001953125,
-      6.241372680664062
+      0.49353179931640623,
+      -1.0361297607421875,
+      -6.364115905761719
     ]
   },
   {
-    "id": 1181,
+    "id": 1171,
     "firstPartnerType": 1088,
     "secondPartnerType": 1106,
     "relativeOrientation": [
@@ -2896,7 +2736,7 @@
     ]
   },
   {
-    "id": 1182,
+    "id": 1172,
     "firstPartnerType": 1088,
     "secondPartnerType": 1119,
     "relativeOrientation": [
@@ -2912,23 +2752,7 @@
     ]
   },
   {
-    "id": 1183,
-    "firstPartnerType": 1088,
-    "secondPartnerType": 1120,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      -3.3591827392578124,
-      -1.8898101806640626,
-      2.2462127685546873
-    ]
-  },
-  {
-    "id": 1184,
+    "id": 1173,
     "firstPartnerType": 1089,
     "secondPartnerType": 1133,
     "relativeOrientation": [
@@ -2944,23 +2768,7 @@
     ]
   },
   {
-    "id": 1185,
-    "firstPartnerType": 1090,
-    "secondPartnerType": 1130,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      3.77794189453125,
-      -0.49342193603515627,
-      0.2394683837890625
-    ]
-  },
-  {
-    "id": 1186,
+    "id": 1174,
     "firstPartnerType": 1090,
     "secondPartnerType": 1136,
     "relativeOrientation": [
@@ -2976,7 +2784,7 @@
     ]
   },
   {
-    "id": 1187,
+    "id": 1175,
     "firstPartnerType": 1091,
     "secondPartnerType": 1092,
     "relativeOrientation": [
@@ -2992,7 +2800,7 @@
     ]
   },
   {
-    "id": 1188,
+    "id": 1176,
     "firstPartnerType": 1091,
     "secondPartnerType": 1104,
     "relativeOrientation": [
@@ -3008,23 +2816,7 @@
     ]
   },
   {
-    "id": 1189,
-    "firstPartnerType": 1092,
-    "secondPartnerType": 1112,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      -2.2366851806640624,
-      2.8965240478515626,
-      1.458270263671875
-    ]
-  },
-  {
-    "id": 1190,
+    "id": 1177,
     "firstPartnerType": 1093,
     "secondPartnerType": 1110,
     "relativeOrientation": [
@@ -3040,7 +2832,7 @@
     ]
   },
   {
-    "id": 1191,
+    "id": 1178,
     "firstPartnerType": 1093,
     "secondPartnerType": 1133,
     "relativeOrientation": [
@@ -3056,7 +2848,7 @@
     ]
   },
   {
-    "id": 1192,
+    "id": 1179,
     "firstPartnerType": 1094,
     "secondPartnerType": 1120,
     "relativeOrientation": [
@@ -3072,23 +2864,7 @@
     ]
   },
   {
-    "id": 1193,
-    "firstPartnerType": 1094,
-    "secondPartnerType": 1126,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      -1.249151611328125,
-      -3.1930160522460938,
-      -1.32757568359375
-    ]
-  },
-  {
-    "id": 1194,
+    "id": 1180,
     "firstPartnerType": 1095,
     "secondPartnerType": 1097,
     "relativeOrientation": [
@@ -3104,7 +2880,7 @@
     ]
   },
   {
-    "id": 1195,
+    "id": 1181,
     "firstPartnerType": 1095,
     "secondPartnerType": 1131,
     "relativeOrientation": [
@@ -3120,7 +2896,7 @@
     ]
   },
   {
-    "id": 1196,
+    "id": 1182,
     "firstPartnerType": 1095,
     "secondPartnerType": 1143,
     "relativeOrientation": [
@@ -3136,7 +2912,7 @@
     ]
   },
   {
-    "id": 1197,
+    "id": 1183,
     "firstPartnerType": 1096,
     "secondPartnerType": 1112,
     "relativeOrientation": [
@@ -3152,7 +2928,7 @@
     ]
   },
   {
-    "id": 1198,
+    "id": 1184,
     "firstPartnerType": 1096,
     "secondPartnerType": 1135,
     "relativeOrientation": [
@@ -3168,7 +2944,7 @@
     ]
   },
   {
-    "id": 1199,
+    "id": 1185,
     "firstPartnerType": 1096,
     "secondPartnerType": 1142,
     "relativeOrientation": [
@@ -3184,9 +2960,9 @@
     ]
   },
   {
-    "id": 1200,
+    "id": 1186,
     "firstPartnerType": 1097,
-    "secondPartnerType": 1131,
+    "secondPartnerType": 1109,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -3194,13 +2970,13 @@
       1.0
     ],
     "relativePosition": [
-      2.1270538330078126,
-      2.6771331787109376,
-      1.0818267822265626
+      -0.8967376708984375,
+      -4.038168334960938,
+      -1.5689971923828125
     ]
   },
   {
-    "id": 1201,
+    "id": 1187,
     "firstPartnerType": 1098,
     "secondPartnerType": 1134,
     "relativeOrientation": [
@@ -3216,7 +2992,7 @@
     ]
   },
   {
-    "id": 1202,
+    "id": 1188,
     "firstPartnerType": 1099,
     "secondPartnerType": 1102,
     "relativeOrientation": [
@@ -3232,7 +3008,7 @@
     ]
   },
   {
-    "id": 1203,
+    "id": 1189,
     "firstPartnerType": 1103,
     "secondPartnerType": 1143,
     "relativeOrientation": [
@@ -3248,7 +3024,7 @@
     ]
   },
   {
-    "id": 1204,
+    "id": 1190,
     "firstPartnerType": 1104,
     "secondPartnerType": 1115,
     "relativeOrientation": [
@@ -3264,7 +3040,7 @@
     ]
   },
   {
-    "id": 1205,
+    "id": 1191,
     "firstPartnerType": 1104,
     "secondPartnerType": 1132,
     "relativeOrientation": [
@@ -3280,7 +3056,7 @@
     ]
   },
   {
-    "id": 1206,
+    "id": 1192,
     "firstPartnerType": 1105,
     "secondPartnerType": 1127,
     "relativeOrientation": [
@@ -3296,7 +3072,7 @@
     ]
   },
   {
-    "id": 1207,
+    "id": 1193,
     "firstPartnerType": 1105,
     "secondPartnerType": 1129,
     "relativeOrientation": [
@@ -3312,7 +3088,7 @@
     ]
   },
   {
-    "id": 1208,
+    "id": 1194,
     "firstPartnerType": 1105,
     "secondPartnerType": 1138,
     "relativeOrientation": [
@@ -3328,7 +3104,7 @@
     ]
   },
   {
-    "id": 1209,
+    "id": 1195,
     "firstPartnerType": 1106,
     "secondPartnerType": 1110,
     "relativeOrientation": [
@@ -3344,7 +3120,7 @@
     ]
   },
   {
-    "id": 1210,
+    "id": 1196,
     "firstPartnerType": 1106,
     "secondPartnerType": 1119,
     "relativeOrientation": [
@@ -3360,7 +3136,7 @@
     ]
   },
   {
-    "id": 1211,
+    "id": 1197,
     "firstPartnerType": 1107,
     "secondPartnerType": 1111,
     "relativeOrientation": [
@@ -3376,7 +3152,7 @@
     ]
   },
   {
-    "id": 1212,
+    "id": 1198,
     "firstPartnerType": 1108,
     "secondPartnerType": 1114,
     "relativeOrientation": [
@@ -3392,7 +3168,7 @@
     ]
   },
   {
-    "id": 1213,
+    "id": 1199,
     "firstPartnerType": 1108,
     "secondPartnerType": 1115,
     "relativeOrientation": [
@@ -3408,9 +3184,9 @@
     ]
   },
   {
-    "id": 1214,
-    "firstPartnerType": 1109,
-    "secondPartnerType": 1123,
+    "id": 1200,
+    "firstPartnerType": 1108,
+    "secondPartnerType": 1147,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -3418,13 +3194,13 @@
       1.0
     ],
     "relativePosition": [
-      0.418536376953125,
-      -2.447557067871094,
-      -5.042987060546875
+      1.7932022094726563,
+      -1.9599151611328125,
+      -2.715863037109375
     ]
   },
   {
-    "id": 1215,
+    "id": 1201,
     "firstPartnerType": 1111,
     "secondPartnerType": 1128,
     "relativeOrientation": [
@@ -3440,7 +3216,7 @@
     ]
   },
   {
-    "id": 1216,
+    "id": 1202,
     "firstPartnerType": 1111,
     "secondPartnerType": 1140,
     "relativeOrientation": [
@@ -3456,7 +3232,7 @@
     ]
   },
   {
-    "id": 1217,
+    "id": 1203,
     "firstPartnerType": 1112,
     "secondPartnerType": 1135,
     "relativeOrientation": [
@@ -3472,7 +3248,7 @@
     ]
   },
   {
-    "id": 1218,
+    "id": 1204,
     "firstPartnerType": 1112,
     "secondPartnerType": 1142,
     "relativeOrientation": [
@@ -3488,7 +3264,23 @@
     ]
   },
   {
-    "id": 1219,
+    "id": 1205,
+    "firstPartnerType": 1113,
+    "secondPartnerType": 1130,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      -0.395013427734375,
+      -1.2789901733398437,
+      3.811415100097656
+    ]
+  },
+  {
+    "id": 1206,
     "firstPartnerType": 1113,
     "secondPartnerType": 1138,
     "relativeOrientation": [
@@ -3504,23 +3296,7 @@
     ]
   },
   {
-    "id": 1220,
-    "firstPartnerType": 1114,
-    "secondPartnerType": 1136,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      1.5583053588867188,
-      2.4995956420898438,
-      -2.9582794189453123
-    ]
-  },
-  {
-    "id": 1221,
+    "id": 1207,
     "firstPartnerType": 1114,
     "secondPartnerType": 1147,
     "relativeOrientation": [
@@ -3536,23 +3312,7 @@
     ]
   },
   {
-    "id": 1222,
-    "firstPartnerType": 1116,
-    "secondPartnerType": 1121,
-    "relativeOrientation": [
-      0.0,
-      0.0,
-      0.0,
-      1.0
-    ],
-    "relativePosition": [
-      -1.603594970703125,
-      2.016096496582031,
-      -0.485882568359375
-    ]
-  },
-  {
-    "id": 1223,
+    "id": 1208,
     "firstPartnerType": 1116,
     "secondPartnerType": 1131,
     "relativeOrientation": [
@@ -3568,7 +3328,7 @@
     ]
   },
   {
-    "id": 1224,
+    "id": 1209,
     "firstPartnerType": 1116,
     "secondPartnerType": 1145,
     "relativeOrientation": [
@@ -3584,7 +3344,7 @@
     ]
   },
   {
-    "id": 1225,
+    "id": 1210,
     "firstPartnerType": 1117,
     "secondPartnerType": 1122,
     "relativeOrientation": [
@@ -3600,7 +3360,7 @@
     ]
   },
   {
-    "id": 1226,
+    "id": 1211,
     "firstPartnerType": 1117,
     "secondPartnerType": 1137,
     "relativeOrientation": [
@@ -3616,7 +3376,7 @@
     ]
   },
   {
-    "id": 1227,
+    "id": 1212,
     "firstPartnerType": 1117,
     "secondPartnerType": 1141,
     "relativeOrientation": [
@@ -3632,7 +3392,7 @@
     ]
   },
   {
-    "id": 1228,
+    "id": 1213,
     "firstPartnerType": 1118,
     "secondPartnerType": 1122,
     "relativeOrientation": [
@@ -3648,7 +3408,7 @@
     ]
   },
   {
-    "id": 1229,
+    "id": 1214,
     "firstPartnerType": 1119,
     "secondPartnerType": 1146,
     "relativeOrientation": [
@@ -3664,7 +3424,7 @@
     ]
   },
   {
-    "id": 1230,
+    "id": 1215,
     "firstPartnerType": 1121,
     "secondPartnerType": 1143,
     "relativeOrientation": [
@@ -3680,7 +3440,7 @@
     ]
   },
   {
-    "id": 1231,
+    "id": 1216,
     "firstPartnerType": 1121,
     "secondPartnerType": 1145,
     "relativeOrientation": [
@@ -3696,7 +3456,23 @@
     ]
   },
   {
-    "id": 1232,
+    "id": 1217,
+    "firstPartnerType": 1123,
+    "secondPartnerType": 1126,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      1.770306396484375,
+      1.0466995239257812,
+      0.9757781982421875
+    ]
+  },
+  {
+    "id": 1218,
     "firstPartnerType": 1124,
     "secondPartnerType": 1127,
     "relativeOrientation": [
@@ -3712,7 +3488,7 @@
     ]
   },
   {
-    "id": 1233,
+    "id": 1219,
     "firstPartnerType": 1124,
     "secondPartnerType": 1136,
     "relativeOrientation": [
@@ -3728,7 +3504,7 @@
     ]
   },
   {
-    "id": 1234,
+    "id": 1220,
     "firstPartnerType": 1124,
     "secondPartnerType": 1137,
     "relativeOrientation": [
@@ -3744,7 +3520,7 @@
     ]
   },
   {
-    "id": 1235,
+    "id": 1221,
     "firstPartnerType": 1126,
     "secondPartnerType": 1139,
     "relativeOrientation": [
@@ -3760,7 +3536,7 @@
     ]
   },
   {
-    "id": 1236,
+    "id": 1222,
     "firstPartnerType": 1127,
     "secondPartnerType": 1141,
     "relativeOrientation": [
@@ -3776,7 +3552,7 @@
     ]
   },
   {
-    "id": 1237,
+    "id": 1223,
     "firstPartnerType": 1128,
     "secondPartnerType": 1134,
     "relativeOrientation": [
@@ -3792,7 +3568,7 @@
     ]
   },
   {
-    "id": 1238,
+    "id": 1224,
     "firstPartnerType": 1128,
     "secondPartnerType": 1140,
     "relativeOrientation": [
@@ -3808,7 +3584,23 @@
     ]
   },
   {
-    "id": 1239,
+    "id": 1225,
+    "firstPartnerType": 1129,
+    "secondPartnerType": 1130,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      2.265313720703125,
+      1.8215682983398438,
+      3.9111892700195314
+    ]
+  },
+  {
+    "id": 1226,
     "firstPartnerType": 1132,
     "secondPartnerType": 1135,
     "relativeOrientation": [
@@ -3824,7 +3616,7 @@
     ]
   },
   {
-    "id": 1240,
+    "id": 1227,
     "firstPartnerType": 1134,
     "secondPartnerType": 1146,
     "relativeOrientation": [
@@ -3840,7 +3632,7 @@
     ]
   },
   {
-    "id": 1241,
+    "id": 1228,
     "firstPartnerType": 1135,
     "secondPartnerType": 1142,
     "relativeOrientation": [
@@ -3856,7 +3648,7 @@
     ]
   },
   {
-    "id": 1242,
+    "id": 1229,
     "firstPartnerType": 1137,
     "secondPartnerType": 1141,
     "relativeOrientation": [
@@ -3872,7 +3664,7 @@
     ]
   },
   {
-    "id": 1243,
+    "id": 1230,
     "firstPartnerType": 1144,
     "secondPartnerType": 1145,
     "relativeOrientation": [

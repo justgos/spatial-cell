@@ -1,9 +1,9 @@
 {
   "numParticles": 16384,
   "numMetabolicParticles": 65536,
-  "steps": 501,
+  "steps": 1001,
   "simSize": 400.0,
-  "maxInteractionDistance": 7.0,
+  "maxInteractionDistance": 8.0,
   "maxDiffusionDistance": 10.0,
   "nGridCellsBits": 5,
   "movementNoiseScale": 0.7,
@@ -11,7 +11,7 @@
   "metaboliteMovementNoiseScale": 0.5,
   "velocityDecay": 0.7,
   "angularVelocityDecay": 0.7,
-  "noiseCoordinationSteps": 8,
-  "relaxationSteps": 8,
+  "noiseCoordinationSteps": 32,
+  "relaxationSteps": 16,
   "metaboliteDiffusionSteps": 8
 }

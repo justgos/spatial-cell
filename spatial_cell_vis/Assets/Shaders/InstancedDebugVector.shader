@@ -112,7 +112,7 @@
             }
 
             v.vertex.xyz *= 0.2;
-            float3 relativeDebugVector = debugVector.xyz * 50;  //  -p.pos.xyz;
+            float3 relativeDebugVector = debugVector.xyz * scale * 50.0f;  //  -p.pos.xyz;
             float4 debugVectorOrientation = quaternionFromTo(float3(0, 1, 0), normalize(relativeDebugVector));
             if (v.vertex.y > 0)
                 v.vertex.y *= (length(relativeDebugVector) / meshScale) / meshHeight / 10;
