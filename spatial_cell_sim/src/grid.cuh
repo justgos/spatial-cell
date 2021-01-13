@@ -83,7 +83,7 @@ public:
         /*
          * The fix for "uses too much shared data" is to change
          * C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\include\cub\device\dispatch\dispatch_radix_sort.cuh
-         * reduce the number of threads per blocks from 512 to 384, in the `Policy700`, line 788 - the first of "Downsweep policies"
+         * and set the `Policy200` and the default policy on line 805: `typedef Policy200 MaxPolicy;`
         */
         cub::DeviceRadixSort::SortPairs(d_temp_storage, temp_storage_bytes,
             indices->d_Current, indices->d_Next, items->d_Current, items->d_Next, indices->count);
