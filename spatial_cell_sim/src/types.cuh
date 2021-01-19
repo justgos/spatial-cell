@@ -38,7 +38,9 @@ struct ParticleInteractionInfo {
     int id;
     int group;
     int firstPartnerType;
+    __int8 firstPartnerState;
     int secondPartnerType;
+    __int8 secondPartnerState;
     float4 relativeOrientation;
     float3 relativePosition;
 
@@ -50,13 +52,17 @@ struct ParticleInteractionInfo {
         int id,
         int group,
         int firstPartnerType,
+        __int8 firstPartnerState,
         int secondPartnerType,
+        __int8 secondPartnerState,
         float4 relativeOrientation,
         float3 relativePosition
     ) : id(id),
         group(group),
         firstPartnerType(firstPartnerType),
+        firstPartnerState(firstPartnerState),
         secondPartnerType(secondPartnerType),
+        secondPartnerState(secondPartnerState),
         relativeOrientation(relativeOrientation),
         relativePosition(relativePosition)
     {
@@ -113,6 +119,7 @@ struct Particle {
     int id;
     int type;
     int flags;
+    __int8 state;
     float radius;
     float3 pos;
     float4 rot;
@@ -134,6 +141,7 @@ struct Particle {
     ) : id(id),
         type(type),
         flags(flags | PARTICLE_FLAG_ACTIVE),
+        state(0),
         radius(radius),
         pos(pos),
         rot(rot),

@@ -32,7 +32,9 @@ loadComplexificationInfo() {
             id,
             c.get("group", -1).asInt(),
             c["firstPartnerType"].asInt(),
+            c.get("firstPartnerState", -1).asInt(),
             c["secondPartnerType"].asInt(),
+            c.get("secondPartnerState", -1).asInt(),
             make_float4(relativeOrientation[0].asFloat(), relativeOrientation[1].asFloat(), relativeOrientation[2].asFloat(), relativeOrientation[3].asFloat()),
             make_float3(relativePosition[0].asFloat(), relativePosition[1].asFloat(), relativePosition[2].asFloat())
         )));

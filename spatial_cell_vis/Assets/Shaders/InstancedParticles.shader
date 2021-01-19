@@ -212,12 +212,12 @@
 
                 fixed4 col = tex2D(_MainTex, i.uv) * _Color * i.col;
                 col.xyz = (0.4 + 0.6 * i.ambient) * col.xyz;
-                float3 lightDir = normalize(_WorldSpaceLightPos0.xyz);
+                //float3 lightDir = normalize(_WorldSpaceLightPos0.xyz);
 
-                // darken light's illumination with shadow, keep ambient intact
-                half3 h = normalize(lightDir + i.viewDir);
-                float nh = max(0, dot(i.normal, h));
-                float spec = pow(nh, 48.0);
+                //// darken light's illumination with shadow, keep ambient intact
+                //half3 h = normalize(lightDir + i.viewDir);
+                //float nh = max(0, dot(i.normal, h));
+                //float spec = pow(nh, 48.0);
 
                 //fixed3 lighting = i.diff + _LightColor0.rgb * spec + i.ambient;
                 //col.rgb *= lighting;

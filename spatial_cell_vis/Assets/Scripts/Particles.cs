@@ -143,7 +143,7 @@ public class Particles : MonoBehaviour
             instancedMaterial.SetInt("particleTypeFilter", particleTypeFilter);
             instancedMaterial.SetInt("targetParticleId", targetParticleId);
             instancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
-            Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.one * simData.SimSize * drawScale * 0.5f, Vector3.one * simData.SimSize * drawScale), argsBuffer);
+            Graphics.DrawMeshInstancedIndirect(mesh, 0, instancedMaterial, new Bounds(Vector3.one * simData.SimSize * drawScale * 0.5f, Vector3.one * simData.SimSize * drawScale), argsBuffer, 0, null, UnityEngine.Rendering.ShadowCastingMode.Off, false);
 
             debugVectorInstancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
             debugVectorInstancedMaterial.SetFloat("scale", drawScale);
@@ -158,11 +158,9 @@ public class Particles : MonoBehaviour
             debugVectorInstancedMaterial.SetFloat("visibleMaxZ", particleVisibleRangeZSlider.HighValue);
             debugVectorInstancedMaterial.SetInt("particleTypeFilter", particleTypeFilter);
             debugVectorInstancedMaterial.SetBuffer("particles", frameData.ParticleBuffer);
-            Graphics.DrawMeshInstancedIndirect(debugVectorMesh, 0, debugVectorInstancedMaterial, new Bounds(Vector3.one * simData.SimSize * drawScale * 0.5f, Vector3.one * simData.SimSize * drawScale), debugVectorArgsBuffer);
+            Graphics.DrawMeshInstancedIndirect(debugVectorMesh, 0, debugVectorInstancedMaterial, new Bounds(Vector3.one * simData.SimSize * drawScale * 0.5f, Vector3.one * simData.SimSize * drawScale), debugVectorArgsBuffer, 0, null, UnityEngine.Rendering.ShadowCastingMode.Off, false);
         }
 
-        // FIXME: `argsBuffer` is not read out immediately, and so the setting above gets rewritten
-        // and? ruins the previous render
         foreach (var entry in frameData.filteredBuffers)
         {
             var tmpArgBuffer = frameData.filteredBufferArgs[entry.Key];
@@ -173,7 +171,7 @@ public class Particles : MonoBehaviour
             tmpArgBuffer.SetData(tmpDrawArgs);
 
             Material mat;
-            if(!filteredInstancedMaterials.TryGetValue(entry.Key, out mat))
+            if (!filteredInstancedMaterials.TryGetValue(entry.Key, out mat))
             {
                 mat = Instantiate(instancedMaterial);
                 filteredInstancedMaterials.Add(entry.Key, mat);
@@ -192,7 +190,7 @@ public class Particles : MonoBehaviour
             mat.SetInt("particleTypeFilter", particleTypeFilter);
             mat.SetInt("targetParticleId", targetParticleId);
             mat.SetBuffer("particles", entry.Value);
-            Graphics.DrawMeshInstancedIndirect(mesh, 0, mat, new Bounds(Vector3.one * simData.SimSize * drawScale * 0.5f, Vector3.one * simData.SimSize * drawScale), tmpArgBuffer);
+            Graphics.DrawMeshInstancedIndirect(mesh, 0, mat, new Bounds(Vector3.one * simData.SimSize * drawScale * 0.5f, Vector3.one * simData.SimSize * drawScale), tmpArgBuffer, 0, null, UnityEngine.Rendering.ShadowCastingMode.Off, false);
         }
 
         //debugVectorInstancedMaterial.SetMatrix("baseTransform", Matrix4x4.identity);
