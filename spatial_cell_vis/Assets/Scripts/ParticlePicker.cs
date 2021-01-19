@@ -143,11 +143,12 @@ public class ParticlePicker : MonoBehaviour
 
                     if (p.id == id)
                     {
-                        Debug.Log(string.Format("Target particle: id {0}, type {1}, pos {2}, rot {3}, debugVector {4}",
+                        Debug.Log(string.Format("Target particle: id {0}, type {1}, pos {2}, rot {3}, r {4}, debugVector {5}",
                             p.id,
                             p.type,
                             p.pos.UnityVector().ToString("F4"),
                             p.rot.UnityQuaternion().ToString("F4"),
+                            p.radius,
                             p.debugVector.UnityQuaternion().ToString("F6")
                         ));
 

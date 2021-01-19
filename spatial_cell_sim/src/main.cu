@@ -45,6 +45,7 @@
 #include "chemistry.cuh"
 #include "dynamics.cuh"
 #include "metabolites.cuh"
+#include "setup/setup.cuh"
 #include "setup/particle_setup.cuh"
 #include "setup/interaction_setup.cuh"
 #include "setup/metabolite_setup.cuh"
@@ -199,48 +200,6 @@ main(void)
     std::string storageFileName = "./results/frames.dat";
     FileStorage storage(storageFileName, &config);
 
-
-    // TODO: implement using boost's shared memory: https://www.boost.org/doc/libs/1_74_0/doc/html/interprocess/quick_guide.html
-    
-    //HANDLE hMapFile;
-    //LPCTSTR pBuf;
-    //std::string memBufName = "spatial_cell_buf";
-    //unsigned int memBufSize = 2 * 1024 * 1024 * 1024;
-
-    //hMapFile = CreateFileMapping(
-    //    INVALID_HANDLE_VALUE,    // use paging file
-    //    NULL,                    // default security
-    //    PAGE_READWRITE,          // read/write access
-    //    0,                       // maximum object size (high-order DWORD)
-    //    memBufSize,                // maximum object size (low-order DWORD)
-    //    memBufName.c_str()                 // name of mapping object
-    //);
-
-    //if (hMapFile == NULL)
-    //{
-    //    printf(TEXT("Could not create file mapping object (%d).\n"),
-    //        GetLastError());
-    //    return 1;
-    //}
-    //pBuf = (LPTSTR)MapViewOfFile(hMapFile,   // handle to map object
-    //    FILE_MAP_ALL_ACCESS, // read/write permission
-    //    0,
-    //    0,
-    //    memBufSize
-    //);
-
-    //if (pBuf == NULL)
-    //{
-    //    printf(TEXT("Could not map view of file (%d).\n"),
-    //        GetLastError());
-
-    //    CloseHandle(hMapFile);
-
-    //    return 1;
-    //}
-
-    //FillMemory((PVOID)pBuf, 0, memBufSize);
-
     // Allocate the host & device variables
     DoubleBuffer<Particle> particles(config.numParticles);
     SingleBuffer<ReducedParticle> reducedParticles(config.numParticles);
@@ -265,131 +224,9 @@ main(void)
     cudaMemcpyToSymbol(d_Config, &config, sizeof(Config), 0, cudaMemcpyHostToDevice);
 
     // Initialize the particles
-    fillParticlesUniform<Particle>(
-        config.numParticles * 0.1,
-        PARTICLE_TYPE_DNA,
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
-    );
-    /*int lineStartIdx = nActiveParticles.h_Current[0];
-    fillParticlesStraightLine<Particle>(
-        config.numParticles * 0.05,
-        PARTICLE_TYPE_DNA,
-        make_float3(config.simSize / 4, config.simSize / 4, config.simSize / 4),
-        make_float3(0.0015, 0.0015, 0.0015),
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
-    );
-    int lineEndIdx = nActiveParticles.h_Current[0];
-    linkParticlesSerially<Particle>(
-        lineStartIdx,
-        lineEndIdx,
-        0,
-        particles.h_Current, &config, rng
-    );*/
-    /*fillParticlesPlane<Particle>(
-        sqrt(config.numParticles * 0.4),
-        PARTICLE_TYPE_LIPID,
-        make_float3(0.35 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        make_float3(-1, 0, 0),
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
-    );*/
-
-    /*fillParticlesSphere(
-        config.numParticles * 0.35,
-        PARTICLE_TYPE_LIPID,
-        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
-    );*/
-
-    std::vector<int> chainMembers;
-    for (int i = 0; i < 3; i++) {
-        for (auto it = particleTypeInfo->begin(); it != particleTypeInfo->end(); it++) {
-            if (it->second.category == "rna")
-                chainMembers.insert(chainMembers.end(), it->first);
-            /*if (chainMembers.size() >= 3)
-                break;*/
-        }
-    }
-    int chainStartIdx = nActiveParticles.h_Current[0];
-    fillParticlesWrappedChain(
-        &chainMembers,
-        make_float3(0.2 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
-    );
-    int chainEndIdx = nActiveParticles.h_Current[0];
-    linkParticlesSerially<Particle>(
-        chainStartIdx,
-        chainEndIdx,
-        1,
-        particles.h_Current, &config, rng
-    );
-
-    instantiateComplex(
-        1,
-        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, complexInfo, &config, rng
-    );
-
-    /*fillParticlesSphere(
-        config.numParticles * 0.23,
-        PARTICLE_TYPE_DNA,
-        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
-    );*/
-
-    /*fillParticlesSphere(
-        config.numParticles * 0.1,
-        PARTICLE_TYPE_LIPID,
-        make_float3(0.2 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
-    );
-    fillParticlesSphere(
-        config.numParticles * 0.01,
-        PARTICLE_TYPE_DNA,
-        make_float3(0.2 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
-    );*/
-    /*fillParticlesSphere(
-        config.numParticles * 0.15,
-        PARTICLE_TYPE_DNA,
-        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
-    );
-    fillParticlesSphere(
-        config.numParticles * 0.08,
-        PARTICLE_TYPE_DNA,
-        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
-    );*/
-    /*fillParticlesSphere(
-        config.numParticles * 0.05,
-        PARTICLE_TYPE_DNA,
-        make_float3(0.5 * config.simSize, 0.5 * config.simSize, 0.5 * config.simSize),
-        particles.h_Current, nActiveParticles.h_Current, particleTypeInfo, &config, rng
-    );*/
-    particles.copyToDevice();
-
+    setupParticles(&particles, &nActiveParticles, &lastActiveParticle, &nextParticleId, particleTypeInfo, complexificationInfo, complexInfo, &config, rng);
     // Initialize the metabolic particles
-    fillParticlesUniform<MetabolicParticle>(
-        config.numMetabolicParticles,
-        PARTICLE_TYPE_METABOLIC,
-        metabolicParticles.h_Current, nActiveMetabolicParticles.h_Current, particleTypeInfo, &config, rng
-    );
-    addMetabolitesByCoord(
-        0,
-        config.numMetabolicParticles,
-        0,
-        metabolicParticles.h_Current, &config, rng
-    );
-    metabolicParticles.copyToDevice();
-
-    // Set the reference particle numbers/indices
-    lastActiveParticle.h_Current[0] = nActiveParticles.h_Current[0] - 1;
-    nextParticleId.h_Current[0] = nActiveParticles.h_Current[0];
-    nActiveParticles.copyToDevice();
-    lastActiveParticle.copyToDevice();
-    nextParticleId.copyToDevice();
-
-    nActiveMetabolicParticles.copyToDevice();
+    setupMetabolicParticles(&metabolicParticles, &nActiveMetabolicParticles, particleTypeInfo, &config, rng);
 
     printf("Particle CUDA kernels with %d blocks of %d threads\n", CUDA_NUM_BLOCKS(config.numParticles), CUDA_THREADS_PER_BLOCK);
     printf("MetabolicParticle CUDA kernels with %d blocks of %d threads\n", CUDA_NUM_BLOCKS(config.numMetabolicParticles), CUDA_THREADS_PER_BLOCK);
@@ -459,21 +296,7 @@ main(void)
         &reducedMetabolicParticles,
         &storage
     );
-    /*reducedParticles.copyToHost();
-    reducedMetabolicParticles.copyToHost();
-    storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);*/
-
-    /*char *memBufPtr = (char*)pBuf;
-    CopyMemory((PVOID)memBufPtr, (char*)&config.simSize, sizeof(float));
-    memBufPtr += sizeof(float);
-    CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
-    memBufPtr += sizeof(unsigned int);
-
-    CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
-    memBufPtr += sizeof(unsigned int);
-    CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
-    memBufPtr += size;*/
-
+    
     // Create initial complex-interactions
     particles.clearNextOnDevice();
     complexify KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
@@ -490,6 +313,8 @@ main(void)
 
     printf("\n");
     printf("[Simulating...]\n");
+
+    double persistFrameDuration = 0.0;
     
     // The simulation loop
     time_point t0 = now();
@@ -514,20 +339,6 @@ main(void)
             &config
         );
         cudaDeviceSynchronize();
-
-        //updateIndices KERNEL_ARGS2(CUDA_NUM_BLOCKS(config.numParticles), CUDA_THREADS_PER_BLOCK) (particles.d_Current, indices.d_Current);
-        //cudaDeviceSynchronize();
-        //time_point t3 = now();
-        //particleSort.sort(&indices, &particles);
-        //cudaDeviceSynchronize();
-        //particles.swap();
-        //indices.swap();
-        ////printCUDAIntArray(d_Indices, config.numParticles);
-        //time_point t4 = now();
-        //gridRanges.clear();
-        //updateGridRanges KERNEL_ARGS2(CUDA_NUM_BLOCKS(config.gridSize), CUDA_THREADS_PER_BLOCK) (indices.d_Current, gridRanges.d_Current);
-        //cudaDeviceSynchronize();
-        ////printCUDAIntArray(gridRanges.d_Current, config.gridSize * 2);
 
         nActiveParticles.copyToHost();
         lastActiveParticle.h_Current[0] = nActiveParticles.h_Current[0];
@@ -595,7 +406,8 @@ main(void)
                 particles.d_Current,
                 particles.d_Next,
                 nActiveParticles.h_Current[0],
-                gridRanges.d_Current
+                gridRanges.d_Current,
+                (float)j / config.noiseCoordinationSteps
             );
             particles.swap();
 
@@ -716,65 +528,33 @@ main(void)
 
         time_point t8 = now();
 
-        // Wait till the previous frame is persisted
-        double persistFrameDuration = persistFrameTask.get();
+        if (step % config.persistEveryNthFrame == 0) {
 
-        reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-            particles.d_Current,
-            reducedParticles.d_Current,
-            nActiveParticles.h_Current[0]
-        );
-        //reducedParticles.copyToHost();
-        reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-            metabolicParticles.d_Current,
-            reducedMetabolicParticles.d_Current,
-            nActiveMetabolicParticles.h_Current[0]
-        );
-        //reducedMetabolicParticles.copyToHost();
-        //storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
-        persistFrameTask = std::async(
-            persistFrame,
-            &reducedParticles,
-            &reducedMetabolicParticles,
-            &storage
-        );
+            // Wait till the previous frame is persisted
+            persistFrameDuration = persistFrameTask.get();
 
-        /*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
-        memBufPtr += sizeof(unsigned int);
-        CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
-        memBufPtr += size;*/
+            reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                particles.d_Current,
+                reducedParticles.d_Current,
+                nActiveParticles.h_Current[0]
+            );
+            reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+                metabolicParticles.d_Current,
+                reducedMetabolicParticles.d_Current,
+                nActiveMetabolicParticles.h_Current[0]
+            );
+
+            persistFrameTask = std::async(
+                persistFrame,
+                &reducedParticles,
+                &reducedMetabolicParticles,
+                &storage
+            );
+        }
 
         time_point t9 = now();
 
         if (step % 10 == 0) {
-            //time_point t7 = now();
-            //particles.copyToHost();
-            //metabolicParticles.copyToHost();
-
-            //time_point t8 = now();
-
-            //reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-            //    particles.d_Current,
-            //    reducedParticles.d_Current,
-            //    nActiveParticles.h_Current[0]
-            //    );
-            //reducedParticles.copyToHost();
-            //reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-            //    metabolicParticles.d_Current,
-            //    reducedMetabolicParticles.d_Current,
-            //    nActiveMetabolicParticles.h_Current[0]
-            //    );
-            //reducedMetabolicParticles.copyToHost();
-
-            //storage.writeFrame<ReducedParticle, ReducedMetabolicParticle>(&reducedParticles, &reducedMetabolicParticles);
-
-            ///*CopyMemory((PVOID)memBufPtr, (char*)&config.numParticles, sizeof(unsigned int));
-            //memBufPtr += sizeof(unsigned int);
-            //CopyMemory((PVOID)memBufPtr, (char*)h_Particles, size);
-            //memBufPtr += size;*/
-
-            //time_point t9 = now();
-
             printf("step %d", step);
             printf(", nActiveParticles %d", nActiveParticles.h_Current[0]);
             printf(", updateGridAndSort %f", getDuration(t1, t5));
@@ -793,7 +573,7 @@ main(void)
     cudaDeviceSynchronize();
 
     // Make sure the last frame is persisted
-    double persistFrameDuration = persistFrameTask.get();
+    persistFrameDuration = persistFrameTask.get();
 
     time_point t2 = now();
     printf("time %f\n", getDuration(t0, t2));
@@ -806,10 +586,7 @@ main(void)
     }
 
     /*printf("Press any key to exit...\n");
-    getchar();
-
-    UnmapViewOfFile(pBuf);
-    CloseHandle(hMapFile);*/
+    getchar();*/
 
     printf("Done\n");
     return 0;

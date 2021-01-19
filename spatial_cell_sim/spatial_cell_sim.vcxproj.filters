@@ -27,5 +27,6 @@
     <ClInclude Include="src\setup\metabolite_setup.cuh" />
     <ClInclude Include="src\chemistry.cuh" />
     <ClInclude Include="src\config.cuh" />
+    <ClInclude Include="src\setup\setup.cuh" />
   </ItemGroup>
 </Project>

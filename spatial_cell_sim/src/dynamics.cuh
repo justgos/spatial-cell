@@ -252,7 +252,8 @@ coordinateNoise(
     const Particle* curParticles,
     Particle* nextParticles,
     int stepStart_nActiveParticles,
-    unsigned int* gridRanges
+    unsigned int* gridRanges,
+    float coordinationFraction
 ) {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
     if (idx >= stepStart_nActiveParticles)
@@ -309,8 +310,9 @@ coordinateNoise(
                     for (int k = 0; k < p.nActiveInteractions; k++) {
                         ParticleInteraction interaction = p.interactions[k];
 
-                        // Non-rigid interactions (e.g. RNA chain) should not be coordinated
-                        if (interaction.type < 10)
+                        // Non-rigid interactions (e.g. RNA chain) should be less coordinated,
+                        // otherwise their behavior becomes too rigid
+                        if (interaction.type < 10 && coordinationFraction > 0.25f)
                             continue;
 
                         if (interaction.partnerId == tp.id) {
@@ -323,19 +325,19 @@ coordinateNoise(
 
                             //p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.5;
 
-                            /*p.angularVelocity = slerp(
+                            p.angularVelocity = slerp(
                                 p.angularVelocity,
                                 tp.angularVelocity,
                                 0.49f / (p.nActiveInteractions + tp.nActiveInteractions)
-                            );*/
+                            );
 
                             // Angular noise is too messy for particle complexes - it'll be taken care of
                             // when the particles will attempt to realign after applying the position noise
-                            p.angularVelocity = slerp(
+                            /*p.angularVelocity = slerp(
                                 p.angularVelocity,
                                 QUATERNION_IDENTITY,
                                 0.4f / (p.nActiveInteractions + tp.nActiveInteractions)
-                            );
+                            );*/
                         }
                     }
                 }
@@ -566,9 +568,6 @@ relax(
                             if (interaction.type >= 10) {
                                 ParticleInteractionInfo pii = flatComplexificationInfo[interaction.type];
 
-                                // Noise should act on the interacting partners as if they were one
-                                // TODO: broadcast the noise direction faster to reduce the complex's wobbling
-                                //p.velocity = lerp(p.velocity, tp.velocity, 0.99f / (p.nActiveInteractions + tp.nActiveInteractions));
                                 // Reduce the noise coming from the direction of the partner (the opposite-facing component), 
                                 // as there're less noise water molecules there
                                 //p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.2;
@@ -606,6 +605,7 @@ relax(
 
                             // Interaction testing code
                             if (interaction.type == 0) {
+                                // Lipid sheet interaction
                                 float distRatio = (interactionDistance - dist) / (dist + 1e-6);
                                 constexpr float collisionRelaxationSpeed = 0.25f;
                                 /*moveVec.x += -delta.x * distRatio * collisionRelaxationSpeed;
@@ -638,10 +638,11 @@ relax(
                                 moveVec.y += (relaxedRelativePosition.y - p.pos.y) * relativePositionRelaxationSpeed;
                                 moveVec.z += (relaxedRelativePosition.z - p.pos.z) * relativePositionRelaxationSpeed;
 
-                                p.debugVector.x = (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
-                                p.debugVector.y = (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
-                                p.debugVector.z = (relaxedRelativePosition.z - p.pos.z) * (1.0 - relativePositionRelaxationSpeed);
+                                p.debugVector.x += (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
+                                p.debugVector.y += (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
+                                p.debugVector.z += (relaxedRelativePosition.z - p.pos.z) * (1.0 - relativePositionRelaxationSpeed);
                             } else if (interaction.type == 1) {
+                                // Flexible chain interaction
                                 float deltaInteractionDist = -(interactionDistance - dist);
                                 constexpr float distanceRelaxationSpeed = 0.2f;
                                 //moveVec += normalizedDelta * (deltaInteractionDist * distanceRelaxationSpeed);
@@ -680,23 +681,23 @@ relax(
                                 // FIXME: the order should be determined not by ids, but by interaction parameters
                                 //if(k < 1 && p.nActiveInteractions > 1)
                                 moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
-                                p.debugVector.x = (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
-                                p.debugVector.y = (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
-                                p.debugVector.z = (relaxedRelativePosition.z - p.pos.z) * (1.0 - relativePositionRelaxationSpeed);
+                                p.debugVector.x += (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
+                                p.debugVector.y += (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
+                                p.debugVector.z += (relaxedRelativePosition.z - p.pos.z) * (1.0 - relativePositionRelaxationSpeed);
                             }
                         }
                     }
 
-                    // Do not process collisions for the interacting particles,
-                    // the interaction alignment code takes care of this
-                    if (!interactionPartners) {
-                        float collisionDist = p.radius + tp.radius;
-                        if (dist < collisionDist) {
-                            float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
-                            constexpr float collisionRelaxationSpeed = 0.25f;
-                            moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed) * p.radius / (p.radius + tp.radius);
-                        }
-                    }
+                    //// Do not process collisions for the interacting particles,
+                    //// the interaction alignment code takes care of this
+                    //if (!interactionPartners) {
+                    //    float collisionDist = p.radius + tp.radius;
+                    //    if (dist < collisionDist) {
+                    //        float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
+                    //        constexpr float collisionRelaxationSpeed = 0.25f;
+                    //        moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed) * p.radius / (p.radius + tp.radius);
+                    //    }
+                    //}
                 }
             }
         }
@@ -704,7 +705,7 @@ relax(
 
     // Move the particle
     p.pos = clamp(
-        p.pos + (targetPos - p.pos) * 0.99f + moveVec,
+        p.pos + (targetPos - p.pos) * 0.49f + moveVec,
         0.0f, d_Config.simSize
     );
 

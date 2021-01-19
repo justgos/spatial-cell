@@ -1,6 +1,7 @@
 [
   {
     "id": 1001,
+    "group": 1001,
     "firstPartnerType": 1001,
     "secondPartnerType": 1005,
     "relativeOrientation": [
@@ -17,6 +18,7 @@
   },
   {
     "id": 1002,
+    "group": 1002,
     "firstPartnerType": 1001,
     "secondPartnerType": 1006,
     "relativeOrientation": [
@@ -33,6 +35,7 @@
   },
   {
     "id": 1003,
+    "group": 1003,
     "firstPartnerType": 1002,
     "secondPartnerType": 1010,
     "relativeOrientation": [
@@ -49,6 +52,7 @@
   },
   {
     "id": 1004,
+    "group": 1004,
     "firstPartnerType": 1002,
     "secondPartnerType": 1012,
     "relativeOrientation": [
@@ -65,6 +69,7 @@
   },
   {
     "id": 1005,
+    "group": 1005,
     "firstPartnerType": 1002,
     "secondPartnerType": 1038,
     "relativeOrientation": [
@@ -81,6 +86,7 @@
   },
   {
     "id": 1006,
+    "group": 1006,
     "firstPartnerType": 1003,
     "secondPartnerType": 1007,
     "relativeOrientation": [
@@ -97,6 +103,7 @@
   },
   {
     "id": 1007,
+    "group": 1007,
     "firstPartnerType": 1003,
     "secondPartnerType": 1009,
     "relativeOrientation": [
@@ -113,6 +120,7 @@
   },
   {
     "id": 1008,
+    "group": 1008,
     "firstPartnerType": 1003,
     "secondPartnerType": 1031,
     "relativeOrientation": [
@@ -129,6 +137,7 @@
   },
   {
     "id": 1009,
+    "group": 1009,
     "firstPartnerType": 1004,
     "secondPartnerType": 1028,
     "relativeOrientation": [
@@ -145,6 +154,7 @@
   },
   {
     "id": 1010,
+    "group": 1010,
     "firstPartnerType": 1004,
     "secondPartnerType": 1029,
     "relativeOrientation": [
@@ -161,6 +171,7 @@
   },
   {
     "id": 1011,
+    "group": 1011,
     "firstPartnerType": 1004,
     "secondPartnerType": 1032,
     "relativeOrientation": [
@@ -177,6 +188,7 @@
   },
   {
     "id": 1012,
+    "group": 1012,
     "firstPartnerType": 1004,
     "secondPartnerType": 1051,
     "relativeOrientation": [
@@ -193,6 +205,7 @@
   },
   {
     "id": 1013,
+    "group": 1013,
     "firstPartnerType": 1005,
     "secondPartnerType": 1029,
     "relativeOrientation": [
@@ -209,6 +222,7 @@
   },
   {
     "id": 1014,
+    "group": 1014,
     "firstPartnerType": 1005,
     "secondPartnerType": 1054,
     "relativeOrientation": [
@@ -225,6 +239,7 @@
   },
   {
     "id": 1015,
+    "group": 1015,
     "firstPartnerType": 1005,
     "secondPartnerType": 1056,
     "relativeOrientation": [
@@ -241,6 +256,7 @@
   },
   {
     "id": 1016,
+    "group": 1016,
     "firstPartnerType": 1006,
     "secondPartnerType": 1013,
     "relativeOrientation": [
@@ -257,6 +273,7 @@
   },
   {
     "id": 1017,
+    "group": 1017,
     "firstPartnerType": 1006,
     "secondPartnerType": 1044,
     "relativeOrientation": [
@@ -273,6 +290,7 @@
   },
   {
     "id": 1018,
+    "group": 1018,
     "firstPartnerType": 1007,
     "secondPartnerType": 1030,
     "relativeOrientation": [
@@ -289,6 +307,7 @@
   },
   {
     "id": 1019,
+    "group": 1019,
     "firstPartnerType": 1007,
     "secondPartnerType": 1046,
     "relativeOrientation": [
@@ -305,6 +324,7 @@
   },
   {
     "id": 1020,
+    "group": 1020,
     "firstPartnerType": 1008,
     "secondPartnerType": 1012,
     "relativeOrientation": [
@@ -321,6 +341,7 @@
   },
   {
     "id": 1021,
+    "group": 1021,
     "firstPartnerType": 1008,
     "secondPartnerType": 1049,
     "relativeOrientation": [
@@ -337,6 +358,7 @@
   },
   {
     "id": 1022,
+    "group": 1022,
     "firstPartnerType": 1008,
     "secondPartnerType": 1053,
     "relativeOrientation": [
@@ -353,6 +375,7 @@
   },
   {
     "id": 1023,
+    "group": 1023,
     "firstPartnerType": 1009,
     "secondPartnerType": 1012,
     "relativeOrientation": [
@@ -369,6 +392,7 @@
   },
   {
     "id": 1024,
+    "group": 1024,
     "firstPartnerType": 1009,
     "secondPartnerType": 1037,
     "relativeOrientation": [
@@ -385,6 +409,7 @@
   },
   {
     "id": 1025,
+    "group": 1025,
     "firstPartnerType": 1010,
     "secondPartnerType": 1012,
     "relativeOrientation": [
@@ -401,6 +426,7 @@
   },
   {
     "id": 1026,
+    "group": 1026,
     "firstPartnerType": 1010,
     "secondPartnerType": 1049,
     "relativeOrientation": [
@@ -417,6 +443,7 @@
   },
   {
     "id": 1027,
+    "group": 1027,
     "firstPartnerType": 1011,
     "secondPartnerType": 1038,
     "relativeOrientation": [
@@ -433,6 +460,7 @@
   },
   {
     "id": 1028,
+    "group": 1028,
     "firstPartnerType": 1011,
     "secondPartnerType": 1053,
     "relativeOrientation": [
@@ -449,6 +477,7 @@
   },
   {
     "id": 1029,
+    "group": 1029,
     "firstPartnerType": 1013,
     "secondPartnerType": 1029,
     "relativeOrientation": [
@@ -465,6 +494,7 @@
   },
   {
     "id": 1030,
+    "group": 1030,
     "firstPartnerType": 1013,
     "secondPartnerType": 1044,
     "relativeOrientation": [
@@ -481,6 +511,7 @@
   },
   {
     "id": 1031,
+    "group": 1031,
     "firstPartnerType": 1014,
     "secondPartnerType": 1031,
     "relativeOrientation": [
@@ -497,6 +528,7 @@
   },
   {
     "id": 1032,
+    "group": 1032,
     "firstPartnerType": 1014,
     "secondPartnerType": 1035,
     "relativeOrientation": [
@@ -513,6 +545,7 @@
   },
   {
     "id": 1033,
+    "group": 1033,
     "firstPartnerType": 1014,
     "secondPartnerType": 1037,
     "relativeOrientation": [
@@ -529,6 +562,7 @@
   },
   {
     "id": 1034,
+    "group": 1034,
     "firstPartnerType": 1014,
     "secondPartnerType": 1039,
     "relativeOrientation": [
@@ -545,6 +579,7 @@
   },
   {
     "id": 1035,
+    "group": 1035,
     "firstPartnerType": 1014,
     "secondPartnerType": 1052,
     "relativeOrientation": [
@@ -561,6 +596,7 @@
   },
   {
     "id": 1036,
+    "group": 1036,
     "firstPartnerType": 1015,
     "secondPartnerType": 1020,
     "relativeOrientation": [
@@ -577,6 +613,7 @@
   },
   {
     "id": 1037,
+    "group": 1037,
     "firstPartnerType": 1015,
     "secondPartnerType": 1050,
     "relativeOrientation": [
@@ -593,6 +630,7 @@
   },
   {
     "id": 1038,
+    "group": 1038,
     "firstPartnerType": 1015,
     "secondPartnerType": 1059,
     "relativeOrientation": [
@@ -609,6 +647,7 @@
   },
   {
     "id": 1039,
+    "group": 1039,
     "firstPartnerType": 1015,
     "secondPartnerType": 1089,
     "relativeOrientation": [
@@ -625,6 +664,7 @@
   },
   {
     "id": 1040,
+    "group": 1040,
     "firstPartnerType": 1016,
     "secondPartnerType": 1017,
     "relativeOrientation": [
@@ -641,6 +681,7 @@
   },
   {
     "id": 1041,
+    "group": 1041,
     "firstPartnerType": 1016,
     "secondPartnerType": 1022,
     "relativeOrientation": [
@@ -657,6 +698,7 @@
   },
   {
     "id": 1042,
+    "group": 1042,
     "firstPartnerType": 1016,
     "secondPartnerType": 1058,
     "relativeOrientation": [
@@ -673,6 +715,7 @@
   },
   {
     "id": 1043,
+    "group": 1043,
     "firstPartnerType": 1017,
     "secondPartnerType": 1020,
     "relativeOrientation": [
@@ -689,6 +732,7 @@
   },
   {
     "id": 1044,
+    "group": 1044,
     "firstPartnerType": 1017,
     "secondPartnerType": 1022,
     "relativeOrientation": [
@@ -705,6 +749,7 @@
   },
   {
     "id": 1045,
+    "group": 1045,
     "firstPartnerType": 1018,
     "secondPartnerType": 1021,
     "relativeOrientation": [
@@ -721,6 +766,7 @@
   },
   {
     "id": 1046,
+    "group": 1046,
     "firstPartnerType": 1018,
     "secondPartnerType": 1033,
     "relativeOrientation": [
@@ -737,6 +783,7 @@
   },
   {
     "id": 1047,
+    "group": 1047,
     "firstPartnerType": 1018,
     "secondPartnerType": 1050,
     "relativeOrientation": [
@@ -753,6 +800,7 @@
   },
   {
     "id": 1048,
+    "group": 1048,
     "firstPartnerType": 1019,
     "secondPartnerType": 1032,
     "relativeOrientation": [
@@ -769,6 +817,7 @@
   },
   {
     "id": 1049,
+    "group": 1049,
     "firstPartnerType": 1019,
     "secondPartnerType": 1047,
     "relativeOrientation": [
@@ -785,6 +834,7 @@
   },
   {
     "id": 1050,
+    "group": 1050,
     "firstPartnerType": 1020,
     "secondPartnerType": 1022,
     "relativeOrientation": [
@@ -801,6 +851,7 @@
   },
   {
     "id": 1051,
+    "group": 1051,
     "firstPartnerType": 1020,
     "secondPartnerType": 1028,
     "relativeOrientation": [
@@ -817,6 +868,7 @@
   },
   {
     "id": 1052,
+    "group": 1052,
     "firstPartnerType": 1021,
     "secondPartnerType": 1023,
     "relativeOrientation": [
@@ -833,6 +885,7 @@
   },
   {
     "id": 1053,
+    "group": 1053,
     "firstPartnerType": 1021,
     "secondPartnerType": 1028,
     "relativeOrientation": [
@@ -849,6 +902,7 @@
   },
   {
     "id": 1054,
+    "group": 1054,
     "firstPartnerType": 1023,
     "secondPartnerType": 1058,
     "relativeOrientation": [
@@ -865,6 +919,7 @@
   },
   {
     "id": 1055,
+    "group": 1055,
     "firstPartnerType": 1024,
     "secondPartnerType": 1033,
     "relativeOrientation": [
@@ -881,6 +936,7 @@
   },
   {
     "id": 1056,
+    "group": 1056,
     "firstPartnerType": 1024,
     "secondPartnerType": 1047,
     "relativeOrientation": [
@@ -897,6 +953,7 @@
   },
   {
     "id": 1057,
+    "group": 1057,
     "firstPartnerType": 1024,
     "secondPartnerType": 1048,
     "relativeOrientation": [
@@ -913,6 +970,7 @@
   },
   {
     "id": 1058,
+    "group": 1058,
     "firstPartnerType": 1024,
     "secondPartnerType": 1050,
     "relativeOrientation": [
@@ -929,6 +987,7 @@
   },
   {
     "id": 1059,
+    "group": 1059,
     "firstPartnerType": 1025,
     "secondPartnerType": 1026,
     "relativeOrientation": [
@@ -945,6 +1004,7 @@
   },
   {
     "id": 1060,
+    "group": 1060,
     "firstPartnerType": 1025,
     "secondPartnerType": 1027,
     "relativeOrientation": [
@@ -961,6 +1021,7 @@
   },
   {
     "id": 1061,
+    "group": 1061,
     "firstPartnerType": 1026,
     "secondPartnerType": 1041,
     "relativeOrientation": [
@@ -977,6 +1038,7 @@
   },
   {
     "id": 1062,
+    "group": 1062,
     "firstPartnerType": 1027,
     "secondPartnerType": 1032,
     "relativeOrientation": [
@@ -993,6 +1055,7 @@
   },
   {
     "id": 1063,
+    "group": 1063,
     "firstPartnerType": 1027,
     "secondPartnerType": 1047,
     "relativeOrientation": [
@@ -1009,6 +1072,7 @@
   },
   {
     "id": 1064,
+    "group": 1064,
     "firstPartnerType": 1030,
     "secondPartnerType": 1034,
     "relativeOrientation": [
@@ -1025,6 +1089,7 @@
   },
   {
     "id": 1065,
+    "group": 1065,
     "firstPartnerType": 1030,
     "secondPartnerType": 1042,
     "relativeOrientation": [
@@ -1041,6 +1106,7 @@
   },
   {
     "id": 1066,
+    "group": 1066,
     "firstPartnerType": 1030,
     "secondPartnerType": 1046,
     "relativeOrientation": [
@@ -1057,6 +1123,7 @@
   },
   {
     "id": 1067,
+    "group": 1067,
     "firstPartnerType": 1031,
     "secondPartnerType": 1039,
     "relativeOrientation": [
@@ -1073,6 +1140,7 @@
   },
   {
     "id": 1068,
+    "group": 1068,
     "firstPartnerType": 1031,
     "secondPartnerType": 1056,
     "relativeOrientation": [
@@ -1089,6 +1157,7 @@
   },
   {
     "id": 1069,
+    "group": 1069,
     "firstPartnerType": 1032,
     "secondPartnerType": 1055,
     "relativeOrientation": [
@@ -1105,6 +1174,7 @@
   },
   {
     "id": 1070,
+    "group": 1070,
     "firstPartnerType": 1033,
     "secondPartnerType": 1048,
     "relativeOrientation": [
@@ -1121,6 +1191,7 @@
   },
   {
     "id": 1071,
+    "group": 1071,
     "firstPartnerType": 1033,
     "secondPartnerType": 1050,
     "relativeOrientation": [
@@ -1137,6 +1208,7 @@
   },
   {
     "id": 1072,
+    "group": 1072,
     "firstPartnerType": 1034,
     "secondPartnerType": 1040,
     "relativeOrientation": [
@@ -1153,6 +1225,7 @@
   },
   {
     "id": 1073,
+    "group": 1073,
     "firstPartnerType": 1034,
     "secondPartnerType": 1042,
     "relativeOrientation": [
@@ -1169,6 +1242,7 @@
   },
   {
     "id": 1074,
+    "group": 1074,
     "firstPartnerType": 1034,
     "secondPartnerType": 1045,
     "relativeOrientation": [
@@ -1185,6 +1259,7 @@
   },
   {
     "id": 1075,
+    "group": 1075,
     "firstPartnerType": 1035,
     "secondPartnerType": 1057,
     "relativeOrientation": [
@@ -1201,6 +1276,7 @@
   },
   {
     "id": 1076,
+    "group": 1076,
     "firstPartnerType": 1035,
     "secondPartnerType": 1060,
     "relativeOrientation": [
@@ -1217,6 +1293,7 @@
   },
   {
     "id": 1077,
+    "group": 1077,
     "firstPartnerType": 1035,
     "secondPartnerType": 1062,
     "relativeOrientation": [
@@ -1233,6 +1310,7 @@
   },
   {
     "id": 1078,
+    "group": 1078,
     "firstPartnerType": 1036,
     "secondPartnerType": 1041,
     "relativeOrientation": [
@@ -1249,6 +1327,7 @@
   },
   {
     "id": 1079,
+    "group": 1079,
     "firstPartnerType": 1036,
     "secondPartnerType": 1048,
     "relativeOrientation": [
@@ -1265,6 +1344,7 @@
   },
   {
     "id": 1080,
+    "group": 1080,
     "firstPartnerType": 1037,
     "secondPartnerType": 1039,
     "relativeOrientation": [
@@ -1281,6 +1361,7 @@
   },
   {
     "id": 1081,
+    "group": 1081,
     "firstPartnerType": 1037,
     "secondPartnerType": 1046,
     "relativeOrientation": [
@@ -1297,6 +1378,7 @@
   },
   {
     "id": 1082,
+    "group": 1082,
     "firstPartnerType": 1039,
     "secondPartnerType": 1052,
     "relativeOrientation": [
@@ -1313,6 +1395,7 @@
   },
   {
     "id": 1083,
+    "group": 1083,
     "firstPartnerType": 1040,
     "secondPartnerType": 1042,
     "relativeOrientation": [
@@ -1329,6 +1412,7 @@
   },
   {
     "id": 1084,
+    "group": 1084,
     "firstPartnerType": 1040,
     "secondPartnerType": 1045,
     "relativeOrientation": [
@@ -1345,6 +1429,7 @@
   },
   {
     "id": 1085,
+    "group": 1085,
     "firstPartnerType": 1042,
     "secondPartnerType": 1051,
     "relativeOrientation": [
@@ -1361,6 +1446,7 @@
   },
   {
     "id": 1086,
+    "group": 1086,
     "firstPartnerType": 1043,
     "secondPartnerType": 1060,
     "relativeOrientation": [
@@ -1377,6 +1463,7 @@
   },
   {
     "id": 1087,
+    "group": 1087,
     "firstPartnerType": 1044,
     "secondPartnerType": 1063,
     "relativeOrientation": [
@@ -1393,6 +1480,7 @@
   },
   {
     "id": 1088,
+    "group": 1088,
     "firstPartnerType": 1045,
     "secondPartnerType": 1054,
     "relativeOrientation": [
@@ -1409,6 +1497,7 @@
   },
   {
     "id": 1089,
+    "group": 1089,
     "firstPartnerType": 1045,
     "secondPartnerType": 1055,
     "relativeOrientation": [
@@ -1425,6 +1514,7 @@
   },
   {
     "id": 1090,
+    "group": 1090,
     "firstPartnerType": 1046,
     "secondPartnerType": 1051,
     "relativeOrientation": [
@@ -1441,6 +1531,7 @@
   },
   {
     "id": 1091,
+    "group": 1091,
     "firstPartnerType": 1049,
     "secondPartnerType": 1053,
     "relativeOrientation": [
@@ -1457,6 +1548,7 @@
   },
   {
     "id": 1092,
+    "group": 1092,
     "firstPartnerType": 1051,
     "secondPartnerType": 1052,
     "relativeOrientation": [
@@ -1473,6 +1565,7 @@
   },
   {
     "id": 1093,
+    "group": 1093,
     "firstPartnerType": 1052,
     "secondPartnerType": 1057,
     "relativeOrientation": [
@@ -1489,6 +1582,7 @@
   },
   {
     "id": 1094,
+    "group": 1094,
     "firstPartnerType": 1054,
     "secondPartnerType": 1055,
     "relativeOrientation": [
@@ -1505,6 +1599,7 @@
   },
   {
     "id": 1095,
+    "group": 1095,
     "firstPartnerType": 1056,
     "secondPartnerType": 1061,
     "relativeOrientation": [
@@ -1521,6 +1616,7 @@
   },
   {
     "id": 1096,
+    "group": 1096,
     "firstPartnerType": 1057,
     "secondPartnerType": 1062,
     "relativeOrientation": [
@@ -1537,6 +1633,7 @@
   },
   {
     "id": 1097,
+    "group": 1097,
     "firstPartnerType": 1057,
     "secondPartnerType": 1063,
     "relativeOrientation": [
@@ -1553,6 +1650,7 @@
   },
   {
     "id": 1098,
+    "group": 1098,
     "firstPartnerType": 1060,
     "secondPartnerType": 1062,
     "relativeOrientation": [
@@ -1569,6 +1667,7 @@
   },
   {
     "id": 1099,
+    "group": 1099,
     "firstPartnerType": 1062,
     "secondPartnerType": 1063,
     "relativeOrientation": [
@@ -1585,6 +1684,7 @@
   },
   {
     "id": 1100,
+    "group": 1100,
     "firstPartnerType": 1064,
     "secondPartnerType": 1088,
     "relativeOrientation": [
@@ -1601,6 +1701,7 @@
   },
   {
     "id": 1101,
+    "group": 1101,
     "firstPartnerType": 1064,
     "secondPartnerType": 1089,
     "relativeOrientation": [
@@ -1617,6 +1718,7 @@
   },
   {
     "id": 1102,
+    "group": 1102,
     "firstPartnerType": 1064,
     "secondPartnerType": 1116,
     "relativeOrientation": [
@@ -1633,6 +1735,7 @@
   },
   {
     "id": 1103,
+    "group": 1103,
     "firstPartnerType": 1064,
     "secondPartnerType": 1121,
     "relativeOrientation": [
@@ -1649,6 +1752,7 @@
   },
   {
     "id": 1104,
+    "group": 1104,
     "firstPartnerType": 1065,
     "secondPartnerType": 1075,
     "relativeOrientation": [
@@ -1665,6 +1769,7 @@
   },
   {
     "id": 1105,
+    "group": 1105,
     "firstPartnerType": 1065,
     "secondPartnerType": 1113,
     "relativeOrientation": [
@@ -1681,6 +1786,7 @@
   },
   {
     "id": 1106,
+    "group": 1106,
     "firstPartnerType": 1065,
     "secondPartnerType": 1130,
     "relativeOrientation": [
@@ -1697,6 +1803,7 @@
   },
   {
     "id": 1107,
+    "group": 1107,
     "firstPartnerType": 1065,
     "secondPartnerType": 1146,
     "relativeOrientation": [
@@ -1713,6 +1820,7 @@
   },
   {
     "id": 1108,
+    "group": 1108,
     "firstPartnerType": 1066,
     "secondPartnerType": 1087,
     "relativeOrientation": [
@@ -1729,6 +1837,7 @@
   },
   {
     "id": 1109,
+    "group": 1109,
     "firstPartnerType": 1066,
     "secondPartnerType": 1123,
     "relativeOrientation": [
@@ -1745,6 +1854,7 @@
   },
   {
     "id": 1110,
+    "group": 1110,
     "firstPartnerType": 1066,
     "secondPartnerType": 1130,
     "relativeOrientation": [
@@ -1761,6 +1871,7 @@
   },
   {
     "id": 1111,
+    "group": 1111,
     "firstPartnerType": 1066,
     "secondPartnerType": 1139,
     "relativeOrientation": [
@@ -1777,6 +1888,7 @@
   },
   {
     "id": 1112,
+    "group": 1112,
     "firstPartnerType": 1067,
     "secondPartnerType": 1097,
     "relativeOrientation": [
@@ -1793,6 +1905,7 @@
   },
   {
     "id": 1113,
+    "group": 1113,
     "firstPartnerType": 1067,
     "secondPartnerType": 1109,
     "relativeOrientation": [
@@ -1809,6 +1922,7 @@
   },
   {
     "id": 1114,
+    "group": 1114,
     "firstPartnerType": 1067,
     "secondPartnerType": 1120,
     "relativeOrientation": [
@@ -1825,6 +1939,7 @@
   },
   {
     "id": 1115,
+    "group": 1115,
     "firstPartnerType": 1067,
     "secondPartnerType": 1131,
     "relativeOrientation": [
@@ -1841,6 +1956,7 @@
   },
   {
     "id": 1116,
+    "group": 1116,
     "firstPartnerType": 1068,
     "secondPartnerType": 1089,
     "relativeOrientation": [
@@ -1857,6 +1973,7 @@
   },
   {
     "id": 1117,
+    "group": 1117,
     "firstPartnerType": 1068,
     "secondPartnerType": 1093,
     "relativeOrientation": [
@@ -1873,6 +1990,7 @@
   },
   {
     "id": 1118,
+    "group": 1118,
     "firstPartnerType": 1068,
     "secondPartnerType": 1110,
     "relativeOrientation": [
@@ -1889,6 +2007,7 @@
   },
   {
     "id": 1119,
+    "group": 1119,
     "firstPartnerType": 1068,
     "secondPartnerType": 1133,
     "relativeOrientation": [
@@ -1905,6 +2024,7 @@
   },
   {
     "id": 1120,
+    "group": 1120,
     "firstPartnerType": 1069,
     "secondPartnerType": 1081,
     "relativeOrientation": [
@@ -1921,6 +2041,7 @@
   },
   {
     "id": 1121,
+    "group": 1121,
     "firstPartnerType": 1069,
     "secondPartnerType": 1085,
     "relativeOrientation": [
@@ -1937,6 +2058,7 @@
   },
   {
     "id": 1122,
+    "group": 1122,
     "firstPartnerType": 1069,
     "secondPartnerType": 1103,
     "relativeOrientation": [
@@ -1953,6 +2075,7 @@
   },
   {
     "id": 1123,
+    "group": 1123,
     "firstPartnerType": 1069,
     "secondPartnerType": 1108,
     "relativeOrientation": [
@@ -1969,6 +2092,7 @@
   },
   {
     "id": 1124,
+    "group": 1124,
     "firstPartnerType": 1070,
     "secondPartnerType": 1098,
     "relativeOrientation": [
@@ -1985,6 +2109,7 @@
   },
   {
     "id": 1125,
+    "group": 1125,
     "firstPartnerType": 1070,
     "secondPartnerType": 1106,
     "relativeOrientation": [
@@ -2001,6 +2126,7 @@
   },
   {
     "id": 1126,
+    "group": 1126,
     "firstPartnerType": 1070,
     "secondPartnerType": 1119,
     "relativeOrientation": [
@@ -2017,6 +2143,7 @@
   },
   {
     "id": 1127,
+    "group": 1127,
     "firstPartnerType": 1071,
     "secondPartnerType": 1079,
     "relativeOrientation": [
@@ -2033,6 +2160,7 @@
   },
   {
     "id": 1128,
+    "group": 1128,
     "firstPartnerType": 1071,
     "secondPartnerType": 1098,
     "relativeOrientation": [
@@ -2049,6 +2177,7 @@
   },
   {
     "id": 1129,
+    "group": 1129,
     "firstPartnerType": 1071,
     "secondPartnerType": 1103,
     "relativeOrientation": [
@@ -2065,6 +2194,7 @@
   },
   {
     "id": 1130,
+    "group": 1130,
     "firstPartnerType": 1072,
     "secondPartnerType": 1078,
     "relativeOrientation": [
@@ -2081,6 +2211,7 @@
   },
   {
     "id": 1131,
+    "group": 1131,
     "firstPartnerType": 1072,
     "secondPartnerType": 1096,
     "relativeOrientation": [
@@ -2097,6 +2228,7 @@
   },
   {
     "id": 1132,
+    "group": 1132,
     "firstPartnerType": 1072,
     "secondPartnerType": 1142,
     "relativeOrientation": [
@@ -2113,6 +2245,7 @@
   },
   {
     "id": 1133,
+    "group": 1133,
     "firstPartnerType": 1073,
     "secondPartnerType": 1082,
     "relativeOrientation": [
@@ -2129,6 +2262,7 @@
   },
   {
     "id": 1134,
+    "group": 1134,
     "firstPartnerType": 1073,
     "secondPartnerType": 1132,
     "relativeOrientation": [
@@ -2145,6 +2279,7 @@
   },
   {
     "id": 1135,
+    "group": 1135,
     "firstPartnerType": 1074,
     "secondPartnerType": 1123,
     "relativeOrientation": [
@@ -2161,6 +2296,7 @@
   },
   {
     "id": 1136,
+    "group": 1136,
     "firstPartnerType": 1074,
     "secondPartnerType": 1126,
     "relativeOrientation": [
@@ -2177,6 +2313,7 @@
   },
   {
     "id": 1137,
+    "group": 1137,
     "firstPartnerType": 1074,
     "secondPartnerType": 1139,
     "relativeOrientation": [
@@ -2193,6 +2330,7 @@
   },
   {
     "id": 1138,
+    "group": 1138,
     "firstPartnerType": 1075,
     "secondPartnerType": 1128,
     "relativeOrientation": [
@@ -2209,6 +2347,7 @@
   },
   {
     "id": 1139,
+    "group": 1139,
     "firstPartnerType": 1075,
     "secondPartnerType": 1134,
     "relativeOrientation": [
@@ -2225,6 +2364,7 @@
   },
   {
     "id": 1140,
+    "group": 1140,
     "firstPartnerType": 1075,
     "secondPartnerType": 1146,
     "relativeOrientation": [
@@ -2241,6 +2381,7 @@
   },
   {
     "id": 1141,
+    "group": 1141,
     "firstPartnerType": 1076,
     "secondPartnerType": 1077,
     "relativeOrientation": [
@@ -2257,6 +2398,7 @@
   },
   {
     "id": 1142,
+    "group": 1142,
     "firstPartnerType": 1076,
     "secondPartnerType": 1099,
     "relativeOrientation": [
@@ -2273,6 +2415,7 @@
   },
   {
     "id": 1143,
+    "group": 1143,
     "firstPartnerType": 1076,
     "secondPartnerType": 1100,
     "relativeOrientation": [
@@ -2289,6 +2432,7 @@
   },
   {
     "id": 1144,
+    "group": 1144,
     "firstPartnerType": 1077,
     "secondPartnerType": 1125,
     "relativeOrientation": [
@@ -2305,6 +2449,7 @@
   },
   {
     "id": 1145,
+    "group": 1145,
     "firstPartnerType": 1078,
     "secondPartnerType": 1091,
     "relativeOrientation": [
@@ -2321,6 +2466,7 @@
   },
   {
     "id": 1146,
+    "group": 1146,
     "firstPartnerType": 1078,
     "secondPartnerType": 1092,
     "relativeOrientation": [
@@ -2337,6 +2483,7 @@
   },
   {
     "id": 1147,
+    "group": 1147,
     "firstPartnerType": 1078,
     "secondPartnerType": 1132,
     "relativeOrientation": [
@@ -2353,6 +2500,7 @@
   },
   {
     "id": 1148,
+    "group": 1148,
     "firstPartnerType": 1079,
     "secondPartnerType": 1094,
     "relativeOrientation": [
@@ -2369,6 +2517,7 @@
   },
   {
     "id": 1149,
+    "group": 1149,
     "firstPartnerType": 1079,
     "secondPartnerType": 1126,
     "relativeOrientation": [
@@ -2385,6 +2534,7 @@
   },
   {
     "id": 1150,
+    "group": 1150,
     "firstPartnerType": 1079,
     "secondPartnerType": 1139,
     "relativeOrientation": [
@@ -2401,6 +2551,7 @@
   },
   {
     "id": 1151,
+    "group": 1151,
     "firstPartnerType": 1080,
     "secondPartnerType": 1121,
     "relativeOrientation": [
@@ -2417,6 +2568,7 @@
   },
   {
     "id": 1152,
+    "group": 1152,
     "firstPartnerType": 1080,
     "secondPartnerType": 1125,
     "relativeOrientation": [
@@ -2433,6 +2585,7 @@
   },
   {
     "id": 1153,
+    "group": 1153,
     "firstPartnerType": 1080,
     "secondPartnerType": 1144,
     "relativeOrientation": [
@@ -2449,6 +2602,7 @@
   },
   {
     "id": 1154,
+    "group": 1154,
     "firstPartnerType": 1081,
     "secondPartnerType": 1124,
     "relativeOrientation": [
@@ -2465,6 +2619,7 @@
   },
   {
     "id": 1155,
+    "group": 1155,
     "firstPartnerType": 1081,
     "secondPartnerType": 1136,
     "relativeOrientation": [
@@ -2481,6 +2636,7 @@
   },
   {
     "id": 1156,
+    "group": 1156,
     "firstPartnerType": 1081,
     "secondPartnerType": 1137,
     "relativeOrientation": [
@@ -2497,6 +2653,7 @@
   },
   {
     "id": 1157,
+    "group": 1157,
     "firstPartnerType": 1082,
     "secondPartnerType": 1118,
     "relativeOrientation": [
@@ -2513,6 +2670,7 @@
   },
   {
     "id": 1158,
+    "group": 1158,
     "firstPartnerType": 1082,
     "secondPartnerType": 1122,
     "relativeOrientation": [
@@ -2529,6 +2687,7 @@
   },
   {
     "id": 1159,
+    "group": 1159,
     "firstPartnerType": 1083,
     "secondPartnerType": 1084,
     "relativeOrientation": [
@@ -2545,6 +2704,7 @@
   },
   {
     "id": 1160,
+    "group": 1160,
     "firstPartnerType": 1083,
     "secondPartnerType": 1092,
     "relativeOrientation": [
@@ -2561,6 +2721,7 @@
   },
   {
     "id": 1161,
+    "group": 1161,
     "firstPartnerType": 1083,
     "secondPartnerType": 1097,
     "relativeOrientation": [
@@ -2577,6 +2738,7 @@
   },
   {
     "id": 1162,
+    "group": 1162,
     "firstPartnerType": 1083,
     "secondPartnerType": 1109,
     "relativeOrientation": [
@@ -2593,6 +2755,7 @@
   },
   {
     "id": 1163,
+    "group": 1163,
     "firstPartnerType": 1084,
     "secondPartnerType": 1091,
     "relativeOrientation": [
@@ -2609,6 +2772,7 @@
   },
   {
     "id": 1164,
+    "group": 1164,
     "firstPartnerType": 1084,
     "secondPartnerType": 1092,
     "relativeOrientation": [
@@ -2625,6 +2789,7 @@
   },
   {
     "id": 1165,
+    "group": 1165,
     "firstPartnerType": 1085,
     "secondPartnerType": 1103,
     "relativeOrientation": [
@@ -2641,6 +2806,7 @@
   },
   {
     "id": 1166,
+    "group": 1166,
     "firstPartnerType": 1085,
     "secondPartnerType": 1115,
     "relativeOrientation": [
@@ -2657,6 +2823,7 @@
   },
   {
     "id": 1167,
+    "group": 1167,
     "firstPartnerType": 1086,
     "secondPartnerType": 1087,
     "relativeOrientation": [
@@ -2673,6 +2840,7 @@
   },
   {
     "id": 1168,
+    "group": 1168,
     "firstPartnerType": 1086,
     "secondPartnerType": 1090,
     "relativeOrientation": [
@@ -2689,6 +2857,7 @@
   },
   {
     "id": 1169,
+    "group": 1169,
     "firstPartnerType": 1087,
     "secondPartnerType": 1090,
     "relativeOrientation": [
@@ -2705,6 +2874,7 @@
   },
   {
     "id": 1170,
+    "group": 1170,
     "firstPartnerType": 1087,
     "secondPartnerType": 1129,
     "relativeOrientation": [
@@ -2721,6 +2891,7 @@
   },
   {
     "id": 1171,
+    "group": 1171,
     "firstPartnerType": 1088,
     "secondPartnerType": 1106,
     "relativeOrientation": [
@@ -2737,6 +2908,7 @@
   },
   {
     "id": 1172,
+    "group": 1172,
     "firstPartnerType": 1088,
     "secondPartnerType": 1119,
     "relativeOrientation": [
@@ -2753,6 +2925,7 @@
   },
   {
     "id": 1173,
+    "group": 1173,
     "firstPartnerType": 1089,
     "secondPartnerType": 1133,
     "relativeOrientation": [
@@ -2769,6 +2942,7 @@
   },
   {
     "id": 1174,
+    "group": 1174,
     "firstPartnerType": 1090,
     "secondPartnerType": 1136,
     "relativeOrientation": [
@@ -2785,6 +2959,7 @@
   },
   {
     "id": 1175,
+    "group": 1175,
     "firstPartnerType": 1091,
     "secondPartnerType": 1092,
     "relativeOrientation": [
@@ -2801,6 +2976,7 @@
   },
   {
     "id": 1176,
+    "group": 1176,
     "firstPartnerType": 1091,
     "secondPartnerType": 1104,
     "relativeOrientation": [
@@ -2817,6 +2993,7 @@
   },
   {
     "id": 1177,
+    "group": 1177,
     "firstPartnerType": 1093,
     "secondPartnerType": 1110,
     "relativeOrientation": [
@@ -2833,6 +3010,7 @@
   },
   {
     "id": 1178,
+    "group": 1178,
     "firstPartnerType": 1093,
     "secondPartnerType": 1133,
     "relativeOrientation": [
@@ -2849,6 +3027,7 @@
   },
   {
     "id": 1179,
+    "group": 1179,
     "firstPartnerType": 1094,
     "secondPartnerType": 1120,
     "relativeOrientation": [
@@ -2865,6 +3044,7 @@
   },
   {
     "id": 1180,
+    "group": 1180,
     "firstPartnerType": 1095,
     "secondPartnerType": 1097,
     "relativeOrientation": [
@@ -2881,6 +3061,7 @@
   },
   {
     "id": 1181,
+    "group": 1181,
     "firstPartnerType": 1095,
     "secondPartnerType": 1131,
     "relativeOrientation": [
@@ -2897,6 +3078,7 @@
   },
   {
     "id": 1182,
+    "group": 1182,
     "firstPartnerType": 1095,
     "secondPartnerType": 1143,
     "relativeOrientation": [
@@ -2913,6 +3095,7 @@
   },
   {
     "id": 1183,
+    "group": 1183,
     "firstPartnerType": 1096,
     "secondPartnerType": 1112,
     "relativeOrientation": [
@@ -2929,6 +3112,7 @@
   },
   {
     "id": 1184,
+    "group": 1184,
     "firstPartnerType": 1096,
     "secondPartnerType": 1135,
     "relativeOrientation": [
@@ -2945,6 +3129,7 @@
   },
   {
     "id": 1185,
+    "group": 1185,
     "firstPartnerType": 1096,
     "secondPartnerType": 1142,
     "relativeOrientation": [
@@ -2961,6 +3146,7 @@
   },
   {
     "id": 1186,
+    "group": 1186,
     "firstPartnerType": 1097,
     "secondPartnerType": 1109,
     "relativeOrientation": [
@@ -2977,6 +3163,7 @@
   },
   {
     "id": 1187,
+    "group": 1187,
     "firstPartnerType": 1098,
     "secondPartnerType": 1134,
     "relativeOrientation": [
@@ -2993,6 +3180,7 @@
   },
   {
     "id": 1188,
+    "group": 1188,
     "firstPartnerType": 1099,
     "secondPartnerType": 1102,
     "relativeOrientation": [
@@ -3009,6 +3197,7 @@
   },
   {
     "id": 1189,
+    "group": 1189,
     "firstPartnerType": 1103,
     "secondPartnerType": 1143,
     "relativeOrientation": [
@@ -3025,6 +3214,7 @@
   },
   {
     "id": 1190,
+    "group": 1190,
     "firstPartnerType": 1104,
     "secondPartnerType": 1115,
     "relativeOrientation": [
@@ -3041,6 +3231,7 @@
   },
   {
     "id": 1191,
+    "group": 1191,
     "firstPartnerType": 1104,
     "secondPartnerType": 1132,
     "relativeOrientation": [
@@ -3057,6 +3248,7 @@
   },
   {
     "id": 1192,
+    "group": 1192,
     "firstPartnerType": 1105,
     "secondPartnerType": 1127,
     "relativeOrientation": [
@@ -3073,6 +3265,7 @@
   },
   {
     "id": 1193,
+    "group": 1193,
     "firstPartnerType": 1105,
     "secondPartnerType": 1129,
     "relativeOrientation": [
@@ -3089,6 +3282,7 @@
   },
   {
     "id": 1194,
+    "group": 1194,
     "firstPartnerType": 1105,
     "secondPartnerType": 1138,
     "relativeOrientation": [
@@ -3105,6 +3299,7 @@
   },
   {
     "id": 1195,
+    "group": 1195,
     "firstPartnerType": 1106,
     "secondPartnerType": 1110,
     "relativeOrientation": [
@@ -3121,6 +3316,7 @@
   },
   {
     "id": 1196,
+    "group": 1196,
     "firstPartnerType": 1106,
     "secondPartnerType": 1119,
     "relativeOrientation": [
@@ -3137,6 +3333,7 @@
   },
   {
     "id": 1197,
+    "group": 1197,
     "firstPartnerType": 1107,
     "secondPartnerType": 1111,
     "relativeOrientation": [
@@ -3153,6 +3350,7 @@
   },
   {
     "id": 1198,
+    "group": 1198,
     "firstPartnerType": 1108,
     "secondPartnerType": 1114,
     "relativeOrientation": [
@@ -3169,6 +3367,7 @@
   },
   {
     "id": 1199,
+    "group": 1199,
     "firstPartnerType": 1108,
     "secondPartnerType": 1115,
     "relativeOrientation": [
@@ -3185,6 +3384,7 @@
   },
   {
     "id": 1200,
+    "group": 1200,
     "firstPartnerType": 1108,
     "secondPartnerType": 1147,
     "relativeOrientation": [
@@ -3201,6 +3401,7 @@
   },
   {
     "id": 1201,
+    "group": 1201,
     "firstPartnerType": 1111,
     "secondPartnerType": 1128,
     "relativeOrientation": [
@@ -3217,6 +3418,7 @@
   },
   {
     "id": 1202,
+    "group": 1202,
     "firstPartnerType": 1111,
     "secondPartnerType": 1140,
     "relativeOrientation": [
@@ -3233,6 +3435,7 @@
   },
   {
     "id": 1203,
+    "group": 1203,
     "firstPartnerType": 1112,
     "secondPartnerType": 1135,
     "relativeOrientation": [
@@ -3249,6 +3452,7 @@
   },
   {
     "id": 1204,
+    "group": 1204,
     "firstPartnerType": 1112,
     "secondPartnerType": 1142,
     "relativeOrientation": [
@@ -3265,6 +3469,7 @@
   },
   {
     "id": 1205,
+    "group": 1205,
     "firstPartnerType": 1113,
     "secondPartnerType": 1130,
     "relativeOrientation": [
@@ -3281,6 +3486,7 @@
   },
   {
     "id": 1206,
+    "group": 1206,
     "firstPartnerType": 1113,
     "secondPartnerType": 1138,
     "relativeOrientation": [
@@ -3297,6 +3503,7 @@
   },
   {
     "id": 1207,
+    "group": 1207,
     "firstPartnerType": 1114,
     "secondPartnerType": 1147,
     "relativeOrientation": [
@@ -3313,6 +3520,7 @@
   },
   {
     "id": 1208,
+    "group": 1208,
     "firstPartnerType": 1116,
     "secondPartnerType": 1131,
     "relativeOrientation": [
@@ -3329,6 +3537,7 @@
   },
   {
     "id": 1209,
+    "group": 1209,
     "firstPartnerType": 1116,
     "secondPartnerType": 1145,
     "relativeOrientation": [
@@ -3345,6 +3554,7 @@
   },
   {
     "id": 1210,
+    "group": 1210,
     "firstPartnerType": 1117,
     "secondPartnerType": 1122,
     "relativeOrientation": [
@@ -3361,6 +3571,7 @@
   },
   {
     "id": 1211,
+    "group": 1211,
     "firstPartnerType": 1117,
     "secondPartnerType": 1137,
     "relativeOrientation": [
@@ -3377,6 +3588,7 @@
   },
   {
     "id": 1212,
+    "group": 1212,
     "firstPartnerType": 1117,
     "secondPartnerType": 1141,
     "relativeOrientation": [
@@ -3393,6 +3605,7 @@
   },
   {
     "id": 1213,
+    "group": 1213,
     "firstPartnerType": 1118,
     "secondPartnerType": 1122,
     "relativeOrientation": [
@@ -3409,6 +3622,7 @@
   },
   {
     "id": 1214,
+    "group": 1214,
     "firstPartnerType": 1119,
     "secondPartnerType": 1146,
     "relativeOrientation": [
@@ -3425,6 +3639,7 @@
   },
   {
     "id": 1215,
+    "group": 1215,
     "firstPartnerType": 1121,
     "secondPartnerType": 1143,
     "relativeOrientation": [
@@ -3441,6 +3656,7 @@
   },
   {
     "id": 1216,
+    "group": 1216,
     "firstPartnerType": 1121,
     "secondPartnerType": 1145,
     "relativeOrientation": [
@@ -3457,6 +3673,7 @@
   },
   {
     "id": 1217,
+    "group": 1217,
     "firstPartnerType": 1123,
     "secondPartnerType": 1126,
     "relativeOrientation": [
@@ -3473,6 +3690,7 @@
   },
   {
     "id": 1218,
+    "group": 1218,
     "firstPartnerType": 1124,
     "secondPartnerType": 1127,
     "relativeOrientation": [
@@ -3489,6 +3707,7 @@
   },
   {
     "id": 1219,
+    "group": 1219,
     "firstPartnerType": 1124,
     "secondPartnerType": 1136,
     "relativeOrientation": [
@@ -3505,6 +3724,7 @@
   },
   {
     "id": 1220,
+    "group": 1220,
     "firstPartnerType": 1124,
     "secondPartnerType": 1137,
     "relativeOrientation": [
@@ -3521,6 +3741,7 @@
   },
   {
     "id": 1221,
+    "group": 1221,
     "firstPartnerType": 1126,
     "secondPartnerType": 1139,
     "relativeOrientation": [
@@ -3537,6 +3758,7 @@
   },
   {
     "id": 1222,
+    "group": 1222,
     "firstPartnerType": 1127,
     "secondPartnerType": 1141,
     "relativeOrientation": [
@@ -3553,6 +3775,7 @@
   },
   {
     "id": 1223,
+    "group": 1223,
     "firstPartnerType": 1128,
     "secondPartnerType": 1134,
     "relativeOrientation": [
@@ -3569,6 +3792,7 @@
   },
   {
     "id": 1224,
+    "group": 1224,
     "firstPartnerType": 1128,
     "secondPartnerType": 1140,
     "relativeOrientation": [
@@ -3585,6 +3809,7 @@
   },
   {
     "id": 1225,
+    "group": 1225,
     "firstPartnerType": 1129,
     "secondPartnerType": 1130,
     "relativeOrientation": [
@@ -3601,6 +3826,7 @@
   },
   {
     "id": 1226,
+    "group": 1226,
     "firstPartnerType": 1132,
     "secondPartnerType": 1135,
     "relativeOrientation": [
@@ -3617,6 +3843,7 @@
   },
   {
     "id": 1227,
+    "group": 1227,
     "firstPartnerType": 1134,
     "secondPartnerType": 1146,
     "relativeOrientation": [
@@ -3633,6 +3860,7 @@
   },
   {
     "id": 1228,
+    "group": 1228,
     "firstPartnerType": 1135,
     "secondPartnerType": 1142,
     "relativeOrientation": [
@@ -3649,6 +3877,7 @@
   },
   {
     "id": 1229,
+    "group": 1229,
     "firstPartnerType": 1137,
     "secondPartnerType": 1141,
     "relativeOrientation": [
@@ -3665,6 +3894,7 @@
   },
   {
     "id": 1230,
+    "group": 1230,
     "firstPartnerType": 1144,
     "secondPartnerType": 1145,
     "relativeOrientation": [
@@ -3677,6 +3907,1145 @@
       1.51092529296875,
       -1.2848724365234374,
       0.444775390625
+    ]
+  },
+  {
+    "id": 1231,
+    "group": 1231,
+    "firstPartnerType": 100,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1232,
+    "group": 1231,
+    "firstPartnerType": 101,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1233,
+    "group": 1231,
+    "firstPartnerType": 102,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1234,
+    "group": 1231,
+    "firstPartnerType": 103,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1235,
+    "group": 1231,
+    "firstPartnerType": 104,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1236,
+    "group": 1231,
+    "firstPartnerType": 105,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1237,
+    "group": 1231,
+    "firstPartnerType": 106,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1238,
+    "group": 1231,
+    "firstPartnerType": 107,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1239,
+    "group": 1231,
+    "firstPartnerType": 108,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1240,
+    "group": 1231,
+    "firstPartnerType": 109,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1241,
+    "group": 1231,
+    "firstPartnerType": 110,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1242,
+    "group": 1231,
+    "firstPartnerType": 111,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1243,
+    "group": 1231,
+    "firstPartnerType": 112,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1244,
+    "group": 1231,
+    "firstPartnerType": 113,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1245,
+    "group": 1231,
+    "firstPartnerType": 114,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1246,
+    "group": 1231,
+    "firstPartnerType": 115,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1247,
+    "group": 1231,
+    "firstPartnerType": 116,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1248,
+    "group": 1231,
+    "firstPartnerType": 117,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1249,
+    "group": 1231,
+    "firstPartnerType": 118,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1250,
+    "group": 1231,
+    "firstPartnerType": 119,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1251,
+    "group": 1231,
+    "firstPartnerType": 120,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1252,
+    "group": 1231,
+    "firstPartnerType": 121,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1253,
+    "group": 1231,
+    "firstPartnerType": 122,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1254,
+    "group": 1231,
+    "firstPartnerType": 123,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1255,
+    "group": 1231,
+    "firstPartnerType": 124,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1256,
+    "group": 1231,
+    "firstPartnerType": 125,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1257,
+    "group": 1231,
+    "firstPartnerType": 126,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1258,
+    "group": 1231,
+    "firstPartnerType": 127,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1259,
+    "group": 1231,
+    "firstPartnerType": 128,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1260,
+    "group": 1231,
+    "firstPartnerType": 129,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1261,
+    "group": 1231,
+    "firstPartnerType": 130,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1262,
+    "group": 1231,
+    "firstPartnerType": 131,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1263,
+    "group": 1231,
+    "firstPartnerType": 132,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1264,
+    "group": 1231,
+    "firstPartnerType": 133,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1265,
+    "group": 1231,
+    "firstPartnerType": 134,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1266,
+    "group": 1231,
+    "firstPartnerType": 135,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1267,
+    "group": 1231,
+    "firstPartnerType": 136,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1268,
+    "group": 1231,
+    "firstPartnerType": 137,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1269,
+    "group": 1231,
+    "firstPartnerType": 138,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1270,
+    "group": 1231,
+    "firstPartnerType": 139,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1271,
+    "group": 1231,
+    "firstPartnerType": 140,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1272,
+    "group": 1231,
+    "firstPartnerType": 141,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1273,
+    "group": 1231,
+    "firstPartnerType": 142,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1274,
+    "group": 1231,
+    "firstPartnerType": 143,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1275,
+    "group": 1231,
+    "firstPartnerType": 144,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1276,
+    "group": 1231,
+    "firstPartnerType": 145,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1277,
+    "group": 1231,
+    "firstPartnerType": 146,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1278,
+    "group": 1231,
+    "firstPartnerType": 147,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1279,
+    "group": 1231,
+    "firstPartnerType": 148,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1280,
+    "group": 1231,
+    "firstPartnerType": 149,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1281,
+    "group": 1231,
+    "firstPartnerType": 150,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1282,
+    "group": 1231,
+    "firstPartnerType": 151,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1283,
+    "group": 1231,
+    "firstPartnerType": 152,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1284,
+    "group": 1231,
+    "firstPartnerType": 153,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1285,
+    "group": 1231,
+    "firstPartnerType": 154,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1286,
+    "group": 1231,
+    "firstPartnerType": 155,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1287,
+    "group": 1231,
+    "firstPartnerType": 156,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1288,
+    "group": 1231,
+    "firstPartnerType": 157,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1289,
+    "group": 1231,
+    "firstPartnerType": 158,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1290,
+    "group": 1231,
+    "firstPartnerType": 159,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1291,
+    "group": 1231,
+    "firstPartnerType": 160,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1292,
+    "group": 1231,
+    "firstPartnerType": 161,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1293,
+    "group": 1231,
+    "firstPartnerType": 162,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1294,
+    "group": 1231,
+    "firstPartnerType": 163,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1295,
+    "group": 1231,
+    "firstPartnerType": 164,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1296,
+    "group": 1231,
+    "firstPartnerType": 165,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ]
+  },
+  {
+    "id": 1297,
+    "group": 1231,
+    "firstPartnerType": 166,
+    "secondPartnerType": 1102,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
     ]
   }
 ]

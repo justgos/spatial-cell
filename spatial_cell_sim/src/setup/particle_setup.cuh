@@ -41,8 +41,7 @@ fillParticlesUniform(
 
 template <typename T> void
 fillParticlesStraightLine(
-    int count,
-    int type,
+    std::vector<int>* types,
     float3 startPos,
     float3 dPos,
     T* h_Particles,
@@ -51,23 +50,26 @@ fillParticlesStraightLine(
     const Config* config,
     std::function<double()> rng
 ) {
-    for (int i = h_nActiveParticles[0]; i < h_nActiveParticles[0] + count; i++)
+    for (int i = h_nActiveParticles[0]; i < h_nActiveParticles[0] + types->size(); i++)
     {
+        int type = (*types)[i - h_nActiveParticles[0]];
+        float radius = (*particleTypeInfo)[type].radius;
         float3 pos = add(startPos, mul(dPos, i - h_nActiveParticles[0]));
         h_Particles[i] = T(
             i,
             type,
             0,
-            (*particleTypeInfo)[type].radius,
+            radius,
             make_float3(
                 min(max(pos.x, 0.0f), config->simSize),
                 min(max(pos.y, 0.0f), config->simSize),
                 min(max(pos.z, 0.0f), config->simSize)
             ),
-            random_rotation_host(rng)
+            QUATERNION_IDENTITY
+            //random_rotation_host(rng)
         );
     }
-    h_nActiveParticles[0] += count;
+    h_nActiveParticles[0] += types->size();
 }
 
 template <typename T> void

@@ -36,6 +36,9 @@ struct Config {
     int relaxationSteps;
     int metaboliteDiffusionSteps;
 
+    int persistEveryNthFrame;
+    int reportEveryNthFrame;
+
     Config() {
         //
     }
@@ -55,7 +58,9 @@ struct Config {
         angularVelocityDecay(configJson["angularVelocityDecay"].asFloat()),
         noiseCoordinationSteps(configJson["noiseCoordinationSteps"].asInt()),
         relaxationSteps(configJson["relaxationSteps"].asInt()),
-        metaboliteDiffusionSteps(configJson["metaboliteDiffusionSteps"].asInt())
+        metaboliteDiffusionSteps(configJson["metaboliteDiffusionSteps"].asInt()),
+        persistEveryNthFrame(configJson["persistEveryNthFrame"].asInt()),
+        reportEveryNthFrame(configJson["reportEveryNthFrame"].asInt())
     {
         // Calculate the derived values
         nGridCells = 1 << nGridCellsBits;
@@ -82,6 +87,8 @@ struct Config {
         printf("noiseCoordinationSteps %d\n", noiseCoordinationSteps);
         printf("relaxationSteps %d\n", relaxationSteps);
         printf("metaboliteDiffusionSteps %d\n", metaboliteDiffusionSteps);
+        printf("persistEveryNthFrame %d\n", persistEveryNthFrame);
+        printf("reportEveryNthFrame %d\n", reportEveryNthFrame);
         printf("\n");
     }
 };

@@ -30,6 +30,7 @@ loadComplexificationInfo() {
         auto relativePosition = c["relativePosition"];
         complexificationInfo->insert(std::pair<int, ParticleInteractionInfo>(id, ParticleInteractionInfo(
             id,
+            c.get("group", -1).asInt(),
             c["firstPartnerType"].asInt(),
             c["secondPartnerType"].asInt(),
             make_float4(relativeOrientation[0].asFloat(), relativeOrientation[1].asFloat(), relativeOrientation[2].asFloat(), relativeOrientation[3].asFloat()),
@@ -260,6 +261,10 @@ complexify(
                     float3 tup = transform_vector(VECTOR_UP, tp.rot);
 
                     for (int k = complexificationStartIndex; k < complexificationEndIndex; k++) {
+                        // The particle can't have any more interactions
+                        if (p.nActiveInteractions >= MAX_ACTIVE_INTERACTIONS)
+                            continue;
+
                         ParticleInteractionInfo pii = partnerMappedComplexificationInfo[k];
 
                         // Check whether these two particles are suitable partners
@@ -269,16 +274,26 @@ complexify(
                         ))
                             continue;
 
-                        // Check whether this interaction is already active
-                        bool interactionAlreadyActive = false;
-                        for (int k = 0; k < p.nActiveInteractions; k++) {
-                            ParticleInteraction interaction = p.interactions[k];
-                            if (interaction.type == pii.id) {
-                                interactionAlreadyActive = true;
-                                break;
+                        // Check whether this interaction group is already active
+                        // TODO: prevent two different particles forming an interaction with a third one during a single step
+                        bool interactionGroupAlreadyActive = false;
+                        if (pii.group >= 0) {
+                            for (int k = 0; k < p.nActiveInteractions; k++) {
+                                ParticleInteraction interaction = p.interactions[k];
+                                if (interaction.group == pii.group) {
+                                    interactionGroupAlreadyActive = true;
+                                    break;
+                                }
+                            }
+                            for (int k = 0; k < tp.nActiveInteractions; k++) {
+                                ParticleInteraction interaction = tp.interactions[k];
+                                if (interaction.group == pii.group) {
+                                    interactionGroupAlreadyActive = true;
+                                    break;
+                                }
                             }
                         }
-                        if (interactionAlreadyActive)
+                        if (interactionGroupAlreadyActive)
                             continue;
 
                         float orientationAlignment = interactionParticipantOrder(p, tp)
@@ -294,6 +309,7 @@ complexify(
                             && fabs(relativePositionAlignment - 1.0) < 0.1
                         ) {
                             p.interactions[p.nActiveInteractions].type = pii.id;
+                            p.interactions[p.nActiveInteractions].group = pii.group;
                             p.interactions[p.nActiveInteractions].partnerId = tp.id;
                             p.nActiveInteractions++;
                         }

@@ -36,6 +36,7 @@ struct ParticleTypeInfo {
 
 struct ParticleInteractionInfo {
     int id;
+    int group;
     int firstPartnerType;
     int secondPartnerType;
     float4 relativeOrientation;
@@ -47,11 +48,13 @@ struct ParticleInteractionInfo {
 
     ParticleInteractionInfo(
         int id,
+        int group,
         int firstPartnerType,
         int secondPartnerType,
         float4 relativeOrientation,
         float3 relativePosition
     ) : id(id),
+        group(group),
         firstPartnerType(firstPartnerType),
         secondPartnerType(secondPartnerType),
         relativeOrientation(relativeOrientation),
@@ -102,6 +105,7 @@ struct ComplexInfo {
 
 struct ParticleInteraction {
     int type;
+    int group;
     int partnerId;
 };
 
@@ -115,7 +119,7 @@ struct Particle {
     float3 velocity;
     float4 angularVelocity;
     int nActiveInteractions;
-    ParticleInteraction interactions[8];
+    ParticleInteraction interactions[MAX_ACTIVE_INTERACTIONS];
     float4 debugVector;
 
     __device__ __host__ Particle(
