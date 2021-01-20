@@ -599,8 +599,8 @@ relax(
                                 float interactionWeight = tp.radius;
                                 countedInteractions += 1.0f;
                                 countedInteractionWeight += interactionWeight;
-                                //targetPos += (relaxedRelativePosition - targetPos) * (p.radius / countedInteractionWeight);
-                                targetPos += (relaxedRelativePosition - targetPos) / countedInteractions;
+                                targetPos += (relaxedRelativePosition - targetPos) * (interactionWeight / countedInteractionWeight);
+                                //targetPos += (relaxedRelativePosition - targetPos) / countedInteractions;
                             }
 
                             // Interaction testing code
@@ -680,7 +680,13 @@ relax(
                                 relaxedRelativePosition += tp.pos;
                                 // FIXME: the order should be determined not by ids, but by interaction parameters
                                 //if(k < 1 && p.nActiveInteractions > 1)
+
                                 moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
+                                /*float interactionWeight = tp.radius;
+                                countedInteractions += 1.0f;
+                                countedInteractionWeight += interactionWeight;
+                                targetPos += (relaxedRelativePosition - targetPos) * (interactionWeight / countedInteractionWeight);*/
+
                                 p.debugVector.x += (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
                                 p.debugVector.y += (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
                                 p.debugVector.z += (relaxedRelativePosition.z - p.pos.z) * (1.0 - relativePositionRelaxationSpeed);
@@ -708,6 +714,7 @@ relax(
         p.pos + (targetPos - p.pos) * 0.49f + moveVec,
         0.0f, d_Config.simSize
     );
+    //p.velocity = p.velocity + ((targetPos - p.pos) * 0.49f + moveVec) * 0.5f,
 
     //p.rot = normalize(p.rot);
 

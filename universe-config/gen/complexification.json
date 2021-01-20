@@ -3912,8 +3912,7 @@
   {
     "id": 1231,
     "group": 1231,
-    "firstPartnerType": 100,
-    "secondPartnerType": 1102,
+    "transitionTo": 1232,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -3924,13 +3923,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 100,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1232,
     "group": 1231,
-    "firstPartnerType": 101,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1233,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -3941,13 +3944,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 100,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1233,
-    "group": 1231,
-    "firstPartnerType": 102,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1234,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -3956,15 +3964,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 100,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1234,
-    "group": 1231,
-    "firstPartnerType": 103,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -3973,15 +3985,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 100,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1235,
     "group": 1231,
-    "firstPartnerType": 104,
-    "secondPartnerType": 1102,
+    "transitionTo": 1231,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -3992,13 +4007,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 100,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1236,
     "group": 1231,
-    "firstPartnerType": 105,
-    "secondPartnerType": 1102,
+    "transitionTo": 1237,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4009,13 +4027,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 101,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1237,
     "group": 1231,
-    "firstPartnerType": 106,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1238,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4026,13 +4048,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 101,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1238,
-    "group": 1231,
-    "firstPartnerType": 107,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1239,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4041,15 +4068,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 101,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1239,
-    "group": 1231,
-    "firstPartnerType": 108,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4058,15 +4089,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 101,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1240,
     "group": 1231,
-    "firstPartnerType": 109,
-    "secondPartnerType": 1102,
+    "transitionTo": 1236,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4077,13 +4111,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 101,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1241,
     "group": 1231,
-    "firstPartnerType": 110,
-    "secondPartnerType": 1102,
+    "transitionTo": 1242,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4094,13 +4131,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 102,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1242,
     "group": 1231,
-    "firstPartnerType": 111,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1243,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4111,13 +4152,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 102,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1243,
-    "group": 1231,
-    "firstPartnerType": 112,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1244,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4126,15 +4172,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 102,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1244,
-    "group": 1231,
-    "firstPartnerType": 113,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4143,15 +4193,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 102,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1245,
     "group": 1231,
-    "firstPartnerType": 114,
-    "secondPartnerType": 1102,
+    "transitionTo": 1241,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4162,13 +4215,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 102,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1246,
     "group": 1231,
-    "firstPartnerType": 115,
-    "secondPartnerType": 1102,
+    "transitionTo": 1247,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4179,13 +4235,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 103,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1247,
     "group": 1231,
-    "firstPartnerType": 116,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1248,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4196,13 +4256,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 103,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1248,
-    "group": 1231,
-    "firstPartnerType": 117,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1249,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4211,15 +4276,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 103,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1249,
-    "group": 1231,
-    "firstPartnerType": 118,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4228,15 +4297,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 103,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1250,
     "group": 1231,
-    "firstPartnerType": 119,
-    "secondPartnerType": 1102,
+    "transitionTo": 1246,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4247,13 +4319,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 103,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1251,
     "group": 1231,
-    "firstPartnerType": 120,
-    "secondPartnerType": 1102,
+    "transitionTo": 1252,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4264,13 +4339,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 104,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1252,
     "group": 1231,
-    "firstPartnerType": 121,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1253,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4281,13 +4360,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 104,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1253,
-    "group": 1231,
-    "firstPartnerType": 122,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1254,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4296,15 +4380,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 104,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1254,
-    "group": 1231,
-    "firstPartnerType": 123,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4313,15 +4401,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 104,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1255,
     "group": 1231,
-    "firstPartnerType": 124,
-    "secondPartnerType": 1102,
+    "transitionTo": 1251,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4332,13 +4423,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 104,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1256,
     "group": 1231,
-    "firstPartnerType": 125,
-    "secondPartnerType": 1102,
+    "transitionTo": 1257,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4349,13 +4443,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 105,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1257,
     "group": 1231,
-    "firstPartnerType": 126,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1258,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4366,13 +4464,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 105,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1258,
-    "group": 1231,
-    "firstPartnerType": 127,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1259,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4381,15 +4484,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 105,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1259,
-    "group": 1231,
-    "firstPartnerType": 128,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4398,15 +4505,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 105,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1260,
     "group": 1231,
-    "firstPartnerType": 129,
-    "secondPartnerType": 1102,
+    "transitionTo": 1256,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4417,13 +4527,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 105,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1261,
     "group": 1231,
-    "firstPartnerType": 130,
-    "secondPartnerType": 1102,
+    "transitionTo": 1262,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4434,13 +4547,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 106,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1262,
     "group": 1231,
-    "firstPartnerType": 131,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1263,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4451,13 +4568,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 106,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1263,
-    "group": 1231,
-    "firstPartnerType": 132,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1264,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4466,15 +4588,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 106,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1264,
-    "group": 1231,
-    "firstPartnerType": 133,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4483,15 +4609,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 106,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1265,
     "group": 1231,
-    "firstPartnerType": 134,
-    "secondPartnerType": 1102,
+    "transitionTo": 1261,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4502,13 +4631,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 106,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1266,
     "group": 1231,
-    "firstPartnerType": 135,
-    "secondPartnerType": 1102,
+    "transitionTo": 1267,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4519,13 +4651,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 107,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1267,
     "group": 1231,
-    "firstPartnerType": 136,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1268,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4536,13 +4672,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 107,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1268,
-    "group": 1231,
-    "firstPartnerType": 137,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1269,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4551,15 +4692,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 107,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1269,
-    "group": 1231,
-    "firstPartnerType": 138,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4568,15 +4713,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 107,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1270,
     "group": 1231,
-    "firstPartnerType": 139,
-    "secondPartnerType": 1102,
+    "transitionTo": 1266,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4587,13 +4735,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 107,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1271,
     "group": 1231,
-    "firstPartnerType": 140,
-    "secondPartnerType": 1102,
+    "transitionTo": 1272,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4604,13 +4755,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 108,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1272,
     "group": 1231,
-    "firstPartnerType": 141,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1273,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4621,13 +4776,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 108,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1273,
-    "group": 1231,
-    "firstPartnerType": 142,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1274,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4636,15 +4796,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 108,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1274,
-    "group": 1231,
-    "firstPartnerType": 143,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4653,15 +4817,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 108,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1275,
     "group": 1231,
-    "firstPartnerType": 144,
-    "secondPartnerType": 1102,
+    "transitionTo": 1271,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4672,13 +4839,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 108,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1276,
     "group": 1231,
-    "firstPartnerType": 145,
-    "secondPartnerType": 1102,
+    "transitionTo": 1277,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4689,13 +4859,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 109,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1277,
     "group": 1231,
-    "firstPartnerType": 146,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1278,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4706,13 +4880,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 109,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1278,
-    "group": 1231,
-    "firstPartnerType": 147,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1279,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4721,15 +4900,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 109,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1279,
-    "group": 1231,
-    "firstPartnerType": 148,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4738,15 +4921,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 109,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1280,
     "group": 1231,
-    "firstPartnerType": 149,
-    "secondPartnerType": 1102,
+    "transitionTo": 1276,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4757,13 +4943,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 109,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1281,
     "group": 1231,
-    "firstPartnerType": 150,
-    "secondPartnerType": 1102,
+    "transitionTo": 1282,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4774,13 +4963,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 110,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1282,
     "group": 1231,
-    "firstPartnerType": 151,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1283,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4791,13 +4984,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 110,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1283,
-    "group": 1231,
-    "firstPartnerType": 152,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1284,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4806,15 +5004,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 110,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1284,
-    "group": 1231,
-    "firstPartnerType": 153,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4823,15 +5025,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 110,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1285,
     "group": 1231,
-    "firstPartnerType": 154,
-    "secondPartnerType": 1102,
+    "transitionTo": 1281,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4842,13 +5047,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 110,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1286,
     "group": 1231,
-    "firstPartnerType": 155,
-    "secondPartnerType": 1102,
+    "transitionTo": 1287,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4859,13 +5067,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 111,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1287,
     "group": 1231,
-    "firstPartnerType": 156,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1288,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4876,13 +5088,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 111,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1288,
-    "group": 1231,
-    "firstPartnerType": 157,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1289,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4891,15 +5108,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 111,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1289,
-    "group": 1231,
-    "firstPartnerType": 158,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4908,15 +5129,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 111,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1290,
     "group": 1231,
-    "firstPartnerType": 159,
-    "secondPartnerType": 1102,
+    "transitionTo": 1286,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4927,13 +5151,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 111,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1291,
     "group": 1231,
-    "firstPartnerType": 160,
-    "secondPartnerType": 1102,
+    "transitionTo": 1292,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4944,13 +5171,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 112,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1292,
     "group": 1231,
-    "firstPartnerType": 161,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1293,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4961,13 +5192,18 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 112,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1293,
-    "group": 1231,
-    "firstPartnerType": 162,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1294,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4976,15 +5212,19 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 112,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1294,
-    "group": 1231,
-    "firstPartnerType": 163,
-    "secondPartnerType": 1102,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -4993,15 +5233,18 @@
     ],
     "relativePosition": [
       0.0,
-      0.0,
+      -1.5,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 112,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
   },
   {
     "id": 1295,
     "group": 1231,
-    "firstPartnerType": 164,
-    "secondPartnerType": 1102,
+    "transitionTo": 1291,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -5012,13 +5255,16 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 112,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   },
   {
     "id": 1296,
     "group": 1231,
-    "firstPartnerType": 165,
-    "secondPartnerType": 1102,
+    "transitionTo": 1297,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -5029,13 +5275,17 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 113,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
   },
   {
     "id": 1297,
     "group": 1231,
-    "firstPartnerType": 166,
-    "secondPartnerType": 1102,
+    "onlyViaTransition": true,
+    "transitionTo": 1298,
     "relativeOrientation": [
       0.0,
       0.0,
@@ -5046,6 +5296,5585 @@
       0.0,
       0.0,
       -2.0
-    ]
+    ],
+    "firstPartnerType": 113,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1298,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1299,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 113,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1299,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 113,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1300,
+    "group": 1231,
+    "transitionTo": 1296,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 113,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1301,
+    "group": 1231,
+    "transitionTo": 1302,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 114,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1302,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1303,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 114,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1303,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1304,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 114,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1304,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 114,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1305,
+    "group": 1231,
+    "transitionTo": 1301,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 114,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1306,
+    "group": 1231,
+    "transitionTo": 1307,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 115,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1307,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1308,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 115,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1308,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1309,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 115,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1309,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 115,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1310,
+    "group": 1231,
+    "transitionTo": 1306,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 115,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1311,
+    "group": 1231,
+    "transitionTo": 1312,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 116,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1312,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1313,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 116,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1313,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1314,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 116,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1314,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 116,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1315,
+    "group": 1231,
+    "transitionTo": 1311,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 116,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1316,
+    "group": 1231,
+    "transitionTo": 1317,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 117,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1317,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1318,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 117,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1318,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1319,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 117,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1319,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 117,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1320,
+    "group": 1231,
+    "transitionTo": 1316,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 117,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1321,
+    "group": 1231,
+    "transitionTo": 1322,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 118,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1322,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1323,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 118,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1323,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1324,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 118,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1324,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 118,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1325,
+    "group": 1231,
+    "transitionTo": 1321,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 118,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1326,
+    "group": 1231,
+    "transitionTo": 1327,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 119,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1327,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1328,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 119,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1328,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1329,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 119,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1329,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 119,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1330,
+    "group": 1231,
+    "transitionTo": 1326,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 119,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1331,
+    "group": 1231,
+    "transitionTo": 1332,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 120,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1332,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1333,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 120,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1333,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1334,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 120,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1334,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 120,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1335,
+    "group": 1231,
+    "transitionTo": 1331,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 120,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1336,
+    "group": 1231,
+    "transitionTo": 1337,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 121,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1337,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1338,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 121,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1338,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1339,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 121,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1339,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 121,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1340,
+    "group": 1231,
+    "transitionTo": 1336,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 121,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1341,
+    "group": 1231,
+    "transitionTo": 1342,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 122,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1342,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1343,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 122,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1343,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1344,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 122,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1344,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 122,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1345,
+    "group": 1231,
+    "transitionTo": 1341,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 122,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1346,
+    "group": 1231,
+    "transitionTo": 1347,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 123,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1347,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1348,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 123,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1348,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1349,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 123,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1349,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 123,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1350,
+    "group": 1231,
+    "transitionTo": 1346,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 123,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1351,
+    "group": 1231,
+    "transitionTo": 1352,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 124,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1352,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1353,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 124,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1353,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1354,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 124,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1354,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 124,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1355,
+    "group": 1231,
+    "transitionTo": 1351,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 124,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1356,
+    "group": 1231,
+    "transitionTo": 1357,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 125,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1357,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1358,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 125,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1358,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1359,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 125,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1359,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 125,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1360,
+    "group": 1231,
+    "transitionTo": 1356,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 125,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1361,
+    "group": 1231,
+    "transitionTo": 1362,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 126,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1362,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1363,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 126,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1363,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1364,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 126,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1364,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 126,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1365,
+    "group": 1231,
+    "transitionTo": 1361,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 126,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1366,
+    "group": 1231,
+    "transitionTo": 1367,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 127,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1367,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1368,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 127,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1368,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1369,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 127,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1369,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 127,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1370,
+    "group": 1231,
+    "transitionTo": 1366,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 127,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1371,
+    "group": 1231,
+    "transitionTo": 1372,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 128,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1372,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1373,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 128,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1373,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1374,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 128,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1374,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 128,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1375,
+    "group": 1231,
+    "transitionTo": 1371,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 128,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1376,
+    "group": 1231,
+    "transitionTo": 1377,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 129,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1377,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1378,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 129,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1378,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1379,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 129,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1379,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 129,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1380,
+    "group": 1231,
+    "transitionTo": 1376,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 129,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1381,
+    "group": 1231,
+    "transitionTo": 1382,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 130,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1382,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1383,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 130,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1383,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1384,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 130,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1384,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 130,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1385,
+    "group": 1231,
+    "transitionTo": 1381,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 130,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1386,
+    "group": 1231,
+    "transitionTo": 1387,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 131,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1387,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1388,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 131,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1388,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1389,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 131,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1389,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 131,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1390,
+    "group": 1231,
+    "transitionTo": 1386,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 131,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1391,
+    "group": 1231,
+    "transitionTo": 1392,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 132,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1392,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1393,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 132,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1393,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1394,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 132,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1394,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 132,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1395,
+    "group": 1231,
+    "transitionTo": 1391,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 132,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1396,
+    "group": 1231,
+    "transitionTo": 1397,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 133,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1397,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1398,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 133,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1398,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1399,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 133,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1399,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 133,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1400,
+    "group": 1231,
+    "transitionTo": 1396,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 133,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1401,
+    "group": 1231,
+    "transitionTo": 1402,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 134,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1402,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1403,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 134,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1403,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1404,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 134,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1404,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 134,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1405,
+    "group": 1231,
+    "transitionTo": 1401,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 134,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1406,
+    "group": 1231,
+    "transitionTo": 1407,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 135,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1407,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1408,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 135,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1408,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1409,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 135,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1409,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 135,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1410,
+    "group": 1231,
+    "transitionTo": 1406,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 135,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1411,
+    "group": 1231,
+    "transitionTo": 1412,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 136,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1412,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1413,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 136,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1413,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1414,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 136,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1414,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 136,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1415,
+    "group": 1231,
+    "transitionTo": 1411,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 136,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1416,
+    "group": 1231,
+    "transitionTo": 1417,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 137,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1417,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1418,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 137,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1418,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1419,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 137,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1419,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 137,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1420,
+    "group": 1231,
+    "transitionTo": 1416,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 137,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1421,
+    "group": 1231,
+    "transitionTo": 1422,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 138,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1422,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1423,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 138,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1423,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1424,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 138,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1424,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 138,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1425,
+    "group": 1231,
+    "transitionTo": 1421,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 138,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1426,
+    "group": 1231,
+    "transitionTo": 1427,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 139,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1427,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1428,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 139,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1428,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1429,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 139,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1429,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 139,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1430,
+    "group": 1231,
+    "transitionTo": 1426,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 139,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1431,
+    "group": 1231,
+    "transitionTo": 1432,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 140,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1432,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1433,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 140,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1433,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1434,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 140,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1434,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 140,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1435,
+    "group": 1231,
+    "transitionTo": 1431,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 140,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1436,
+    "group": 1231,
+    "transitionTo": 1437,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 141,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1437,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1438,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 141,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1438,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1439,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 141,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1439,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 141,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1440,
+    "group": 1231,
+    "transitionTo": 1436,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 141,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1441,
+    "group": 1231,
+    "transitionTo": 1442,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 142,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1442,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1443,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 142,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1443,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1444,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 142,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1444,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 142,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1445,
+    "group": 1231,
+    "transitionTo": 1441,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 142,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1446,
+    "group": 1231,
+    "transitionTo": 1447,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 143,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1447,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1448,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 143,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1448,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1449,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 143,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1449,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 143,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1450,
+    "group": 1231,
+    "transitionTo": 1446,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 143,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1451,
+    "group": 1231,
+    "transitionTo": 1452,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 144,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1452,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1453,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 144,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1453,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1454,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 144,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1454,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 144,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1455,
+    "group": 1231,
+    "transitionTo": 1451,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 144,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1456,
+    "group": 1231,
+    "transitionTo": 1457,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 145,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1457,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1458,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 145,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1458,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1459,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 145,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1459,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 145,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1460,
+    "group": 1231,
+    "transitionTo": 1456,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 145,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1461,
+    "group": 1231,
+    "transitionTo": 1462,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 146,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1462,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1463,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 146,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1463,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1464,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 146,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1464,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 146,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1465,
+    "group": 1231,
+    "transitionTo": 1461,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 146,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1466,
+    "group": 1231,
+    "transitionTo": 1467,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 147,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1467,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1468,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 147,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1468,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1469,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 147,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1469,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 147,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1470,
+    "group": 1231,
+    "transitionTo": 1466,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 147,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1471,
+    "group": 1231,
+    "transitionTo": 1472,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 148,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1472,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1473,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 148,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1473,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1474,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 148,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1474,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 148,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1475,
+    "group": 1231,
+    "transitionTo": 1471,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 148,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1476,
+    "group": 1231,
+    "transitionTo": 1477,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 149,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1477,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1478,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 149,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1478,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1479,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 149,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1479,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 149,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1480,
+    "group": 1231,
+    "transitionTo": 1476,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 149,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1481,
+    "group": 1231,
+    "transitionTo": 1482,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 150,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1482,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1483,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 150,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1483,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1484,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 150,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1484,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 150,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1485,
+    "group": 1231,
+    "transitionTo": 1481,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 150,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1486,
+    "group": 1231,
+    "transitionTo": 1487,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 151,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1487,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1488,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 151,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1488,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1489,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 151,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1489,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 151,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1490,
+    "group": 1231,
+    "transitionTo": 1486,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 151,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1491,
+    "group": 1231,
+    "transitionTo": 1492,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 152,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1492,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1493,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 152,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1493,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1494,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 152,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1494,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 152,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1495,
+    "group": 1231,
+    "transitionTo": 1491,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 152,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1496,
+    "group": 1231,
+    "transitionTo": 1497,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 153,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1497,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1498,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 153,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1498,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1499,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 153,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1499,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 153,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1500,
+    "group": 1231,
+    "transitionTo": 1496,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 153,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1501,
+    "group": 1231,
+    "transitionTo": 1502,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 154,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1502,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1503,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 154,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1503,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1504,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 154,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1504,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 154,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1505,
+    "group": 1231,
+    "transitionTo": 1501,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 154,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1506,
+    "group": 1231,
+    "transitionTo": 1507,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 155,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1507,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1508,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 155,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1508,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1509,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 155,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1509,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 155,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1510,
+    "group": 1231,
+    "transitionTo": 1506,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 155,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1511,
+    "group": 1231,
+    "transitionTo": 1512,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 156,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1512,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1513,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 156,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1513,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1514,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 156,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1514,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 156,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1515,
+    "group": 1231,
+    "transitionTo": 1511,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 156,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1516,
+    "group": 1231,
+    "transitionTo": 1517,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 157,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1517,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1518,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 157,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1518,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1519,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 157,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1519,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 157,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1520,
+    "group": 1231,
+    "transitionTo": 1516,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 157,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1521,
+    "group": 1231,
+    "transitionTo": 1522,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 158,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1522,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1523,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 158,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1523,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1524,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 158,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1524,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 158,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1525,
+    "group": 1231,
+    "transitionTo": 1521,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 158,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1526,
+    "group": 1231,
+    "transitionTo": 1527,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 159,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1527,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1528,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 159,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1528,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1529,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 159,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1529,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 159,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1530,
+    "group": 1231,
+    "transitionTo": 1526,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 159,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1531,
+    "group": 1231,
+    "transitionTo": 1532,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 160,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1532,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1533,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 160,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1533,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1534,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 160,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1534,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 160,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1535,
+    "group": 1231,
+    "transitionTo": 1531,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 160,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1536,
+    "group": 1231,
+    "transitionTo": 1537,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 161,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1537,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1538,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 161,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1538,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1539,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 161,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1539,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 161,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1540,
+    "group": 1231,
+    "transitionTo": 1536,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 161,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1541,
+    "group": 1231,
+    "transitionTo": 1542,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 162,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1542,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1543,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 162,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1543,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1544,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 162,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1544,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 162,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1545,
+    "group": 1231,
+    "transitionTo": 1541,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 162,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1546,
+    "group": 1231,
+    "transitionTo": 1547,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 163,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1547,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1548,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 163,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1548,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1549,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 163,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1549,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 163,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1550,
+    "group": 1231,
+    "transitionTo": 1546,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 163,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1551,
+    "group": 1231,
+    "transitionTo": 1552,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 164,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1552,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1553,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 164,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1553,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1554,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 164,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1554,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 164,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1555,
+    "group": 1231,
+    "transitionTo": 1551,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 164,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1556,
+    "group": 1231,
+    "transitionTo": 1557,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 165,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1557,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1558,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 165,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1558,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1559,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 165,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1559,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 165,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1560,
+    "group": 1231,
+    "transitionTo": 1556,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 165,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1561,
+    "group": 1231,
+    "transitionTo": 1562,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 166,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1562,
+    "group": 1231,
+    "onlyViaTransition": true,
+    "transitionTo": 1563,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 166,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
+  },
+  {
+    "id": 1563,
+    "group": 1232,
+    "keepState": true,
+    "onlyViaTransition": true,
+    "transitionTo": 1564,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 166,
+    "firstPartnerState": 1,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 0
+  },
+  {
+    "id": 1564,
+    "group": 1232,
+    "onlyViaTransition": true,
+    "breakOnAlignment": true,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      -1.5,
+      -2.0
+    ],
+    "firstPartnerType": 166,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": -1
+  },
+  {
+    "id": 1565,
+    "group": 1231,
+    "transitionTo": 1561,
+    "relativeOrientation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "relativePosition": [
+      0.0,
+      0.0,
+      -2.0
+    ],
+    "firstPartnerType": 166,
+    "firstPartnerState": 0,
+    "secondPartnerType": 1102,
+    "secondPartnerState": 1
   }
 ]

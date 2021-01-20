@@ -41,6 +41,10 @@ struct ParticleInteractionInfo {
     __int8 firstPartnerState;
     int secondPartnerType;
     __int8 secondPartnerState;
+    bool keepState;  // Shouldn't change state, but wait for it to change through other interactions
+    bool onlyViaTransition;  // Can be initiated only via transition from another interaction
+    int transitionTo;  // Upod being formed, this interaction might transform into another one
+    bool breakOnAlignment;  // This interaction is meant to change the participants' states, align 'em and then disintegrate
     float4 relativeOrientation;
     float3 relativePosition;
 
@@ -55,6 +59,10 @@ struct ParticleInteractionInfo {
         __int8 firstPartnerState,
         int secondPartnerType,
         __int8 secondPartnerState,
+        bool keepState,
+        bool onlyViaTransition,
+        int transitionTo,
+        bool breakOnAlignment,
         float4 relativeOrientation,
         float3 relativePosition
     ) : id(id),
@@ -63,6 +71,10 @@ struct ParticleInteractionInfo {
         firstPartnerState(firstPartnerState),
         secondPartnerType(secondPartnerType),
         secondPartnerState(secondPartnerState),
+        keepState(keepState),
+        onlyViaTransition(onlyViaTransition),
+        transitionTo(transitionTo),
+        breakOnAlignment(breakOnAlignment),
         relativeOrientation(relativeOrientation),
         relativePosition(relativePosition)
     {
@@ -198,7 +210,7 @@ struct ReducedParticle {
         Particle p
     ) : id(p.id),
         type(p.type),
-        flags(p.flags),
+        flags(p.flags | (((int)p.state & 0x0000000F) << 16)),  // Pack a bit of state here for debugging
         radius(p.radius),
         posX(p.pos.x),
         posY(p.pos.y),

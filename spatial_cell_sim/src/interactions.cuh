@@ -35,6 +35,10 @@ loadComplexificationInfo() {
             c.get("firstPartnerState", -1).asInt(),
             c["secondPartnerType"].asInt(),
             c.get("secondPartnerState", -1).asInt(),
+            c.get("keepState", false).asBool(),
+            c.get("onlyViaTransition", false).asBool(),
+            c.get("transitionTo", -1).asInt(),
+            c.get("breakOnAlignment", false).asBool(),
             make_float4(relativeOrientation[0].asFloat(), relativeOrientation[1].asFloat(), relativeOrientation[2].asFloat(), relativeOrientation[3].asFloat()),
             make_float3(relativePosition[0].asFloat(), relativePosition[1].asFloat(), relativePosition[2].asFloat())
         )));
@@ -206,6 +210,7 @@ complexify(
     Particle* nextParticles,
     int stepStart_nActiveParticles,
     unsigned int* gridRanges,
+    ParticleInteractionInfo* flatComplexificationInfo,
     int* partnerMappedComplexificationIndex,
     ParticleInteractionInfo *partnerMappedComplexificationInfo
 ) {
@@ -271,9 +276,11 @@ complexify(
 
                         // Check whether these two particles are suitable partners
                         if (!(
-                            (p.type == pii.firstPartnerType && tp.type == pii.secondPartnerType)
-                            || (p.type == pii.secondPartnerType && tp.type == pii.firstPartnerType)
-                        ))
+                                (p.type == pii.firstPartnerType && tp.type == pii.secondPartnerType)
+                                || (p.type == pii.secondPartnerType && tp.type == pii.firstPartnerType)
+                            )
+                            || pii.onlyViaTransition
+                        )
                             continue;
 
                         // Check whether this interaction group is already active
@@ -302,18 +309,145 @@ complexify(
                             ? dot(transform_vector(up, pii.relativeOrientation), tup)
                             : dot(transform_vector(tup, pii.relativeOrientation), up);
                         float relativePositionAlignment = interactionParticipantOrder(p, tp)
-                            ? dot(transform_vector(pii.relativePosition, mul(inverse(pii.relativeOrientation), tp.rot)), delta) / normsq(delta)
+                            ? dot(transform_vector(pii.relativePosition, p.rot), delta) / normsq(delta)
                             : dot(transform_vector(pii.relativePosition, tp.rot), -delta) / normsq(delta);
 
-                        // If the particles are well-aligned - create an interaction
+                        // If the particles are well-aligned - create the interaction
                         if (
                             orientationAlignment > 0.9
                             && fabs(relativePositionAlignment - 1.0) < 0.1
+                            && (interactionParticipantOrder(p, tp)
+                                ? ((pii.firstPartnerState < 0 || pii.firstPartnerState == p.state) && (pii.secondPartnerState < 0 || pii.secondPartnerState == tp.state))
+                                : ((pii.secondPartnerState < 0 || pii.secondPartnerState == p.state) && (pii.firstPartnerState < 0 || pii.firstPartnerState == tp.state)))
                         ) {
                             p.interactions[p.nActiveInteractions].type = pii.id;
                             p.interactions[p.nActiveInteractions].group = pii.group;
                             p.interactions[p.nActiveInteractions].partnerId = tp.id;
                             p.nActiveInteractions++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    nextParticles[idx] = p;
+}
+
+
+__global__ void
+transitionInteractions(
+    const int step,
+    curandState* rngState,
+    const Particle* curParticles,
+    Particle* nextParticles,
+    int stepStart_nActiveParticles,
+    unsigned int* gridRanges,
+    ParticleInteractionInfo* flatComplexificationInfo,
+    int* partnerMappedComplexificationIndex,
+    ParticleInteractionInfo* partnerMappedComplexificationInfo
+) {
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx >= stepStart_nActiveParticles)
+        return;
+
+    Particle p = curParticles[idx];
+
+    if (!(p.flags & PARTICLE_FLAG_ACTIVE)) {
+        nextParticles[idx] = p;
+        return;
+    }
+
+    // Grid cell index of the current particle
+    const int cgx = getGridIdx(p.pos.x),
+        cgy = getGridIdx(p.pos.y),
+        cgz = getGridIdx(p.pos.z);
+
+    // Up direction of the current particle
+    float3 up = transform_vector(VECTOR_UP, p.rot);
+
+    int complexificationStartIndex = partnerMappedComplexificationIndex[p.type * 2];
+    int complexificationEndIndex = partnerMappedComplexificationIndex[p.type * 2 + 1];
+
+    for (int gx = max(cgx - 1, 0); gx <= min(cgx + 1, d_Config.nGridCells - 1); gx++) {
+        for (int gy = max(cgy - 1, 0); gy <= min(cgy + 1, d_Config.nGridCells - 1); gy++) {
+            for (int gz = max(cgz - 1, 0); gz <= min(cgz + 1, d_Config.nGridCells - 1); gz++) {
+                // Get the range of particle ids in this block
+                const unsigned int startIdx = gridRanges[makeIdx(gx, gy, gz) * 2];
+                const unsigned int endIdx = gridRanges[makeIdx(gx, gy, gz) * 2 + 1];
+                for (int j = startIdx; j < endIdx; j++) {
+                    if (j == idx)
+                        continue;
+
+                    const Particle tp = curParticles[j];
+                    if (!(tp.flags & PARTICLE_FLAG_ACTIVE))
+                        continue;
+
+                    float3 delta = make_float3(
+                        tp.pos.x - p.pos.x,
+                        tp.pos.y - p.pos.y,
+                        tp.pos.z - p.pos.z
+                    );
+                    // Skip particles beyond the maximum interaction distance
+                    if (fabs(delta.x) > d_Config.maxInteractionDistance
+                        || fabs(delta.y) > d_Config.maxInteractionDistance
+                        || fabs(delta.z) > d_Config.maxInteractionDistance)
+                        continue;
+
+                    float3 normalizedDelta = normalize(delta);
+                    float dist = norm(delta);
+
+                    // Up direction of the other particle
+                    float3 tup = transform_vector(VECTOR_UP, tp.rot);
+
+                    for (int k = 0; k < p.nActiveInteractions; k++) {
+                        ParticleInteraction interaction = p.interactions[k];
+                        if (interaction.partnerId == tp.id) {
+                            ParticleInteractionInfo pii = flatComplexificationInfo[interaction.type];
+
+                            // Check if there are any possible transitions here
+                            if (!(pii.transitionTo >= 0
+                                || pii.breakOnAlignment)
+                            )
+                                continue;
+
+                            float orientationAlignment = interactionParticipantOrder(p, tp)
+                                ? dot(transform_vector(up, pii.relativeOrientation), tup)
+                                : dot(transform_vector(tup, pii.relativeOrientation), up);
+                            float relativePositionAlignment = interactionParticipantOrder(p, tp)
+                                ? dot(transform_vector(pii.relativePosition, p.rot), delta) / normsq(delta)
+                                : dot(transform_vector(pii.relativePosition, tp.rot), -delta) / normsq(delta);
+
+                            // If the particles are well-aligned - create the interaction
+                            if (
+                                orientationAlignment > 0.9
+                                && fabs(relativePositionAlignment - 1.0) < 0.1
+                                && (interactionParticipantOrder(p, tp)
+                                    ? ((pii.firstPartnerState < 0 || pii.firstPartnerState == p.state) && (pii.secondPartnerState < 0 || pii.secondPartnerState == tp.state))
+                                    : ((pii.secondPartnerState < 0 || pii.secondPartnerState == p.state) && (pii.firstPartnerState < 0 || pii.firstPartnerState == tp.state)))
+                            ) {
+                                if (pii.transitionTo >= 0) {
+                                    ParticleInteractionInfo tpii = flatComplexificationInfo[pii.transitionTo];
+                                    p.interactions[k].type = tpii.id;
+                                    p.interactions[k].group = tpii.group;
+                                    //p.interactions[k].partnerId = tp.id;
+
+                                    if (!tpii.keepState) {
+                                        // Update the particle's state to match the target interaction
+                                        if (p.type == tpii.firstPartnerType && tpii.firstPartnerState >= 0)
+                                            p.state = tpii.firstPartnerState;
+                                        if (p.type == tpii.secondPartnerType && tpii.secondPartnerState >= 0)
+                                            p.state = tpii.secondPartnerState;
+                                    }
+                                } else if (pii.breakOnAlignment) {
+                                    // Break this interaction and step back the interaction loop
+                                    for (int l = k; l < p.nActiveInteractions - 1; l++) {
+                                        p.interactions[l] = p.interactions[k];
+                                    }
+                                    p.nActiveInteractions--;
+                                    k--;
+                                }
+                            }
                         }
                     }
                 }

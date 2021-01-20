@@ -306,6 +306,7 @@ main(void)
         particles.d_Next,
         nActiveParticles.h_Current[0],
         gridRanges.d_Current,
+        flatComplexificationInfo->d_Current,
         partnerMappedInteractions.first->d_Current,
         partnerMappedInteractions.second->d_Current
     );
@@ -490,6 +491,22 @@ main(void)
             particles.d_Next,
             nActiveParticles.h_Current[0],
             gridRanges.d_Current,
+            flatComplexificationInfo->d_Current,
+            partnerMappedInteractions.first->d_Current,
+            partnerMappedInteractions.second->d_Current
+        );
+        particles.swap();
+
+        // Transition the complex-interactions
+        particles.clearNextOnDevice();
+        transitionInteractions KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            step,
+            rngState.d_Current,
+            particles.d_Current,
+            particles.d_Next,
+            nActiveParticles.h_Current[0],
+            gridRanges.d_Current,
+            flatComplexificationInfo->d_Current,
             partnerMappedInteractions.first->d_Current,
             partnerMappedInteractions.second->d_Current
         );
