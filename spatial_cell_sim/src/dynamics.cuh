@@ -172,13 +172,17 @@ brownianMovementAndRotation(
     }
 
     // Brownian motion
-    p.velocity = add(
+    p.posNoise = mul(
+        transform_vector(VECTOR_UP, random_rotation(&rngState[idx])),
+        fabs(curand_normal(&rngState[idx])) * movementNoiseScale / max(p.radius / 2.5, 1.0f)
+    );
+    /*p.velocity = add(
         mul(p.velocity, d_Config.velocityDecay),
         mul(
             transform_vector(VECTOR_UP, random_rotation(&rngState[idx])),
             fabs(curand_normal(&rngState[idx])) * movementNoiseScale / max(p.radius / 2.5, 1.0f)
         )
-    );
+    );*/
     //float3 noisePos = p.pos + step * make_float3(0.1, 0.1, 0.1) * 100.0;
     //float noiseScale = 10.0;
     ///*p.velocity = p.velocity * d_Config.velocityDecay + make_float3(
@@ -195,11 +199,43 @@ brownianMovementAndRotation(
     //);
 
     // Brownian rotation
-    p.angularVelocity = slerp(
-        slerp(p.angularVelocity, QUATERNION_IDENTITY, d_Config.angularVelocityDecay),
+    p.angularNoise = p.angularVelocity = slerp(
+        p.angularNoise,
         random_rotation(&rngState[idx]),
         d_Config.rotationNoiseScale / (p.radius / 2.5)
     );
+    /*p.angularVelocity = slerp(
+        slerp(p.angularVelocity, QUATERNION_IDENTITY, d_Config.angularVelocityDecay),
+        random_rotation(&rngState[idx]),
+        d_Config.rotationNoiseScale / (p.radius / 2.5)
+    );*/
+    
+    particles[idx] = p;
+}
+
+template <typename T>
+__global__ void
+applyNoise(
+    const int step,
+    curandState* rngState,
+    T* particles,
+    const int stepStart_nActiveParticles
+) {
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx >= stepStart_nActiveParticles)
+        return;
+
+    T p = particles[idx];
+
+    if (!(p.flags & PARTICLE_FLAG_ACTIVE)) {
+        return;
+    }
+
+    p.velocity += p.posNoise;
+    p.posNoise = VECTOR_ZERO;
+
+    p.angularVelocity = mul(p.angularNoise, p.angularVelocity);
+    p.angularNoise = QUATERNION_IDENTITY;
     
     particles[idx] = p;
 }
@@ -231,12 +267,14 @@ applyVelocities(
         ),
         0, d_Config.simSize
     );
+    p.velocity *= d_Config.velocityDecay;
 
     // Rotate the particle
     p.rot = mul(
         p.rot,
         slerp(QUATERNION_IDENTITY, p.angularVelocity, stepFraction)
     );
+    p.angularVelocity = slerp(p.angularVelocity, QUATERNION_IDENTITY, d_Config.angularVelocityDecay);
 
     particles[idx] = p;
 }
@@ -317,17 +355,17 @@ coordinateNoise(
 
                         if (interaction.partnerId == tp.id) {
                             // Noise should act on the interacting partners as if they were one
-                            float pVelocityMag = length(p.velocity);
-                            float tpVelocityMag = length(tp.velocity);
-                            p.velocity = lerp(p.velocity, tp.velocity, 0.9f * tp.radius / (p.radius + tp.radius) / (p.nActiveInteractions + tp.nActiveInteractions));
+                            float pPosNoiseMag = length(p.posNoise);
+                            float tpPosNoiseMag = length(tp.posNoise);
+                            p.posNoise = lerp(p.posNoise, tp.posNoise, 0.9f * tp.radius / (p.radius + tp.radius) / (p.nActiveInteractions + tp.nActiveInteractions));
                             // Restore some of the impulse
-                            p.velocity *= 1.0f + ((pVelocityMag * p.radius + tpVelocityMag * tp.radius) / (p.radius + tp.radius) / length(p.velocity) - 1.0f) * 0.5f;
+                            p.posNoise *= 1.0f + ((pPosNoiseMag * p.radius + tpPosNoiseMag * tp.radius) / (p.radius + tp.radius) / length(p.posNoise) - 1.0f) * 0.5f;
 
                             //p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.5;
 
-                            p.angularVelocity = slerp(
-                                p.angularVelocity,
-                                tp.angularVelocity,
+                            p.angularNoise = slerp(
+                                p.angularNoise,
+                                tp.angularNoise,
                                 0.9f * tp.radius / (p.radius + tp.radius) / p.nActiveInteractions  //(p.nActiveInteractions + tp.nActiveInteractions)
                             );
 

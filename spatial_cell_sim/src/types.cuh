@@ -142,7 +142,9 @@ struct Particle {
     float3 pos;
     float4 rot;
     float3 velocity;
+    float3 posNoise;
     float4 angularVelocity;
+    float4 angularNoise;
     int nActiveInteractions;
     ParticleInteraction interactions[MAX_ACTIVE_INTERACTIONS];
     float4 debugVector;
@@ -164,7 +166,9 @@ struct Particle {
         pos(pos),
         rot(rot),
         velocity(velocity),
+        posNoise(VECTOR_ZERO),
         angularVelocity(angularVelocity),
+        angularNoise(QUATERNION_IDENTITY),
         nActiveInteractions(0),
         interactions(),
         debugVector(make_float4(0, 0, 0, 0))
