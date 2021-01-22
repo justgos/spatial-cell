@@ -80,7 +80,7 @@ public class FrameData : MonoBehaviour
                 filteredBufferArgs.Add(typeId, argBuffer);
 
                 sw.Stop();
-                Debug.Log("Filtered particles in " + ((double)sw.ElapsedTicks / System.Diagnostics.Stopwatch.Frequency) + "s");
+                //Debug.Log("Filtered particles in " + ((double)sw.ElapsedTicks / System.Diagnostics.Stopwatch.Frequency) + "s");
             }
         }
         frame = simFrame;

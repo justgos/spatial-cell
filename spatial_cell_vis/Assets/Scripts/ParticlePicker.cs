@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using Unity.Collections.LowLevel.Unsafe;
 
@@ -16,10 +18,17 @@ public class ParticlePicker : MonoBehaviour
 
     private Particles targetParticleRenderer = null;
     private Nullable<SimData.Particle> targetParticle = null;
+    private Nullable<SimData.Particle> foundTargetParticle = null;
+
+    public ComputeShader findParticles;
+    private ComputeBuffer foundParticles;
+    private ComputeBuffer foundParticlesArgs;
+    public Text targetParticleInfo;
 
     void Start()
     {
-        
+        foundParticles = new ComputeBuffer(1, Marshal.SizeOf(typeof(SimData.Particle)), ComputeBufferType.Append);
+        foundParticlesArgs = new ComputeBuffer(5, sizeof(int), ComputeBufferType.IndirectArguments);
     }
 
     // Ref: http://paulbourke.net/geometry/circlesphere/raysphere.c
@@ -102,7 +111,7 @@ public class ParticlePicker : MonoBehaviour
             if(targetParticle != null)
             {
                 SimData.Particle tp = (SimData.Particle)targetParticle;
-                LogParticleState(tp.id);
+                //LogParticleState(tp.id);
 
                 foreach (var particleRenderer in particleRenderers)
                 {
@@ -116,13 +125,77 @@ public class ParticlePicker : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            if (targetParticle != null)
-            {
-                SimData.Particle tp = (SimData.Particle)targetParticle;
+        ResolveTargetParticle();
 
-                LogParticleState(tp.id);
+        //if (Input.GetKeyDown(KeyCode.X))
+        //{
+        //    if (targetParticle != null)
+        //    {
+        //        SimData.Particle tp = (SimData.Particle)targetParticle;
+
+            //        LogParticleState(tp.id);
+            //    }
+            //}
+    }
+
+    Nullable<SimData.Particle> FindParticle(ComputeBuffer particleBuffer, int numParticles, int id)
+    {
+        Nullable<SimData.Particle> target = null;
+        foundParticles.SetCounterValue(0);
+        findParticles.SetBuffer(0, "particles", particleBuffer);
+        findParticles.SetBuffer(0, "foundParticles", foundParticles);
+        findParticles.SetInt("particleId", id);
+        findParticles.SetInt("count", numParticles);
+        findParticles.Dispatch(0, particleBuffer.count / 8, 1, 1);
+        int[] args = new int[] { 0, 1, 0, 0, 0 };
+        foundParticlesArgs.SetData(args);
+        ComputeBuffer.CopyCount(foundParticles, foundParticlesArgs, 0);
+        foundParticlesArgs.GetData(args);
+        //Debug.Log(string.Format("Found {0} particles with id {1}", args[0], id));
+        if(args[0] > 0)
+        {
+            var found = new SimData.Particle[1];
+            foundParticles.GetData(found);
+            target = found[0];
+        }
+
+        return target;
+    }
+
+    void ResolveTargetParticle()
+    {
+        if(!targetParticle.HasValue)
+        {
+            foundTargetParticle = null;
+            targetParticleInfo.text = "";
+            return;
+        }
+
+        var particleRenderers = GameObject.FindObjectsOfType<Particles>();
+        foreach (var particleRenderer in particleRenderers)
+        {
+            if (!particleRenderer.gameObject.activeSelf || particleRenderer.frameData.Frame == null)
+                continue;
+            var found = FindParticle(particleRenderer.frameData.ParticleBuffer, particleRenderer.frameData.NumParticles, targetParticle.Value.id);
+            foundTargetParticle = found;
+            if (foundTargetParticle.HasValue)
+            {
+                var p = foundTargetParticle.Value;
+                targetParticleInfo.text = string.Format("Target particle: \nid {0}, \ntype {1}, \nflags {2:X}, \nstate {3}, \nr {4}, \npos {5}, \nrot {6}, \ndebugVector {7}",
+                    p.id,
+                    p.type,
+                    p.flags & 0xFFFF,
+                    (p.flags >> 16) & 0xFFFF,
+                    p.radius,
+                    p.pos.UnityVector().ToString("F4"),
+                    p.rot.UnityQuaternion().ToString("F4"),
+                    p.debugVector.UnityQuaternion().ToString("F6")
+                );
+                return;
+            }
+            else
+            {
+                targetParticleInfo.text = "Target particle: \nNot found";
             }
         }
     }
@@ -137,26 +210,47 @@ public class ParticlePicker : MonoBehaviour
             SimData.SimFrame frame = (SimData.SimFrame)particleRenderer.frameData.Frame;
             unsafe
             {
-                for (var i = 0; i < frame.particles.Length; i++)
+                var found = FindParticle(particleRenderer.frameData.ParticleBuffer, particleRenderer.frameData.NumParticles, id);
+                if(found.HasValue)
                 {
-                    var p = UnsafeUtility.ReadArrayElement<SimData.Particle>(frame.particles.GetUnsafeReadOnlyPtr(), i);
-
-                    if (p.id == id)
-                    {
-                        Debug.Log(string.Format("Target particle: id {0}, type {1}, flags {2:X}, pos {3}, rot {4}, r {5}, debugVector {6}",
-                            p.id,
-                            p.type,
-                            p.flags,
-                            p.pos.UnityVector().ToString("F4"),
-                            p.rot.UnityQuaternion().ToString("F4"),
-                            p.radius,
-                            p.debugVector.UnityQuaternion().ToString("F6")
-                        ));
-
-                        return;
-                    }
+                    var p = found.Value;
+                    Debug.Log(string.Format("Target particle: id {0}, type {1}, flags {2:X}, pos {3}, rot {4}, r {5}, debugVector {6}",
+                        p.id,
+                        p.type,
+                        p.flags,
+                        p.pos.UnityVector().ToString("F4"),
+                        p.rot.UnityQuaternion().ToString("F4"),
+                        p.radius,
+                        p.debugVector.UnityQuaternion().ToString("F6")
+                    ));
                 }
+
+                //for (var i = 0; i < frame.particles.Length; i++)
+                //{
+                //    var p = UnsafeUtility.ReadArrayElement<SimData.Particle>(frame.particles.GetUnsafeReadOnlyPtr(), i);
+
+                //    if (p.id == id)
+                //    {
+                //        Debug.Log(string.Format("Target particle: id {0}, type {1}, flags {2:X}, pos {3}, rot {4}, r {5}, debugVector {6}",
+                //            p.id,
+                //            p.type,
+                //            p.flags,
+                //            p.pos.UnityVector().ToString("F4"),
+                //            p.rot.UnityQuaternion().ToString("F4"),
+                //            p.radius,
+                //            p.debugVector.UnityQuaternion().ToString("F6")
+                //        ));
+
+                //        return;
+                //    }
+                //}
             }
         }
+    }
+
+    void OnDestroy()
+    {
+        foundParticles.Dispose();
+        foundParticlesArgs.Dispose();
     }
 }

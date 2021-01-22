@@ -35,10 +35,12 @@ loadComplexificationInfo() {
             c.get("firstPartnerState", -1).asInt(),
             c["secondPartnerType"].asInt(),
             c.get("secondPartnerState", -1).asInt(),
-            c.get("keepState", false).asBool(),
+            c.get("setState", true).asBool(),
+            c.get("waitForState", true).asBool(),
+            c.get("waitForAlignment", true).asBool(),
             c.get("onlyViaTransition", false).asBool(),
             c.get("transitionTo", -1).asInt(),
-            c.get("breakOnAlignment", false).asBool(),
+            c.get("breakAfterTransition", false).asBool(),
             make_float4(relativeOrientation[0].asFloat(), relativeOrientation[1].asFloat(), relativeOrientation[2].asFloat(), relativeOrientation[3].asFloat()),
             make_float3(relativePosition[0].asFloat(), relativePosition[1].asFloat(), relativePosition[2].asFloat())
         )));
@@ -314,8 +316,8 @@ complexify(
 
                         // If the particles are well-aligned - create the interaction
                         if (
-                            orientationAlignment > 0.9
-                            && fabs(relativePositionAlignment - 1.0) < 0.1
+                            orientationAlignment > 0.8
+                            && fabs(relativePositionAlignment - 1.0) < 0.2
                             && (interactionParticipantOrder(p, tp)
                                 ? ((pii.firstPartnerState < 0 || pii.firstPartnerState == p.state) && (pii.secondPartnerState < 0 || pii.secondPartnerState == tp.state))
                                 : ((pii.secondPartnerState < 0 || pii.secondPartnerState == p.state) && (pii.firstPartnerState < 0 || pii.firstPartnerState == tp.state)))
@@ -369,6 +371,9 @@ transitionInteractions(
     int complexificationStartIndex = partnerMappedComplexificationIndex[p.type * 2];
     int complexificationEndIndex = partnerMappedComplexificationIndex[p.type * 2 + 1];
 
+    int sourceTransitionIndex = -1;
+    ParticleInteractionInfo targetTransition;
+
     for (int gx = max(cgx - 1, 0); gx <= min(cgx + 1, d_Config.nGridCells - 1); gx++) {
         for (int gy = max(cgy - 1, 0); gy <= min(cgy + 1, d_Config.nGridCells - 1); gy++) {
             for (int gz = max(cgz - 1, 0); gz <= min(cgz + 1, d_Config.nGridCells - 1); gz++) {
@@ -402,12 +407,18 @@ transitionInteractions(
 
                     for (int k = 0; k < p.nActiveInteractions; k++) {
                         ParticleInteraction interaction = p.interactions[k];
+
+                        if (interaction.type < 10)
+                            continue;
+
                         if (interaction.partnerId == tp.id) {
                             ParticleInteractionInfo pii = flatComplexificationInfo[interaction.type];
 
                             // Check if there are any possible transitions here
-                            if (!(pii.transitionTo >= 0
-                                || pii.breakOnAlignment)
+                            if (!(
+                                    pii.transitionTo >= 0
+                                    || pii.breakAfterTransition
+                                )
                             )
                                 continue;
 
@@ -420,31 +431,73 @@ transitionInteractions(
 
                             // If the particles are well-aligned - create the interaction
                             if (
-                                orientationAlignment > 0.9
-                                && fabs(relativePositionAlignment - 1.0) < 0.1
-                                && (interactionParticipantOrder(p, tp)
-                                    ? ((pii.firstPartnerState < 0 || pii.firstPartnerState == p.state) && (pii.secondPartnerState < 0 || pii.secondPartnerState == tp.state))
-                                    : ((pii.secondPartnerState < 0 || pii.secondPartnerState == p.state) && (pii.firstPartnerState < 0 || pii.firstPartnerState == tp.state)))
+                                (pii.breakAfterTransition || !pii.waitForAlignment
+                                    || (orientationAlignment > 0.8
+                                        && fabs(relativePositionAlignment - 1.0) < 0.2)
+                                )
+                                && (!pii.waitForState || 
+                                    (interactionParticipantOrder(p, tp)
+                                        ? ((pii.firstPartnerState < 0 || pii.firstPartnerState == p.state) && (pii.secondPartnerState < 0 || pii.secondPartnerState == tp.state))
+                                        : ((pii.secondPartnerState < 0 || pii.secondPartnerState == p.state) && (pii.firstPartnerState < 0 || pii.firstPartnerState == tp.state))
+                                    )
+                                   )
                             ) {
                                 if (pii.transitionTo >= 0) {
                                     ParticleInteractionInfo tpii = flatComplexificationInfo[pii.transitionTo];
-                                    p.interactions[k].type = tpii.id;
-                                    p.interactions[k].group = tpii.group;
-                                    //p.interactions[k].partnerId = tp.id;
 
-                                    if (!tpii.keepState) {
-                                        // Update the particle's state to match the target interaction
-                                        if (p.type == tpii.firstPartnerType && tpii.firstPartnerState >= 0)
-                                            p.state = tpii.firstPartnerState;
-                                        if (p.type == tpii.secondPartnerType && tpii.secondPartnerState >= 0)
-                                            p.state = tpii.secondPartnerState;
+                                    // Check whether this interaction group is already active
+                                    // TODO: prevent two different particles forming an interaction with a third one during a single step
+                                    bool interactionGroupAlreadyActive = false;
+                                    if (tpii.group >= 0 && tpii.group != pii.group) {
+                                        for (int l = 0; l < p.nActiveInteractions; l++) {
+                                            ParticleInteraction interaction = p.interactions[l];
+                                            if (interaction.group == tpii.group) {
+                                                interactionGroupAlreadyActive = true;
+                                                break;
+                                            }
+                                        }
+                                        for (int l = 0; l < tp.nActiveInteractions; l++) {
+                                            ParticleInteraction interaction = tp.interactions[l];
+                                            if (interaction.group == tpii.group) {
+                                                interactionGroupAlreadyActive = true;
+                                                break;
+                                            }
+                                        }
                                     }
-                                } else if (pii.breakOnAlignment) {
+                                    if (interactionGroupAlreadyActive)
+                                        continue;
+
+                                    if (!tpii.setState ||
+                                        !((p.type == tpii.firstPartnerType && tpii.firstPartnerState >= 0)
+                                            || (p.type == tpii.secondPartnerType && tpii.secondPartnerState >= 0)
+                                        )
+                                    ) {
+                                        // If this transition won't affect this particle's state - play it immediately
+                                        p.interactions[k].type = tpii.id;
+                                        p.interactions[k].group = tpii.group;
+                                    } else {
+                                        sourceTransitionIndex = k;
+                                        targetTransition = tpii;
+                                    }
+                                    //p.interactions[k].type = tpii.id;
+                                    //p.interactions[k].group = tpii.group;
+                                    ////p.interactions[k].partnerId = tp.id;
+
+                                    //if (tpii.setState) {
+                                    //    // Update the particle's state to match the target interaction
+                                    //    if (p.type == tpii.firstPartnerType && tpii.firstPartnerState >= 0)
+                                    //        p.state = tpii.firstPartnerState;
+                                    //    if (p.type == tpii.secondPartnerType && tpii.secondPartnerState >= 0)
+                                    //        p.state = tpii.secondPartnerState;
+                                    //}
+                                } else if (pii.breakAfterTransition) {
                                     // Break this interaction and step back the interaction loop
                                     for (int l = k; l < p.nActiveInteractions - 1; l++) {
-                                        p.interactions[l] = p.interactions[k];
+                                        p.interactions[l] = p.interactions[l+1];
                                     }
                                     p.nActiveInteractions--;
+                                    if (sourceTransitionIndex > k)
+                                        sourceTransitionIndex--;
                                     k--;
                                 }
                             }
@@ -452,6 +505,20 @@ transitionInteractions(
                     }
                 }
             }
+        }
+    }
+
+    if (sourceTransitionIndex >= 0) {
+        p.interactions[sourceTransitionIndex].type = targetTransition.id;
+        p.interactions[sourceTransitionIndex].group = targetTransition.group;
+        //p.interactions[sourceTransitionIndex].partnerId = tp.id;
+
+        if (targetTransition.setState) {
+            // Update the particle's state to match the target interaction
+            if (p.type == targetTransition.firstPartnerType && targetTransition.firstPartnerState >= 0)
+                p.state = targetTransition.firstPartnerState;
+            if (p.type == targetTransition.secondPartnerType && targetTransition.secondPartnerState >= 0)
+                p.state = targetTransition.secondPartnerState;
         }
     }
 

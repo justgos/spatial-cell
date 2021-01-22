@@ -41,14 +41,16 @@ struct ParticleInteractionInfo {
     __int8 firstPartnerState;
     int secondPartnerType;
     __int8 secondPartnerState;
-    bool keepState;  // Shouldn't change state, but wait for it to change through other interactions
+    bool setState;  // Should we change the participants's state to the ones specified in the interaction?
+    bool waitForState;  // Should we wait for the participants' states to become same as specified before transitioning?
+    bool waitForAlignment;
     bool onlyViaTransition;  // Can be initiated only via transition from another interaction
     int transitionTo;  // Upod being formed, this interaction might transform into another one
-    bool breakOnAlignment;  // This interaction is meant to change the participants' states, align 'em and then disintegrate
+    bool breakAfterTransition;  // This interaction is meant to change the participants' states, align 'em and then disintegrate
     float4 relativeOrientation;
     float3 relativePosition;
 
-    ParticleInteractionInfo() {
+    __device__ __host__ ParticleInteractionInfo() {
         //
     }
 
@@ -59,10 +61,12 @@ struct ParticleInteractionInfo {
         __int8 firstPartnerState,
         int secondPartnerType,
         __int8 secondPartnerState,
-        bool keepState,
+        bool setState,
+        bool waitForState,
+        bool waitForAlignment,
         bool onlyViaTransition,
         int transitionTo,
-        bool breakOnAlignment,
+        bool breakAfterTransition,
         float4 relativeOrientation,
         float3 relativePosition
     ) : id(id),
@@ -71,10 +75,12 @@ struct ParticleInteractionInfo {
         firstPartnerState(firstPartnerState),
         secondPartnerType(secondPartnerType),
         secondPartnerState(secondPartnerState),
-        keepState(keepState),
+        setState(setState),
+        waitForState(waitForState),
+        waitForAlignment(waitForAlignment),
         onlyViaTransition(onlyViaTransition),
         transitionTo(transitionTo),
-        breakOnAlignment(breakOnAlignment),
+        breakAfterTransition(breakAfterTransition),
         relativeOrientation(relativeOrientation),
         relativePosition(relativePosition)
     {

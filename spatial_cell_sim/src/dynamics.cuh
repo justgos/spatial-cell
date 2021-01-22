@@ -243,7 +243,7 @@ applyVelocities(
 
 
 /*
-* Noise applied to interacted partners should be aligned
+* Noise applied to interaction partners should be aligned
 */
 __global__ void
 coordinateNoise(
@@ -319,16 +319,16 @@ coordinateNoise(
                             // Noise should act on the interacting partners as if they were one
                             float pVelocityMag = length(p.velocity);
                             float tpVelocityMag = length(tp.velocity);
-                            p.velocity = lerp(p.velocity, tp.velocity, 0.49f / (p.nActiveInteractions + tp.nActiveInteractions));
+                            p.velocity = lerp(p.velocity, tp.velocity, 0.9f * tp.radius / (p.radius + tp.radius) / (p.nActiveInteractions + tp.nActiveInteractions));
                             // Restore some of the impulse
-                            p.velocity *= 1.0f + ((pVelocityMag + tpVelocityMag) / 2.0f / length(p.velocity) - 1.0f) * 0.5f;
+                            p.velocity *= 1.0f + ((pVelocityMag * p.radius + tpVelocityMag * tp.radius) / (p.radius + tp.radius) / length(p.velocity) - 1.0f) * 0.5f;
 
                             //p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.5;
 
                             p.angularVelocity = slerp(
                                 p.angularVelocity,
                                 tp.angularVelocity,
-                                0.49f / (p.nActiveInteractions + tp.nActiveInteractions)
+                                0.9f * tp.radius / (p.radius + tp.radius) / p.nActiveInteractions  //(p.nActiveInteractions + tp.nActiveInteractions)
                             );
 
                             // Angular noise is too messy for particle complexes - it'll be taken care of
@@ -371,6 +371,7 @@ relax(
     }
 
     float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
+    float3 dVelocity = make_float3(0.0f, 0.0f, 0.0f);
     //float4 rotQuat = QUATERNION_IDENTITY;
     float3 targetPos = p.pos;
     float countedInteractions = 0.0f;
@@ -493,7 +494,7 @@ relax(
                                             transform_vector(
                                                 normalizedDelta,
                                                 quaternion(
-                                                    normalize(cross(normalizedDelta, up)),
+                                                    safeCross(normalizedDelta, up),
                                                     targetRelativePositionAngle
                                                 )
                                             )
@@ -511,7 +512,7 @@ relax(
                                 // Align relative position
                                 constexpr float relativePositionRelaxationSpeed = 0.05f;
                                 //float4 targetRelativePositionRotation = quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle);
-                                float3 relativePositionRelaxationAxis = normalize(cross(tup, -(normalizedDelta)));
+                                float3 relativePositionRelaxationAxis = safeCross(tup, -(normalizedDelta));
                                 float currentRelativePositionAngle = angle(tup, -(normalizedDelta));
                                 /*float3 negDelta = negate(normalizedDelta);
                                 float sinAngle = sin(currentRelativePositionAngle * 0.5f);
@@ -599,13 +600,14 @@ relax(
                                 float interactionWeight = tp.radius;
                                 countedInteractions += 1.0f;
                                 countedInteractionWeight += interactionWeight;
-                                targetPos += (relaxedRelativePosition - targetPos) * (interactionWeight / countedInteractionWeight);
+                                //targetPos += (relaxedRelativePosition - targetPos) * (interactionWeight / countedInteractionWeight);
+                                //p.velocity += (relaxedRelativePosition - targetPos) * 0.1f * (interactionWeight / countedInteractionWeight);
+                                p.velocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.45f / p.nActiveInteractions * tp.radius / max(p.radius, tp.radius);  // / (p.radius + tp.radius);
                                 //targetPos += (relaxedRelativePosition - targetPos) / countedInteractions;
                             }
 
                             // Interaction testing code
                             if (interaction.type == 0) {
-                                // Lipid sheet interaction
                                 float distRatio = (interactionDistance - dist) / (dist + 1e-6);
                                 constexpr float collisionRelaxationSpeed = 0.25f;
                                 /*moveVec.x += -delta.x * distRatio * collisionRelaxationSpeed;
@@ -634,9 +636,7 @@ relax(
                                     targetRelativePositionRotation,
                                     interactionDistance
                                 );
-                                moveVec.x += (relaxedRelativePosition.x - p.pos.x) * relativePositionRelaxationSpeed;
-                                moveVec.y += (relaxedRelativePosition.y - p.pos.y) * relativePositionRelaxationSpeed;
-                                moveVec.z += (relaxedRelativePosition.z - p.pos.z) * relativePositionRelaxationSpeed;
+                                moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
 
                                 p.debugVector.x += (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
                                 p.debugVector.y += (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
@@ -660,7 +660,7 @@ relax(
                                 constexpr float relativePositionRelaxationSpeed = 0.35f;
                                 // FIXME: the order should be determined not by ids, but by interaction parameters
                                 float3 relPosVec = (p.id < tp.id ? 1 : -1) * (normalizedDelta);
-                                float3 relativePositionRelaxationAxis = normalize(cross(tup, relPosVec));
+                                float3 relativePositionRelaxationAxis = safeCross(tup, relPosVec);
                                 float currentRelativePositionAngle = angle(tup, relPosVec);
 
                                 float3 relaxedRelativePosition = (p.id < tp.id ? -1 : 1) * transform_vector(
@@ -681,7 +681,9 @@ relax(
                                 // FIXME: the order should be determined not by ids, but by interaction parameters
                                 //if(k < 1 && p.nActiveInteractions > 1)
 
-                                moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
+                                //moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
+                                //float3 pJ = relaxedRelativePosition - p.pos;
+                                p.velocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.45f / p.nActiveInteractions * tp.radius / max(p.radius, tp.radius);  // / (p.radius + tp.radius);
                                 /*float interactionWeight = tp.radius;
                                 countedInteractions += 1.0f;
                                 countedInteractionWeight += interactionWeight;
@@ -694,27 +696,30 @@ relax(
                         }
                     }
 
-                    //// Do not process collisions for the interacting particles,
-                    //// the interaction alignment code takes care of this
-                    //if (!interactionPartners) {
-                    //    float collisionDist = p.radius + tp.radius;
-                    //    if (dist < collisionDist) {
-                    //        float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
-                    //        constexpr float collisionRelaxationSpeed = 0.25f;
-                    //        moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed) * p.radius / (p.radius + tp.radius);
-                    //    }
-                    //}
+                    // Do not process collisions for the interacting particles,
+                    // the interaction alignment code takes care of this
+                    if (!interactionPartners) {
+                        float collisionDist = p.radius + tp.radius;
+                        if (dist < collisionDist) {
+                            //float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
+                            //constexpr float collisionRelaxationSpeed = 0.25f;
+                            //moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed) * p.radius / (p.radius + tp.radius);
+                            p.velocity += (tp.pos - normalizedDelta * collisionDist + tp.velocity - (p.pos + p.velocity)) * 0.1f * tp.radius / max(p.radius, tp.radius);  // / (p.radius + tp.radius);;
+                        }
+                    }
                 }
             }
         }
     }
 
-    // Move the particle
-    p.pos = clamp(
-        p.pos + (targetPos - p.pos) * 0.49f + moveVec,
-        0.0f, d_Config.simSize
-    );
+    //// Move the particle
+    //p.pos = clamp(
+    //    p.pos + (targetPos - p.pos) * 0.49f + moveVec,
+    //    0.0f, d_Config.simSize
+    //);
     //p.velocity = p.velocity + ((targetPos - p.pos) * 0.49f + moveVec) * 0.5f,
+
+    //p.velocity += dVelocity;
 
     //p.rot = normalize(p.rot);
 

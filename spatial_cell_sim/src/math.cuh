@@ -88,6 +88,14 @@ norm(float4 a) {
 //}
 
 __device__ __host__ __inline__ float3
+safeCross(float3 a, float3 b) {
+    float3 c = cross(a, b);
+    if (c.x == 0.0 && c.y == 0.0 && c.z == 0.0)
+        return VECTOR_FORWARD;
+    return normalize(c);
+}
+
+__device__ __host__ __inline__ float3
 add(float3 a, float3 b) {
     return make_float3(
         a.x + b.x,
@@ -148,7 +156,7 @@ quaternion(float3 axis, float angle) {
 
 __device__ __host__ __inline__ float4
 quaternionFromTo(float3 a, float3 b) {
-    return quaternion(normalize(cross(a, b)), angle(a, b));
+    return quaternion(safeCross(a, b), angle(a, b));
 }
 
 __device__ __host__ __inline__ float3

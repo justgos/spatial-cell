@@ -74,6 +74,7 @@
      <None Include="Assets\Shaders\InstancedMetabolicParticles.shader" />
      <None Include="Assets\Shaders\TransparentMetabolicParticles.shader" />
      <None Include="Assets\Shaders\InstancedMetabolicDebugVector.shader" />
+     <None Include="Assets\Shaders\FindParticles.compute" />
      <None Include="Assets\Shaders\FilterParticles.compute" />
      <None Include="Assets\Shaders\InstancedParticles.shader" />
     <Reference Include="UnityEngine">
