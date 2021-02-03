@@ -17,6 +17,7 @@ struct ParticleTypeInfo {
     std::string category;
     std::string name;
     float radius;
+    __int8 hydrophobic; // 0 - false, 1 - true, 2 - polar (e.g. lipid)
 
     ParticleTypeInfo() {
         //
@@ -25,10 +26,12 @@ struct ParticleTypeInfo {
     ParticleTypeInfo(
         std::string category,
         std::string name,
-        float radius
+        float radius,
+        __int8 hydrophobic
     ) : category(category),
         name(name),
-        radius(radius)
+        radius(radius),
+        hydrophobic(hydrophobic)
     {
         //
     }
@@ -139,6 +142,7 @@ struct Particle {
     int flags;
     __int8 state;
     float radius;
+    __int8 hydrophobic; // 0 - false, 1 - true, 2 - polar (e.g. lipid)
     float3 pos;
     float4 rot;
     float3 velocity;
@@ -154,6 +158,7 @@ struct Particle {
         int type = 0,
         int flags = 0,
         float radius = 2.5,
+        __int8 hydrophobic = HYDROPHYLIC,
         float3 pos = VECTOR_ZERO,
         float4 rot = QUATERNION_IDENTITY,
         float3 velocity = VECTOR_ZERO,
@@ -163,6 +168,7 @@ struct Particle {
         flags(flags | PARTICLE_FLAG_ACTIVE),
         state(0),
         radius(radius),
+        hydrophobic(hydrophobic),
         pos(pos),
         rot(rot),
         velocity(velocity),
@@ -186,11 +192,12 @@ struct MetabolicParticle : Particle {
         int type = 0,
         int flags = 0,
         float radius = 2.5,
+        __int8 hydrophobic = HYDROPHYLIC,
         float3 pos = VECTOR_ZERO,
         float4 rot = QUATERNION_IDENTITY,
         float3 velocity = VECTOR_ZERO,
         float4 angularVelocity = QUATERNION_IDENTITY
-    ) : Particle(id, type, flags, radius, pos, rot, velocity, angularVelocity)
+    ) : Particle(id, type, flags, radius, hydrophobic, pos, rot, velocity, angularVelocity)
     {
         memset(metabolites, 0, NUM_METABOLITES * sizeof(float));
     }

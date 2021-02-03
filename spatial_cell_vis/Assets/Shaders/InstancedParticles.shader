@@ -71,6 +71,7 @@
             uniform float visibleMaxY;
             uniform float visibleMinZ;
             uniform float visibleMaxZ;
+            uniform int particleTypeFilter;
             uniform int targetParticleId;
     #endif
             half _Glossiness;
@@ -139,6 +140,7 @@
                     || pos.y > visibleMaxY
                     || pos.z < visibleMinZ
                     || pos.z > visibleMaxZ
+                    || (p.type < 8 && !(particleTypeFilter & (0x0000001 << p.type)))
                 ) {
                     v.vertex = 0;
                     //o.col = float4(1, 0, 0, 1);

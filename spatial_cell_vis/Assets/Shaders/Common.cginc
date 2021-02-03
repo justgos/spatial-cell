@@ -102,7 +102,7 @@ quaternion(float3 axis, float angle) {
 
 float4
 quaternionFromTo(float3 a, float3 b) {
-    return quaternion(cross(a, b), angle(a, b));
+    return quaternion(normalize(cross(a, b)), angle(a, b));
 }
 
 float3

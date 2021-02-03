@@ -73,7 +73,7 @@ public class FrameData : MonoBehaviour
                 argBuffer.SetData(args);
                 ComputeBuffer.CopyCount(buffer, argBuffer, 0);
                 argBuffer.GetData(args);
-                Debug.Log(string.Format("Filtered {0} particles of type {1}", args[0], typeId));
+                //Debug.Log(string.Format("Filtered {0} particles of type {1}", args[0], typeId));
                 args[1] = args[0];
                 argBuffer.SetData(args);
                 filteredBuffers.Add(typeId, buffer);

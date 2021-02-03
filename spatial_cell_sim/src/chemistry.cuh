@@ -22,7 +22,8 @@ loadParticleTypeInfo() {
         particleTypeInfo->insert(std::pair<int, ParticleTypeInfo>(type, ParticleTypeInfo(
             m["category"].asCString(),
             m["name"].asCString(),
-            m["radius"].asFloat()
+            m["radius"].asFloat(),
+            m.get("hydrophobic", false).asInt()
         )));
     }
 

@@ -424,8 +424,11 @@ main(void)
         cudaDeviceSynchronize();
 
         time_point t6_1 = now();
+        double relaxTime = 0.0;
+        double relaxMetabolicParticlesTime = 0.0;
         //float stepFraction = 1.0f / config.relaxationSteps;
         for (int j = 0; j < config.relaxationSteps; j++) {
+            time_point t6_1_1 = now();
             // Step fraction scales as a decreasing arithmetic progression
             float stepFraction = (config.relaxationSteps - j) * 1.0f / ((1.0f + config.relaxationSteps) * config.relaxationSteps / 2.0f);
             // Relax the accumulated tensions - Particles
@@ -448,6 +451,9 @@ main(void)
                 flatComplexificationInfo->d_Current
             );
             particles.swap();
+
+            cudaDeviceSynchronize();
+            time_point t6_1_2 = now();
 
             // Relax the accumulated tensions - MetabolicParticles
             metabolicParticles.clearNextOnDevice();
@@ -489,6 +495,11 @@ main(void)
             }
 
             cudaDeviceSynchronize();
+
+            time_point t6_1_3 = now();
+
+            relaxTime += getDuration(t6_1_1, t6_1_2);
+            relaxMetabolicParticlesTime += getDuration(t6_1_2, t6_1_3);
         }
 
         applyVelocities<Particle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
@@ -605,7 +616,8 @@ main(void)
             printf(", move %f", getDuration(t5, t6));
             printf(", moveMetabolicParticles %f", getDuration(t6, t6_00));
             printf(", coordinateNoise %f", getDuration(t6_00, t6_1));
-            printf(", relax %f", getDuration(t6_1, t6_2));
+            printf(", relax %f", relaxTime);
+            printf(", relaxMetabolicParticles %f", relaxMetabolicParticlesTime);
             printf(", complexify %f", getDuration(t6_2, t6_3));
             printf(", diffuseMetabolites %f", getDuration(t6_3, t8));
             printf(", persistFrame (previous) %f", persistFrameDuration);

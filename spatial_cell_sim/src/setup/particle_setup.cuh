@@ -28,6 +28,7 @@ fillParticlesUniform(
             type,
             0,
             (*particleTypeInfo)[type].radius,
+            (*particleTypeInfo)[type].hydrophobic,
             make_float3(
                 rng() * config->simSize,
                 rng() * config->simSize,
@@ -53,13 +54,13 @@ fillParticlesStraightLine(
     for (int i = h_nActiveParticles[0]; i < h_nActiveParticles[0] + types->size(); i++)
     {
         int type = (*types)[i - h_nActiveParticles[0]];
-        float radius = (*particleTypeInfo)[type].radius;
         float3 pos = add(startPos, mul(dPos, i - h_nActiveParticles[0]));
         h_Particles[i] = T(
             i,
             type,
             0,
-            radius,
+            (*particleTypeInfo)[type].radius,
+            (*particleTypeInfo)[type].hydrophobic,
             make_float3(
                 min(max(pos.x, 0.0f), config->simSize),
                 min(max(pos.y, 0.0f), config->simSize),
@@ -101,6 +102,7 @@ fillParticlesWrappedChain(
             type,
             0,
             radius,
+            (*particleTypeInfo)[type].hydrophobic,
             make_float3(
                 min(max(pos.x, 0.0f), config->simSize),
                 min(max(pos.y, 0.0f), config->simSize),
@@ -149,6 +151,7 @@ fillParticlesPlane(
             type,
             0,
             (*particleTypeInfo)[type].radius,
+            (*particleTypeInfo)[type].hydrophobic,
             make_float3(
                 min(max(pos.x, 0.0f), config->simSize),
                 min(max(pos.y, 0.0f), config->simSize),
@@ -188,6 +191,7 @@ fillParticlesSphere(
     int count,
     int type,
     float3 center,
+    float4 baseOrientation,
     T* h_Particles,
     int* h_nActiveParticles,
     std::unordered_map<int, ParticleTypeInfo>* particleTypeInfo,
@@ -209,13 +213,14 @@ fillParticlesSphere(
             type,
             0,
             (*particleTypeInfo)[type].radius,
+            (*particleTypeInfo)[type].hydrophobic,
             make_float3(
                 min(max(pos.x, 0.0f), config->simSize),
                 min(max(pos.y, 0.0f), config->simSize),
                 min(max(pos.z, 0.0f), config->simSize)
             ),
             //random_rotation_host(rng)
-            quaternionFromTo(VECTOR_UP, posDirection)
+            mul(quaternionFromTo(VECTOR_UP, posDirection), baseOrientation)
             //quaternion(rotAxis, atan2(dot(posDirection, cross(VECTOR_UP, rotAxis)), dot(posDirection, VECTOR_UP)))
         );
     }
@@ -243,6 +248,7 @@ instantiateComplex(
             cp.type,
             0,
             (*particleTypeInfo)[cp.type].radius,
+            (*particleTypeInfo)[cp.type].hydrophobic,
             make_float3(
                 min(max(pos.x, 0.0f), config->simSize),
                 min(max(pos.y, 0.0f), config->simSize),

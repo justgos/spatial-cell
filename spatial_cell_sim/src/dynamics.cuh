@@ -124,6 +124,7 @@ move(
                                     2,
                                     0,
                                     0.001,
+                                    HYDROPHYLIC,
                                     make_float3(
                                         p.pos.x + delta.x / 2,
                                         p.pos.y + delta.y / 2,
@@ -199,7 +200,7 @@ brownianMovementAndRotation(
     //);
 
     // Brownian rotation
-    p.angularNoise = p.angularVelocity = slerp(
+    p.angularNoise = slerp(
         p.angularNoise,
         random_rotation(&rngState[idx]),
         d_Config.rotationNoiseScale / (p.radius / 2.5)
@@ -271,8 +272,8 @@ applyVelocities(
 
     // Rotate the particle
     p.rot = mul(
-        p.rot,
-        slerp(QUATERNION_IDENTITY, p.angularVelocity, stepFraction)
+        slerp(QUATERNION_IDENTITY, p.angularVelocity, stepFraction),
+        p.rot
     );
     p.angularVelocity = slerp(p.angularVelocity, QUATERNION_IDENTITY, d_Config.angularVelocityDecay);
 
@@ -408,8 +409,11 @@ relax(
         return;
     }
 
-    float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
-    float3 dVelocity = make_float3(0.0f, 0.0f, 0.0f);
+    float3 moveVec = VECTOR_ZERO;
+    float3 dVelocity = VECTOR_ZERO;
+    float4 dAngularVelocity = QUATERNION_IDENTITY;
+    float3 phobicAttractionPos = VECTOR_ZERO;
+    float phobicAttractionPowerSum = 0.0f;
     //float4 rotQuat = QUATERNION_IDENTITY;
     float3 targetPos = p.pos;
     float countedInteractions = 0.0f;
@@ -460,10 +464,117 @@ relax(
                     * TODO: interactions should alter the particle's velocity, not just position
                     */
 
-                    if (p.type == PARTICLE_TYPE_LIPID && p.type == tp.type && dist <= p.radius + tp.radius + 0.8 * p.radius) {
+                    if ((p.hydrophobic > 0 || tp.hydrophobic > 0) && dist <= p.radius + tp.radius + 0.8 * (p.radius + tp.radius) * 0.5f) {
+                        if (p.hydrophobic == POLAR && tp.hydrophobic == POLAR) {
+                            float3 pPhobicDir = -up;
+                            float3 tpPhobicDir = -tup;
+                            float3 pPhobicDirVert = pPhobicDir * p.radius + p.pos;
+                            float3 tpPhobicDirVert = tpPhobicDir * tp.radius + tp.pos;
+                            float3 pPhilicDir = up;
+                            float3 tpPhilicDir = tup;
+                            float3 pPhilicDirVert = pPhilicDir * p.radius + p.pos;
+                            float3 tpPhilicDirVert = tpPhilicDir * tp.radius + tp.pos;
+                            // TODO: reduce for longer-range interactions
+                            //float attractionPower = (dot(pPhobicDir, normalizedDelta) + 1.0f) * 0.5f * (dot(tpPhobicDir, -normalizedDelta) + 1.0f) * 0.5f;
+                            float powerCap = 10.0f;
+                            float attractionPower = min(max(length(tpPhobicDirVert - pPhobicDirVert) / (p.radius + tp.radius), 1e-6), 2.0f) / 2.0f;
+                            float repulsionPower = min(1.0f / max(length(tpPhilicDirVert - pPhobicDirVert) / (p.radius + tp.radius), 1e-6), powerCap) / powerCap;
+                            constexpr float distanceRelaxationSpeed = 0.05f;
+                            dVelocity += (tpPhobicDirVert + tp.velocity - (pPhobicDirVert + p.velocity)) * distanceRelaxationSpeed * attractionPower;
+                            //dVelocity += (tp.pos - normalizedDelta * interactionDistance + tp.velocity - (p.pos + p.velocity)) * distanceRelaxationSpeed;
+                            countedInteractionWeight += 1.0f;
+
+                            constexpr float orientationRelaxationSpeed = 0.15f;
+                            /*dAngularVelocity = mul(
+                                slerp(
+                                    QUATERNION_IDENTITY,
+                                    quaternionFromTo(pPhobicDir, normalizedDelta),
+                                    orientationRelaxationSpeed * attractionPower
+                                ),
+                                dAngularVelocity
+                            );*/
+
+                            float phobicAttractionPower = pow(min(1.0f / max(length(tpPhobicDirVert - pPhobicDirVert) / (p.radius + tp.radius), 1e-6f), powerCap) / powerCap, 0.2f);
+                            phobicAttractionPowerSum += phobicAttractionPower;
+                            phobicAttractionPos += tpPhobicDirVert * phobicAttractionPower;
+
+                            float targetRelativePositionAngle = PI / 2;
+                            float maxRelativeOrientationDeviation = PI / 2.0f - PI / 12.0f;
+                            /*float3 orientationRelaxationAxis = safeCross(pPhobicDir, normalizedDelta);
+                            float currentRelativeOrientationAngle = angle(pPhobicDir, normalizedDelta);
+                            float3 relaxedRelativeOrientation = transform_vector(
+                                pPhobicDir,
+                                quaternion(
+                                    orientationRelaxationAxis,
+                                    min(
+                                        max(
+                                            currentRelativeOrientationAngle,
+                                            currentRelativeOrientationAngle
+                                        ),
+                                        currentRelativeOrientationAngle
+                                    )
+                                )
+                            );*/
+
+                            /*dAngularVelocity = slerp(
+                                dAngularVelocity,
+                                quaternionFromTo(pPhobicDir, normalize(tpPhobicDirVert - p.pos)),
+                                orientationRelaxationSpeed * attractionPower
+                            );
+                            dAngularVelocity = slerp(
+                                dAngularVelocity,
+                                inverse(quaternionFromTo(pPhobicDir, normalize(tpPhilicDirVert - p.pos))),
+                                orientationRelaxationSpeed * repulsionPower
+                            );
+                            dAngularVelocity = slerp(
+                                dAngularVelocity,
+                                inverse(quaternionFromTo(pPhilicDir, normalize(tpPhobicDirVert - p.pos))),
+                                orientationRelaxationSpeed * min(1.0f / max(length(tpPhobicDirVert - pPhilicDirVert) / (p.radius + tp.radius), 1e-6), powerCap) / powerCap
+                            );*/
+
+                            /*p.rot = slerp(
+                                p.rot,
+                                mul(relaxedRelativeOrientation, p.rot),
+                                orientationRelaxationSpeed
+                            );*/
+                            /*dAngularVelocity = slerp(
+                                dAngularVelocity,
+                                mul(quaternionFromTo(tpPhobicVec, relaxedRelativeOrientation), p.rot),
+                                orientationRelaxationSpeed * attractionPower
+                            );*/
+
+                            ////float coalignment = (dot(pPhobicDir, tpPhobicDir) + 1.0f) * 0.5f;
+                            //float coalignment = max(dot(pPhobicDir, tpPhobicDir), 0.0f);
+                            ////coalignment *= coalignment;
+                            //dAngularVelocity = slerp(
+                            //    dAngularVelocity,
+                            //    quaternionFromTo(up, tup),
+                            //    orientationRelaxationSpeed * coalignment
+                            //);
+
+                            //dAngularVelocity = slerp(
+                            //    dAngularVelocity,
+                            //    quaternionFromTo(
+                            //        up,
+                            //        transform_vector(
+                            //            normalizedDelta,
+                            //            quaternion(
+                            //                safeCross(normalizedDelta, up),
+                            //                targetRelativePositionAngle
+                            //            )
+                            //        )
+                            //    ),
+                            //    orientationRelaxationSpeed * coalignment
+                            //);
+                        }
+                    }
+
+                    //if (p.type == PARTICLE_TYPE_LIPID && p.type == tp.type && dist <= p.radius + tp.radius + 0.8 * p.radius) {
+                    if(false) {
                         float deltaInteractionDist = -(interactionDistance - dist);
                         constexpr float distanceRelaxationSpeed = 0.15f;
-                        moveVec += normalizedDelta * (deltaInteractionDist * distanceRelaxationSpeed);
+                        //moveVec += normalizedDelta * (deltaInteractionDist * distanceRelaxationSpeed);
+                        //p.velocity += (tp.pos - normalizedDelta * interactionDistance + tp.velocity - (p.pos + p.velocity)) * 0.05f;
 
                         float interactionAngleMaxDelta = PI / 4;
                         float interactionOrientationAngle = 0;
@@ -503,7 +614,7 @@ relax(
 
                                 // Reduce the noise coming from the direction of the partner (the opposite-facing component), 
                                 // as there're less noise water molecules there
-                                p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.5;
+                                //p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.5;
 
                                 //p.velocity = mul(p.velocity, 0.9);
                                 // and less angular noise
@@ -575,7 +686,9 @@ relax(
                                 );
                                 relaxedRelativePosition *= interactionDistance;
                                 relaxedRelativePosition += tp.pos;
-                                moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
+                                //moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
+
+                                p.velocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * relativePositionRelaxationSpeed;
 
                                 /*p.debugVector.x = (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
                                 p.debugVector.y = (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
@@ -640,7 +753,7 @@ relax(
                                 countedInteractionWeight += interactionWeight;
                                 //targetPos += (relaxedRelativePosition - targetPos) * (interactionWeight / countedInteractionWeight);
                                 //p.velocity += (relaxedRelativePosition - targetPos) * 0.1f * (interactionWeight / countedInteractionWeight);
-                                p.velocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.45f / p.nActiveInteractions * tp.radius / max(p.radius, tp.radius);  // / (p.radius + tp.radius);
+                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.45f / p.nActiveInteractions * tp.radius / max(p.radius, tp.radius);  // / (p.radius + tp.radius);
                                 //targetPos += (relaxedRelativePosition - targetPos) / countedInteractions;
                             }
 
@@ -721,7 +834,7 @@ relax(
 
                                 //moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
                                 //float3 pJ = relaxedRelativePosition - p.pos;
-                                p.velocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.45f / p.nActiveInteractions * tp.radius / max(p.radius, tp.radius);  // / (p.radius + tp.radius);
+                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.45f / p.nActiveInteractions * tp.radius / max(p.radius, tp.radius);  // / (p.radius + tp.radius);
                                 /*float interactionWeight = tp.radius;
                                 countedInteractions += 1.0f;
                                 countedInteractionWeight += interactionWeight;
@@ -742,7 +855,8 @@ relax(
                             //float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
                             //constexpr float collisionRelaxationSpeed = 0.25f;
                             //moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed) * p.radius / (p.radius + tp.radius);
-                            p.velocity += (tp.pos - normalizedDelta * collisionDist + tp.velocity - (p.pos + p.velocity)) * 0.1f * tp.radius / max(p.radius, tp.radius);  // / (p.radius + tp.radius);;
+                            dVelocity += (tp.pos - normalizedDelta * collisionDist + tp.velocity - (p.pos + p.velocity)) * 0.5f * tp.radius / max(p.radius, tp.radius);  // / (p.radius + tp.radius);;
+                            countedInteractionWeight += 1.0f;
                         }
                     }
                 }
@@ -757,7 +871,23 @@ relax(
     //);
     //p.velocity = p.velocity + ((targetPos - p.pos) * 0.49f + moveVec) * 0.5f,
 
-    //p.velocity += dVelocity;
+    p.velocity += dVelocity / max(countedInteractionWeight, 1.0f);
+    p.angularVelocity = mul(
+        slerp(QUATERNION_IDENTITY, dAngularVelocity, 1.0f / max(countedInteractionWeight, 1.0f)),
+        p.angularVelocity
+    );
+
+    if (phobicAttractionPowerSum > 0.0f) {
+        float3 phobicAttractionDir = normalize(phobicAttractionPos / phobicAttractionPowerSum - p.pos);
+        /*p.debugVector.x = phobicAttractionDir.x * -0.5f;
+        p.debugVector.y = phobicAttractionDir.y * -0.5f;
+        p.debugVector.z = phobicAttractionDir.z * -0.5f;*/
+        p.angularVelocity = slerp(
+            p.angularVelocity,
+            quaternionFromTo(-up, phobicAttractionDir),
+            0.2f
+        );
+    }
 
     //p.rot = normalize(p.rot);
 
