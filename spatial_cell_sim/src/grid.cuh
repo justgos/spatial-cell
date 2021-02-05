@@ -54,6 +54,9 @@ updateGridRanges(const unsigned int* indices, unsigned int* gridRanges, const in
     const int endIndex = min((int)((idx + 1) * (float)numParticles / d_Config.gridSize), numParticles);
 
     int lastIdx = indices[startIndex];
+    if (lastIdx == MAX_GRID_INDEX)
+        return;
+
     if (startIndex <= 0 || indices[startIndex - 1] != lastIdx)
         gridRanges[lastIdx * 2] = startIndex;
 

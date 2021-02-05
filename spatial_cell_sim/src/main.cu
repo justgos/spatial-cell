@@ -116,10 +116,10 @@ main(void)
     Config config(configJson);
     config.print();
 
-    if (config.gridSize < config.maxInteractionDistance) {
+    if (config.gridCellSize < config.maxInteractionDistance) {
         printf("WARNING! The maxInteractionDistance (%f) is less than gridCellSize (%f).\nNot all interactions may play out as intended\n", config.maxInteractionDistance, config.gridCellSize);
     }
-    if (config.gridSize < config.maxDiffusionDistance) {
+    if (config.gridCellSize < config.maxDiffusionDistance) {
         printf("WARNING! The maxDiffusionDistance (%f) is less than gridCellSize (%f).\nMetabolite diffusion may play out as intended\n", config.maxDiffusionDistance, config.gridCellSize);
     }
 

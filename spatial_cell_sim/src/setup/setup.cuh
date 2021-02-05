@@ -58,7 +58,7 @@ setupParticles(
     fillParticlesSphere(
         pow(44.0f, 2.0f),
         PARTICLE_TYPE_LIPID,
-        make_float3(0.5 * config->simSize, 0.5 * config->simSize, 0.5 * config->simSize),
+        make_float3(0.5 * config->simSize, 0.5 * config->simSize, 0.7 * config->simSize),
         QUATERNION_IDENTITY,
         particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, config, rng
     );
@@ -66,54 +66,54 @@ setupParticles(
     fillParticlesSphere(
         pow(40.0f, 2.0f),
         PARTICLE_TYPE_LIPID,
-        make_float3(0.5 * config->simSize, 0.5 * config->simSize, 0.5 * config->simSize),
+        make_float3(0.5 * config->simSize, 0.5 * config->simSize, 0.7 * config->simSize),
         quaternion(VECTOR_RIGHT, PI),
         particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, config, rng
     );
 
-    //std::vector<int> chainMembers;
-    //for (int i = 0; i < 2; i++) {
-    //    for (auto it = particleTypeInfo->begin(); it != particleTypeInfo->end(); it++) {
-    //        if (it->second.category == "rna")
-    //            chainMembers.insert(chainMembers.end(), it->first);
-    //        /*if (chainMembers.size() >= 3)
-    //            break;*/
-    //    }
-    //}
-    //int chainStartIdx = nActiveParticles->h_Current[0];
-    //fillParticlesWrappedChain(
-    //    &chainMembers,
-    //    make_float3(0.2 * config->simSize, 0.5 * config->simSize, 0.5 * config->simSize),
-    //    particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, config, rng
-    //);
-    //int chainEndIdx = nActiveParticles->h_Current[0];
-    //linkParticlesSerially<Particle>(
-    //    chainStartIdx,
-    //    chainEndIdx,
-    //    1,
-    //    particles->h_Current, complexificationInfo, config, rng
-    //);
+    std::vector<int> chainMembers;
+    for (int i = 0; i < 2; i++) {
+        for (auto it = particleTypeInfo->begin(); it != particleTypeInfo->end(); it++) {
+            if (it->second.category == "rna")
+                chainMembers.insert(chainMembers.end(), it->first);
+            /*if (chainMembers.size() >= 3)
+                break;*/
+        }
+    }
+    int chainStartIdx = nActiveParticles->h_Current[0];
+    fillParticlesWrappedChain(
+        &chainMembers,
+        make_float3(0.2 * config->simSize, 0.5 * config->simSize, 0.5 * config->simSize),
+        particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, config, rng
+    );
+    int chainEndIdx = nActiveParticles->h_Current[0];
+    linkParticlesSerially<Particle>(
+        chainStartIdx,
+        chainEndIdx,
+        1,
+        particles->h_Current, complexificationInfo, config, rng
+    );
 
-    //instantiateComplex(
-    //    1,
-    //    make_float3(0.5 * config->simSize, 0.5 * config->simSize, 0.5 * config->simSize),
-    //    particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, complexInfo, config, rng
-    //);
+    instantiateComplex(
+        1,
+        make_float3(0.5 * config->simSize, 0.5 * config->simSize, 0.5 * config->simSize),
+        particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, complexInfo, config, rng
+    );
 
-    //chainStartIdx = nActiveParticles->h_Current[0];
-    //fillParticlesStraightLine(
-    //    &chainMembers,
-    //    make_float3(0.5 * config->simSize - 1.8570869001109949, 0.5 * config->simSize + 2.8257686272096096, 0.5 * config->simSize - 16.748319527406373 - 2.0),
-    //    make_float3(0.0, -1.5, 0.0),
-    //    particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, config, rng
-    //);
-    //chainEndIdx = nActiveParticles->h_Current[0];
-    //linkParticlesSerially<Particle>(
-    //    chainStartIdx,
-    //    chainEndIdx,
-    //    1,
-    //    particles->h_Current, complexificationInfo, config, rng
-    //);
+    chainStartIdx = nActiveParticles->h_Current[0];
+    fillParticlesStraightLine(
+        &chainMembers,
+        make_float3(0.5 * config->simSize - 1.8570869001109949, 0.5 * config->simSize + 2.8257686272096096, 0.5 * config->simSize - 16.748319527406373 - 2.0),
+        make_float3(0.0, -1.5, 0.0),
+        particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, config, rng
+    );
+    chainEndIdx = nActiveParticles->h_Current[0];
+    linkParticlesSerially<Particle>(
+        chainStartIdx,
+        chainEndIdx,
+        1,
+        particles->h_Current, complexificationInfo, config, rng
+    );
 
 
     //instantiateComplex(
@@ -218,7 +218,7 @@ setupMetabolicParticles(
     std::function<double()> rng
 ) {
     fillParticlesUniform<MetabolicParticle>(
-        config->numMetabolicParticles,
+        config->numMetabolicParticles * 0.95f,
         PARTICLE_TYPE_METABOLIC,
         metabolicParticles->h_Current, nActiveMetabolicParticles->h_Current, particleTypeInfo, config, rng
     );

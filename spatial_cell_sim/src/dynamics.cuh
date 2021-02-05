@@ -460,10 +460,6 @@ relax(
                     // Up direction of the other particle
                     float3 tup = transform_vector(VECTOR_UP, tp.rot);                    
 
-                    /*
-                    * TODO: interactions should alter the particle's velocity, not just position
-                    */
-
                     if ((p.hydrophobic > 0 || tp.hydrophobic > 0) && dist <= p.radius + tp.radius + 0.8 * (p.radius + tp.radius) * 0.5f) {
                         if (p.hydrophobic == POLAR && tp.hydrophobic == POLAR) {
                             float3 pPhobicDir = -up;
@@ -569,147 +565,6 @@ relax(
                         }
                     }
 
-                    //if (p.type == PARTICLE_TYPE_LIPID && p.type == tp.type && dist <= p.radius + tp.radius + 0.8 * p.radius) {
-                    if(false) {
-                        float deltaInteractionDist = -(interactionDistance - dist);
-                        constexpr float distanceRelaxationSpeed = 0.15f;
-                        //moveVec += normalizedDelta * (deltaInteractionDist * distanceRelaxationSpeed);
-                        //p.velocity += (tp.pos - normalizedDelta * interactionDistance + tp.velocity - (p.pos + p.velocity)) * 0.05f;
-
-                        float interactionAngleMaxDelta = PI / 4;
-                        float interactionOrientationAngle = 0;
-                        float interactionRelativePositionsAngle = PI / 2;
-                        // Rotation between the particles' up directions
-                            //float4 orientationDifference = p.id < tp.id ? mul(tp.rot, inverse(p.rot)) : mul(p.rot, inverse(tp.rot));
-                        float4 orientationDifference = p.id < tp.id ? quaternionFromTo(up, tup) : quaternionFromTo(tup, up);
-                        float orientationDifferenceAngle = angle(orientationDifference);
-                        float orientationAngleDelta = fabs(orientationDifferenceAngle - interactionOrientationAngle);
-
-                        bool correctlyOrientedAndPositioned = false;
-
-                        if (orientationAngleDelta < interactionAngleMaxDelta) {
-                            // Rotation between the particle's up direction and the direction to the other particle
-                            float4 relativePositionRotation = p.id < tp.id ? quaternionFromTo(up, normalizedDelta) : quaternionFromTo(tup, negate(normalizedDelta));
-                            float relativePositionAngle = angle(relativePositionRotation);
-                            float relativePositionAngleDelta = fabs(relativePositionAngle - interactionRelativePositionsAngle);
-
-                            // If the particles are aligned well enough, strengthen the alignment futher
-                            if (relativePositionAngleDelta < interactionAngleMaxDelta) {
-                                correctlyOrientedAndPositioned = true;
-                                /*
-                                * TODO: mix discontinuous noise with a spatially smooth one for aggregated particles
-                                */
-
-                                // Lipids that are part of the membrane should experience
-                                // less movement noise perpendicular to the membrane surface
-                                /*p.velocity = add(
-                                    p.velocity,
-                                    mul(
-                                        negate(mul(up, dot(p.velocity, up))),
-                                        0.9
-                                    )
-                                );*/
-                                // ..or leave mostly the vertical movement
-                                //p.velocity = p.velocity * 0.8 + 0.2 * (up * dot(p.velocity, up));
-
-                                // Reduce the noise coming from the direction of the partner (the opposite-facing component), 
-                                // as there're less noise water molecules there
-                                //p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.5;
-
-                                //p.velocity = mul(p.velocity, 0.9);
-                                // and less angular noise
-                                p.angularVelocity = slerp(p.angularVelocity, QUATERNION_IDENTITY, 0.9);
-
-                                // Align relative orientation
-                                float4 targetRelativeOrientationDelta = quaternion(VECTOR_RIGHT, 0);
-                                constexpr float relativeOrientationRelaxationSpeed = 0.05f;
-                                float targetRelativePositionAngle = PI / 2;
-                                float targetRelativePositionAngleFlex = PI / 8;
-
-                                p.rot = slerp(
-                                    p.rot,
-                                    //mul(quaternionFromTo(up, dot(up, tup) > 0 ? tup : negate(tup)), tp.rot),
-                                    mul(quaternionFromTo(up, tup), p.rot),
-                                    //dot(up, tup) > 0 ? tp.rot : mul(tp.rot, quaternion(VECTOR_RIGHT, PI)),
-                                    //getTargetRelativeOrientation(p, tp, targetRelativeOrientationDelta),
-                                    relativeOrientationRelaxationSpeed
-                                );
-
-                                p.rot = slerp(
-                                    p.rot,
-                                    mul(
-                                        quaternionFromTo(
-                                            up,
-                                            transform_vector(
-                                                normalizedDelta,
-                                                quaternion(
-                                                    safeCross(normalizedDelta, up),
-                                                    targetRelativePositionAngle
-                                                )
-                                            )
-                                        ),
-                                        p.rot
-                                    ),
-                                    //mul(quaternion(cross(up, normalizedDelta), targetRelativePositionAngle - angle(quaternionFromTo(up, normalizedDelta))), p.rot),
-                                    //getTargetRelativeOrientation(p, tp, targetRelativeOrientationDelta),
-                                    relativeOrientationRelaxationSpeed
-                                );
-
-                                //// Decrease the movement noise for each interaction
-                                //p.velocity = mul(p.velocity, 0.5);
-
-                                // Align relative position
-                                constexpr float relativePositionRelaxationSpeed = 0.05f;
-                                //float4 targetRelativePositionRotation = quaternion(cross(tup, negate(normalizedDelta)), targetRelativePositionAngle);
-                                float3 relativePositionRelaxationAxis = safeCross(tup, -(normalizedDelta));
-                                float currentRelativePositionAngle = angle(tup, -(normalizedDelta));
-                                /*float3 negDelta = negate(normalizedDelta);
-                                float sinAngle = sin(currentRelativePositionAngle * 0.5f);
-                                float cosAngle = cos(currentRelativePositionAngle * 0.5f);
-                                float4 qt4 = quaternion(cross(normalize(tup), negate(normalizedDelta)), currentRelativePositionAngle);
-                                float4 qt3 = quaternion(normalize(relativePositionRelaxationAxis), currentRelativePositionAngle);
-                                float4 qt2 = quaternion(relativePositionRelaxationAxis, currentRelativePositionAngle);
-                                float4 qt = quaternionFromTo(tup, negate(normalizedDelta));
-                                float3 tv = transform_vector(tup, qt);*/
-                                float3 relaxedRelativePosition = transform_vector(
-                                    tup,
-                                    quaternion(
-                                        relativePositionRelaxationAxis,
-                                        min(
-                                            max(
-                                                currentRelativePositionAngle,
-                                                targetRelativePositionAngle - targetRelativePositionAngleFlex
-                                            ),
-                                            targetRelativePositionAngle + targetRelativePositionAngleFlex
-                                        )
-                                    )
-                                );
-                                relaxedRelativePosition *= interactionDistance;
-                                relaxedRelativePosition += tp.pos;
-                                //moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
-
-                                p.velocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * relativePositionRelaxationSpeed;
-
-                                /*p.debugVector.x = (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
-                                p.debugVector.y = (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
-                                p.debugVector.z = (relaxedRelativePosition.z - p.pos.z) * (1.0 - relativePositionRelaxationSpeed);*/
-                            }
-                        }
-
-                        // Kinda.. membrane fusion?
-                        if(!correctlyOrientedAndPositioned) {
-                            constexpr float verticalIrregularityRelaxationSpeed = 0.05f;
-                            //moveVec += normalizedDelta * dist * verticalIrregularityRelaxationSpeed;
-                            moveVec = add(
-                                moveVec,
-                                mul(
-                                    dot(up, normalizedDelta) > 0 ? up : negate(up),
-                                    dist * verticalIrregularityRelaxationSpeed
-                                )
-                            );
-                        }
-                    }
-
                     bool interactionPartners = false;
 
                     for (int k = 0; k < p.nActiveInteractions; k++) {
@@ -726,11 +581,16 @@ relax(
 
                                 // Align relative orientation
                                 constexpr float relativeOrientationRelaxationSpeed = 0.1f;
-                                p.rot = slerp(
+                                dAngularVelocity = slerp(
+                                    dAngularVelocity,
+                                    mul(inverse(mul(p.angularVelocity, p.rot)), mul(tp.angularVelocity, getTargetRelativeOrientation(p, tp, pii.relativeOrientation))),
+                                    relativeOrientationRelaxationSpeed
+                                );
+                                /*p.rot = slerp(
                                     p.rot,
                                     getTargetRelativeOrientation(p, tp, pii.relativeOrientation),
                                     relativeOrientationRelaxationSpeed
-                                );
+                                );*/
 
                                 // Align relative position
                                 //constexpr float relativePositionRelaxationSpeed = 0.15f;
@@ -799,12 +659,16 @@ relax(
                                 //moveVec += normalizedDelta * (deltaInteractionDist * distanceRelaxationSpeed);
 
                                 constexpr float relativeOrientationRelaxationSpeed = 0.2f;
-                                // FIXME: the order should be determined not by ids, but by interaction parameters
-                                p.rot = slerp(
-                                    p.rot,
-                                    mul(quaternionFromTo(up, (p.id < tp.id ? -1 : 1) * normalizedDelta), p.rot),
+                                dAngularVelocity = slerp(
+                                    dAngularVelocity,
+                                    quaternionFromTo(transform_vector(up, p.angularVelocity), (interaction.group == INTERACTION_GROUP_FORWARD ? -1 : 1) * normalizedDelta),
                                     relativeOrientationRelaxationSpeed
                                 );
+                                /*p.rot = slerp(
+                                    p.rot,
+                                    mul(quaternionFromTo(up, (interaction.group == INTERACTION_GROUP_FORWARD ? -1 : 1) * normalizedDelta), p.rot),
+                                    relativeOrientationRelaxationSpeed
+                                );*/
 
                                 float targetRelativePositionAngle = PI;
                                 float targetRelativePositionAngleFlex = PI / 8;

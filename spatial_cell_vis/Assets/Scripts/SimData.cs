@@ -574,8 +574,13 @@ public class SimData : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            particleRenderers[0].drawInstanced = !particleRenderers[0].drawInstanced;
+        }
+
         // Toggle metabolic particle rendering
-        if(Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.M))
         {
             metabolicParticleRenderer.gameObject.SetActive(!metabolicParticleRenderer.gameObject.activeSelf);
         }

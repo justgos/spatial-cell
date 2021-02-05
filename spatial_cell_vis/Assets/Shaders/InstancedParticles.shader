@@ -174,8 +174,12 @@
                 o.col = colormap[(uint)p.type % colormapLength];
                 if (p.type == 0)
                     o.col = float4(0.9, 0.8, 0.3, 1);
-                //o.col = float4(1, 1, 1, 1);
-                //o.col.rgb = abs(p.rot.xyz);
+                
+                int state = (p.flags >> 16) & 0x0F;
+                if (state > 0) {
+                    o.col.rgb = float3(0.0, 1.0, 0.0);
+                }
+
                 o.col.rgb /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);
 
                 if (targetParticleId == p.id)
