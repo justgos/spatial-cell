@@ -77,18 +77,50 @@ printCUDAIntArray(unsigned int* a, unsigned int len) {
     free(host_a);
 }
 
+template <typename TParticles, typename TMetabolicParticles>
 double
-persistFrame(
-    SingleBuffer<ReducedParticle> *particles,
-    SingleBuffer<ReducedMetabolicParticle> *metabolicParticles,
-    FileStorage *storage
+persistFrameAsync(
+    SingleBuffer<TParticles>* particles,
+    SingleBuffer<TMetabolicParticles>* metabolicParticles,
+    FileStorage* storage
 ) {
     time_point t1 = now();
     particles->copyToHost();
     metabolicParticles->copyToHost();
-    storage->writeFrame<ReducedParticle, ReducedMetabolicParticle>(particles, metabolicParticles);
+    storage->writeFrame<TParticles, TMetabolicParticles>(particles, metabolicParticles);
     time_point t2 = now();
     return getDuration(t1, t2);
+}
+
+std::future<double>
+persistFrame(
+    SingleBuffer<Particle> *particles,
+    SingleBuffer<ReducedParticle> *reducedParticles,
+    int nActiveParticles,
+    SingleBuffer<MetabolicParticle> *metabolicParticles,
+    SingleBuffer<ReducedMetabolicParticle> *reducedMetabolicParticles,
+    int nActiveMetabolicParticles,
+    FileStorage *storage
+) {
+    // Reduce particles buffer to slimmer representation for saving
+    reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles), CUDA_THREADS_PER_BLOCK) (
+        particles->d_Current,
+        reducedParticles->d_Current,
+        nActiveParticles
+    );
+    reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles), CUDA_THREADS_PER_BLOCK) (
+        metabolicParticles->d_Current,
+        reducedMetabolicParticles->d_Current,
+        nActiveMetabolicParticles
+    );
+    cudaDeviceSynchronize();
+
+    return std::async(
+        persistFrameAsync<ReducedParticle, ReducedMetabolicParticle>,
+        reducedParticles,
+        reducedMetabolicParticles,
+        storage
+    );
 }
 
 void
@@ -274,26 +306,15 @@ main(void)
     );
     metabolicParticles.swap();
     cudaDeviceSynchronize();
-    metabolicParticles.copyToHost();
-
-    // Reduce particles buffer to slimmer representation for saving
-    reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-        particles.d_Current,
-        reducedParticles.d_Current,
-        nActiveParticles.h_Current[0]
-    );
-    reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-        metabolicParticles.d_Current,
-        reducedMetabolicParticles.d_Current,
-        nActiveMetabolicParticles.h_Current[0]
-    );
-    cudaDeviceSynchronize();
 
     // Write the first frame
-    std::future<double> persistFrameTask = std::async(
-        persistFrame,
+    std::future<double> persistFrameTask = persistFrame(
+        &particles,
         &reducedParticles,
+        nActiveParticles.h_Current[0],
+        &metabolicParticles,
         &reducedMetabolicParticles,
+        nActiveMetabolicParticles.h_Current[0],
         &storage
     );
     
@@ -421,6 +442,12 @@ main(void)
             particles.d_Current,
             nActiveParticles.h_Current[0]
         );
+        applyNoise<MetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            step,
+            metabolicParticleRngState.d_Current,
+            metabolicParticles.d_Current,
+            nActiveMetabolicParticles.h_Current[0]
+        );
         cudaDeviceSynchronize();
 
         time_point t6_1 = now();
@@ -428,6 +455,18 @@ main(void)
         double relaxMetabolicParticlesTime = 0.0;
         //float stepFraction = 1.0f / config.relaxationSteps;
         for (int j = 0; j < config.relaxationSteps; j++) {
+            // DEBUG: store the relaxation interations
+            //        (requires uncommenting the "DEBUG" section in the `reduceParticles` kernel)
+            /*persistFrameTask = persistFrame(
+                &particles,
+                &reducedParticles,
+                nActiveParticles.h_Current[0],
+                &metabolicParticles,
+                &reducedMetabolicParticles,
+                nActiveMetabolicParticles.h_Current[0],
+                &storage
+            );*/
+
             time_point t6_1_1 = now();
             // Step fraction scales as a decreasing arithmetic progression
             float stepFraction = (config.relaxationSteps - j) * 1.0f / ((1.0f + config.relaxationSteps) * config.relaxationSteps / 2.0f);
@@ -456,7 +495,6 @@ main(void)
             time_point t6_1_2 = now();
 
             // Relax the accumulated tensions - MetabolicParticles
-            metabolicParticles.clearNextOnDevice();
             /*applyVelocities<MetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
                 step,
                 metabolicParticleRngState.d_Current,
@@ -466,6 +504,7 @@ main(void)
             );*/
 
             if (j % 2 == 0) {
+                metabolicParticles.clearNextOnDevice();
                 // Relax the metabolic particles less often
                 relaxMetabolicParticles KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
                     step,
@@ -476,7 +515,7 @@ main(void)
                     metabolicParticleGridRanges.d_Current,
                     particles.d_Current,
                     gridRanges.d_Current
-                    );
+                );
                 metabolicParticles.swap();
 
                 // Relax the metabolic-plain particle tensions
@@ -490,7 +529,7 @@ main(void)
                     gridRanges.d_Current,
                     metabolicParticles.d_Current,
                     metabolicParticleGridRanges.d_Current
-                    );
+                );
                 particles.swap();
             }
 
@@ -507,14 +546,14 @@ main(void)
             rngState.d_Current,
             particles.d_Current,
             nActiveParticles.h_Current[0],
-            0.5f
+            0.45f
         );
         applyVelocities<MetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
             step,
             metabolicParticleRngState.d_Current,
             metabolicParticles.d_Current,
             nActiveMetabolicParticles.h_Current[0],
-            0.5f
+            0.45f
         );
         cudaDeviceSynchronize();
 
@@ -588,21 +627,13 @@ main(void)
             // Wait till the previous frame is persisted
             persistFrameDuration = persistFrameTask.get();
 
-            reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-                particles.d_Current,
-                reducedParticles.d_Current,
-                nActiveParticles.h_Current[0]
-            );
-            reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
-                metabolicParticles.d_Current,
-                reducedMetabolicParticles.d_Current,
-                nActiveMetabolicParticles.h_Current[0]
-            );
-
-            persistFrameTask = std::async(
-                persistFrame,
+            persistFrameTask = persistFrame(
+                &particles,
                 &reducedParticles,
+                nActiveParticles.h_Current[0],
+                &metabolicParticles,
                 &reducedMetabolicParticles,
+                nActiveMetabolicParticles.h_Current[0],
                 &storage
             );
         }

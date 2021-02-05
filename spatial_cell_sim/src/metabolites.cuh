@@ -160,6 +160,8 @@ relaxMetabolicParticles(
     }
 
     float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
+    float3 dVelocity = VECTOR_ZERO;
+    float countedInteractionWeight = 0.0f;
 
     // Grid cell index of the current particle
     const int cgx = getGridIdx(p.pos.x),
@@ -183,11 +185,7 @@ relaxMetabolicParticles(
                     if (!(tp.flags & PARTICLE_FLAG_ACTIVE))
                         continue;
 
-                    float3 delta = make_float3(
-                        tp.pos.x - p.pos.x,
-                        tp.pos.y - p.pos.y,
-                        tp.pos.z - p.pos.z
-                    );
+                    float3 delta = tp.pos - p.pos;
                     // Skip particles beyond the maximum interaction distance
                     if (fabs(delta.x) > d_Config.maxInteractionDistance
                         || fabs(delta.y) > d_Config.maxInteractionDistance
@@ -203,15 +201,9 @@ relaxMetabolicParticles(
                     float3 tup = transform_vector(VECTOR_UP, tp.rot);
 
                     if (dist <= collisionDist) {
-                        float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
-                        constexpr float collisionRelaxationSpeed = 0.25f;
-                        moveVec = add(
-                            moveVec,
-                            mul(
-                                normalizedDelta,
-                                deltaCollisionDist * collisionRelaxationSpeed
-                            )
-                        );
+                        float interactionWeight = 1.0f;
+                        countedInteractionWeight += interactionWeight;
+                        dVelocity += (tp.pos - normalizedDelta * collisionDist + tp.velocity - (p.pos + p.velocity)) * 0.9f * interactionWeight;
                     }
                 }
 
@@ -248,29 +240,24 @@ relaxMetabolicParticles(
                     float3 tup = transform_vector(VECTOR_UP, tp.rot);
 
                     if (dist <= collisionDist) {
-                        float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
-                        constexpr float collisionRelaxationSpeed = 0.15f;
-                        moveVec = add(
-                            moveVec,
-                            mul(
-                                normalizedDelta,
-                                deltaCollisionDist * collisionRelaxationSpeed
-                            )
-                        );
+                        float interactionWeight = 2.0f;
+                        countedInteractionWeight += interactionWeight;
+                        dVelocity += (tp.pos - normalizedDelta * collisionDist + tp.velocity - (p.pos + p.velocity)) * 0.9f * interactionWeight;
                     }
                 }
             }
         }
     }
 
-    // Move the particle
-    p.pos = clamp(
-        add(
-            p.pos,
-            moveVec
-        ),
-        0.0f, d_Config.simSize
-    );
+    //// Move the particle
+    //p.pos = clamp(
+    //    add(
+    //        p.pos,
+    //        moveVec
+    //    ),
+    //    0.0f, d_Config.simSize
+    //);
+    p.velocity += dVelocity / max(countedInteractionWeight, 1.0f);
 
 
     nextMetabolicParticles[idx] = p;
@@ -302,6 +289,8 @@ relaxMetabolicParticlePartners(
     }
 
     float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
+    float3 dVelocity = VECTOR_ZERO;
+    float countedInteractionWeight = 0.0f;
 
     // Grid cell index of the current particle
     const int cgx = getGridIdx(p.pos.x),
@@ -322,11 +311,7 @@ relaxMetabolicParticlePartners(
                     if (!(tp.flags & PARTICLE_FLAG_ACTIVE))
                         continue;
 
-                    float3 delta = make_float3(
-                        tp.pos.x - p.pos.x,
-                        tp.pos.y - p.pos.y,
-                        tp.pos.z - p.pos.z
-                    );
+                    float3 delta = tp.pos - p.pos;
                     // Skip particles beyond the maximum interaction distance
                     if (fabs(delta.x) > d_Config.maxInteractionDistance
                         || fabs(delta.y) > d_Config.maxInteractionDistance
@@ -342,29 +327,24 @@ relaxMetabolicParticlePartners(
                     float3 tup = transform_vector(VECTOR_UP, tp.rot);
 
                     if (dist <= collisionDist) {
-                        float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
-                        constexpr float collisionRelaxationSpeed = 0.15f;
-                        moveVec = add(
-                            moveVec,
-                            mul(
-                                normalizedDelta,
-                                deltaCollisionDist * collisionRelaxationSpeed
-                            )
-                        );
+                        float interactionWeight = 2.0f;
+                        countedInteractionWeight += interactionWeight;
+                        dVelocity += (tp.pos - normalizedDelta * collisionDist + tp.velocity - (p.pos + p.velocity)) * 0.9f * interactionWeight;
                     }
                 }
             }
         }
     }
 
-    // Move the particle
-    p.pos = clamp(
-        add(
-            p.pos,
-            moveVec
-        ),
-        0.0f, d_Config.simSize
-    );
+    //// Move the particle
+    //p.pos = clamp(
+    //    add(
+    //        p.pos,
+    //        moveVec
+    //    ),
+    //    0.0f, d_Config.simSize
+    //);
+    p.velocity += dVelocity / max(countedInteractionWeight, 1.0f);
 
     nextParticles[idx] = p;
 }
