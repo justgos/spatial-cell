@@ -116,11 +116,11 @@ setupParticles(
     );
 
 
-    //instantiateComplex(
-    //    1,
-    //    make_float3(0.5 * config->simSize, 0.5 * config->simSize, 0.3 * config->simSize),
-    //    particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, complexInfo, config, rng
-    //);
+    instantiateComplex(
+        1,
+        make_float3(0.5 * config->simSize, 0.5 * config->simSize, 0.3 * config->simSize),
+        particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, complexInfo, config, rng
+    );
 
     //chainStartIdx = nActiveParticles->h_Current[0];
     //fillParticlesStraightLine(

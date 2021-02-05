@@ -19,12 +19,12 @@ struct Config {
     float simSize;
     float maxInteractionDistance;
     float maxDiffusionDistance;
-    int nGridCellsBits;
+    float gridCellSize;
 
     // Derived
     int nGridCells;
-    float gridCellSize;
-    float gridSize;
+    int nGridCellsBits;
+    float totalGridCells;
     //
 
     float movementNoiseScale;
@@ -50,7 +50,7 @@ struct Config {
         simSize(configJson["simSize"].asFloat()),
         maxInteractionDistance(configJson["maxInteractionDistance"].asFloat()),
         maxDiffusionDistance(configJson["maxDiffusionDistance"].asFloat()),
-        nGridCellsBits(configJson["nGridCellsBits"].asInt()),
+        gridCellSize(configJson["gridCellSize"].asFloat()),
         movementNoiseScale(configJson["movementNoiseScale"].asFloat()),
         rotationNoiseScale(configJson["rotationNoiseScale"].asFloat()),
         metaboliteMovementNoiseScale(configJson["metaboliteMovementNoiseScale"].asFloat()),
@@ -63,9 +63,15 @@ struct Config {
         reportEveryNthFrame(configJson["reportEveryNthFrame"].asInt())
     {
         // Calculate the derived values
-        nGridCells = 1 << nGridCellsBits;
-        gridCellSize = simSize / nGridCells;
-        gridSize = nGridCells * nGridCells * nGridCells;
+        nGridCells = ceil(simSize / gridCellSize);
+        nGridCellsBits = 1;
+        int nCellsP2 = 2;
+        while (nCellsP2 < nGridCells) {
+            nCellsP2 *= 2;
+            nGridCellsBits++;
+        }
+        nGridCells = nCellsP2;
+        totalGridCells = nGridCells * nGridCells * nGridCells;
     }
 
     void

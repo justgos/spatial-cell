@@ -47,11 +47,11 @@ __global__ void
 updateGridRanges(const unsigned int* indices, unsigned int* gridRanges, const int numParticles)
 {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
-    if (idx >= d_Config.gridSize)
+    if (idx >= d_Config.totalGridCells)
         return;
 
-    const int startIndex = (int)(idx * (float)numParticles / d_Config.gridSize);
-    const int endIndex = min((int)((idx + 1) * (float)numParticles / d_Config.gridSize), numParticles);
+    const int startIndex = (int)(idx * (float)numParticles / d_Config.totalGridCells);
+    const int endIndex = min((int)((idx + 1) * (float)numParticles / d_Config.totalGridCells), numParticles);
 
     int lastIdx = indices[startIndex];
     if (lastIdx == MAX_GRID_INDEX)
@@ -123,14 +123,14 @@ updateGridAndSort(
         indices->d_Current,
         numParticles
     );
-    //cudaDeviceSynchronize();
+    cudaDeviceSynchronize();
     particleSort->sort(indices, particles);
     //cudaDeviceSynchronize();
     particles->swap();
     indices->swap();
     //printCUDAIntArray(d_Indices, config.numParticles);
     gridRanges->clear();
-    updateGridRanges KERNEL_ARGS2(CUDA_NUM_BLOCKS(config->gridSize), CUDA_THREADS_PER_BLOCK) (
+    updateGridRanges KERNEL_ARGS2(CUDA_NUM_BLOCKS(config->totalGridCells), CUDA_THREADS_PER_BLOCK) (
         indices->d_Current,
         gridRanges->d_Current,
         numParticles

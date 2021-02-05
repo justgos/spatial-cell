@@ -5,7 +5,7 @@
   "simSize": 400.0,
   "maxInteractionDistance": 8.0,
   "maxDiffusionDistance": 10.0,
-  "nGridCellsBits": 5,
+  "gridCellSize": 10.0,
   "movementNoiseScale": 1.7,
   "rotationNoiseScale": 0.05,
   "metaboliteMovementNoiseScale": 1.5,

@@ -236,7 +236,7 @@ main(void)
     DoubleBuffer<Particle> particles(config.numParticles);
     SingleBuffer<ReducedParticle> reducedParticles(config.numParticles);
     DeviceOnlyDoubleBuffer<unsigned int> indices(config.numParticles);
-    DeviceOnlySingleBuffer<unsigned int> gridRanges(config.gridSize * 2);
+    DeviceOnlySingleBuffer<unsigned int> gridRanges(config.totalGridCells * 2);
     SingleBuffer<int> nActiveParticles(1);
     SingleBuffer<int> lastActiveParticle(1);
     SingleBuffer<int> nextParticleId(1);
@@ -245,7 +245,7 @@ main(void)
     DoubleBuffer<MetabolicParticle> metabolicParticles(config.numMetabolicParticles);
     SingleBuffer<ReducedMetabolicParticle> reducedMetabolicParticles(config.numMetabolicParticles);
     DeviceOnlyDoubleBuffer<unsigned int> metabolicParticleIndices(config.numMetabolicParticles);
-    DeviceOnlySingleBuffer<unsigned int> metabolicParticleGridRanges(config.gridSize * 2);
+    DeviceOnlySingleBuffer<unsigned int> metabolicParticleGridRanges(config.totalGridCells * 2);
     SingleBuffer<int> nActiveMetabolicParticles(1);
     RadixSortPairs<MetabolicParticle> metabolicParticleSort(&metabolicParticleIndices, &metabolicParticles);
 

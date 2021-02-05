@@ -308,8 +308,9 @@ coordinateNoise(
         return;
     }
 
-    float3 moveVec = make_float3(0.0f, 0.0f, 0.0f);
-    //float4 rotQuat = QUATERNION_IDENTITY;
+    float3 dPosNoise = VECTOR_ZERO;
+    float4 dAngularNoise = QUATERNION_IDENTITY;
+    float countedInteractionWeight = 0.0f;
 
     // Grid cell index of the current particle
     const int cgx = getGridIdx(p.pos.x),
@@ -358,17 +359,23 @@ coordinateNoise(
                             // Noise should act on the interacting partners as if they were one
                             float pPosNoiseMag = length(p.posNoise);
                             float tpPosNoiseMag = length(tp.posNoise);
-                            p.posNoise = lerp(p.posNoise, tp.posNoise, 0.9f * tp.radius / (p.radius + tp.radius) / (p.nActiveInteractions + tp.nActiveInteractions));
+                            float interactionWeight = 1.0f;
+                            float dPosNoiseMag = length(dPosNoise);
+                            dPosNoise += (tp.posNoise - p.posNoise) * 0.9f * tp.radius / (p.radius + tp.radius) * interactionWeight;
                             // Restore some of the impulse
-                            p.posNoise *= 1.0f + ((pPosNoiseMag * p.radius + tpPosNoiseMag * tp.radius) / (p.radius + tp.radius) / length(p.posNoise) - 1.0f) * 0.5f;
+                            //dPosNoise *= 1.0f + ((pPosNoiseMag * interactionWeight + dPosNoiseMag * countedInteractionWeight) / (interactionWeight + countedInteractionWeight) / length(dPosNoise) - 1.0f) * 0.5f;
+                            dPosNoise *= max(length(dPosNoise), pPosNoiseMag) / length(dPosNoise);
 
                             //p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.5;
 
-                            p.angularNoise = slerp(
-                                p.angularNoise,
-                                tp.angularNoise,
-                                0.9f * tp.radius / (p.radius + tp.radius) / p.nActiveInteractions  //(p.nActiveInteractions + tp.nActiveInteractions)
+                            dAngularNoise = slerp(
+                                dAngularNoise,
+                                mul(inverse(p.angularNoise), tp.angularNoise),
+                                0.9f * tp.radius / (p.radius + tp.radius) * interactionWeight  //(p.nActiveInteractions + tp.nActiveInteractions)
                             );
+                            // TODO: restore some of the angular impulse too
+
+                            countedInteractionWeight += interactionWeight;
 
                             // Angular noise is too messy for particle complexes - it'll be taken care of
                             // when the particles will attempt to realign after applying the position noise
@@ -383,6 +390,12 @@ coordinateNoise(
             }
         }
     }
+
+    p.posNoise += dPosNoise / max(countedInteractionWeight, 1.0f);
+    p.angularNoise = mul(
+        slerp(QUATERNION_IDENTITY, dAngularNoise, 1.0f / max(countedInteractionWeight, 1.0f)),
+        p.angularNoise
+    );
 
     nextParticles[idx] = p;
 }
@@ -477,9 +490,9 @@ relax(
                             float attractionPower = min(max(length(tpPhobicDirVert - pPhobicDirVert) / (p.radius + tp.radius), 1e-6), 2.0f) / 2.0f;
                             float repulsionPower = min(1.0f / max(length(tpPhilicDirVert - pPhobicDirVert) / (p.radius + tp.radius), 1e-6), powerCap) / powerCap;
                             constexpr float distanceRelaxationSpeed = 0.05f;
-                            float interactionWeight = distanceRelaxationSpeed * attractionPower;
+                            float interactionWeight = 1.0f;
                             countedInteractionWeight += interactionWeight;
-                            dVelocity += (tpPhobicDirVert - pPhobicDirVert) * interactionWeight;
+                            dVelocity += (tpPhobicDirVert - pPhobicDirVert) * distanceRelaxationSpeed * attractionPower * interactionWeight;
                             //dVelocity += (tp.pos - normalizedDelta * interactionDistance + tp.velocity - (p.pos + p.velocity)) * distanceRelaxationSpeed;
 
                             constexpr float orientationRelaxationSpeed = 0.15f;
@@ -610,12 +623,12 @@ relax(
                                 //float3 relativePositionDelta = relaxedRelativePosition - p.pos;
                                 //moveVec += relativePositionDelta * relativePositionRelaxationSpeed;
                                 //moveVec += relativePositionDelta * 0.99f / (p.nActiveInteractions + tp.nActiveInteractions);  // *(p.radius / (p.radius + tp.radius));
-                                float interactionWeight = tp.radius / (p.radius + tp.radius);
+                                float interactionWeight = 1.0f;
                                 countedInteractions += 1.0f;
                                 countedInteractionWeight += interactionWeight;
                                 //targetPos += (relaxedRelativePosition - targetPos) * (interactionWeight / countedInteractionWeight);
                                 //p.velocity += (relaxedRelativePosition - targetPos) * 0.1f * (interactionWeight / countedInteractionWeight);
-                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.9f * interactionWeight;
+                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.9f * tp.radius / (p.radius + tp.radius) * interactionWeight;
                                 ;  // / max(p.radius, tp.radius);
                                 //targetPos += (relaxedRelativePosition - targetPos) / countedInteractions;
                             }
@@ -701,10 +714,10 @@ relax(
 
                                 //moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
                                 //float3 pJ = relaxedRelativePosition - p.pos;
-                                float interactionWeight = tp.radius / (p.radius + tp.radius);
+                                float interactionWeight = 1.0f;
                                 countedInteractions += 1.0f;
                                 countedInteractionWeight += interactionWeight;
-                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.9f * interactionWeight;  // / max(p.radius, tp.radius);
+                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.9f * tp.radius / (p.radius + tp.radius) * interactionWeight;  // / max(p.radius, tp.radius);
                                 //targetPos += (relaxedRelativePosition - targetPos) * (interactionWeight / countedInteractionWeight);*/
 
                                 p.debugVector.x += (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
@@ -722,10 +735,10 @@ relax(
                             //float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
                             //constexpr float collisionRelaxationSpeed = 0.25f;
                             //moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed) * p.radius / (p.radius + tp.radius);
-                            float interactionWeight = tp.radius / (p.radius + tp.radius);
+                            float interactionWeight = 1.0f;
                             countedInteractions += 1.0f;
                             countedInteractionWeight += interactionWeight;
-                            dVelocity += (tp.pos - normalizedDelta * collisionDist + tp.velocity - (p.pos + p.velocity)) * 0.9f * interactionWeight;  // / max(p.radius, tp.radius);
+                            dVelocity += (tp.pos - normalizedDelta * collisionDist + tp.velocity - (p.pos + p.velocity)) * 0.9f * tp.radius / (p.radius + tp.radius) * interactionWeight;  // / max(p.radius, tp.radius);
                         }
                     }
                 }
