@@ -35,11 +35,13 @@ loadComplexificationInfo() {
             c.get("firstPartnerState", -1).asInt(),
             c["secondPartnerType"].asInt(),
             c.get("secondPartnerState", -1).asInt(),
+            c.get("propagateState", false).asBool(),
             c.get("setState", true).asBool(),
             c.get("waitForState", true).asBool(),
             c.get("waitForAlignment", true).asBool(),
             c.get("onlyViaTransition", false).asBool(),
             c.get("transitionTo", -1).asInt(),
+            c.get("polymerize", -1).asInt(),
             c.get("breakAfterTransition", false).asBool(),
             make_float4(relativeOrientation[0].asFloat(), relativeOrientation[1].asFloat(), relativeOrientation[2].asFloat(), relativeOrientation[3].asFloat()),
             make_float3(relativePosition[0].asFloat(), relativePosition[1].asFloat(), relativePosition[2].asFloat())
@@ -76,7 +78,7 @@ std::pair<
     SingleBuffer<int>*,
     SingleBuffer<ParticleInteractionInfo>*
 >
-partnerMappedComplexificationInfo(std::unordered_map<int, ParticleInteractionInfo>* complexificationInfo) {
+partnerMapComplexificationInfo(std::unordered_map<int, ParticleInteractionInfo>* complexificationInfo) {
     int maxIndex = 0;
     for (auto it = complexificationInfo->begin(); it != complexificationInfo->end(); it++) {
         maxIndex = max(it->first, maxIndex);
@@ -344,7 +346,11 @@ transitionInteractions(
     const Particle* curParticles,
     Particle* nextParticles,
     int stepStart_nActiveParticles,
+    int* nActiveParticles,
+    int* lastActiveParticle,
+    int* nextParticleId,
     unsigned int* gridRanges,
+    MinimalParticleTypeInfo* flatParticleTypeInfo,
     ParticleInteractionInfo* flatComplexificationInfo,
     int* partnerMappedComplexificationIndex,
     ParticleInteractionInfo* partnerMappedComplexificationInfo
@@ -515,10 +521,167 @@ transitionInteractions(
 
         if (targetTransition.setState) {
             // Update the particle's state to match the target interaction
-            if (p.type == targetTransition.firstPartnerType && targetTransition.firstPartnerState >= 0)
+            if (p.type == targetTransition.firstPartnerType && targetTransition.firstPartnerState >= 0) {
                 p.state = targetTransition.firstPartnerState;
-            if (p.type == targetTransition.secondPartnerType && targetTransition.secondPartnerState >= 0)
+                p.lastStateChangeStep = step;
+            }
+            if (p.type == targetTransition.secondPartnerType && targetTransition.secondPartnerState >= 0) {
                 p.state = targetTransition.secondPartnerState;
+                p.lastStateChangeStep = step;
+            }
+        }
+
+        if (targetTransition.polymerize >= 0) {
+            ParticleInteractionInfo polymerization = flatComplexificationInfo[targetTransition.polymerize];
+            
+            // The current particle should also be a participant of the target polymerization interaction
+            if (
+                polymerization.firstPartnerType == p.type
+                || polymerization.secondPartnerType == p.type
+            ) {
+                int newParticleType = polymerization.firstPartnerType == p.type
+                    ? polymerization.secondPartnerType
+                    : polymerization.firstPartnerType;
+                int newParticleState = polymerization.firstPartnerType == p.type
+                    ? polymerization.secondPartnerState
+                    : polymerization.firstPartnerState;
+                MinimalParticleTypeInfo newParticleInfo = flatParticleTypeInfo[newParticleType];
+                int newIdx = atomicAdd(lastActiveParticle, 1);
+                if (newIdx < d_Config.numParticles) {
+                    int newId = atomicAdd(nextParticleId, 1);
+                    Particle np = Particle(
+                        newId,
+                        newParticleType,
+                        0,
+                        newParticleInfo.radius,
+                        newParticleInfo.hydrophobic,
+                        p.pos + transform_vector(
+                            p.type < newParticleType
+                            ? polymerization.relativePosition
+                            : -polymerization.relativePosition,
+                            p.rot
+                        ),
+                        mul(
+                            p.rot,
+                            p.type < newParticleType
+                            ? polymerization.relativeOrientation
+                            : inverse(polymerization.relativeOrientation)
+                        )
+                    );
+                    if (newParticleState >= 0) {
+                        np.state = newParticleState;
+                        np.lastStateChangeStep = step;
+                    }
+                    np.interactions[np.nActiveInteractions].type = targetTransition.polymerize;
+                    np.interactions[np.nActiveInteractions].group = polymerization.group;
+                    np.interactions[np.nActiveInteractions].partnerId = p.id;
+                    np.nActiveInteractions++;
+
+                    int activePolymerizationIndex = -1;
+                    // Does the current particle already have a polymerication interaction active?
+                    for (int k = 0; k < p.nActiveInteractions; k++) {
+                        ParticleInteraction interaction = p.interactions[k];
+                        if (interaction.group == polymerization.group) {
+                            activePolymerizationIndex = k;
+                            break;
+                        }
+                    }
+                    if (activePolymerizationIndex >= 0) {
+                        // Transfer the existing interaction to a new partner
+                        p.interactions[activePolymerizationIndex].partnerId = np.id;
+                    } else {
+                        p.interactions[p.nActiveInteractions].type = targetTransition.polymerize;
+                        p.interactions[p.nActiveInteractions].group = polymerization.group;
+                        p.interactions[p.nActiveInteractions].partnerId = np.id;
+                        p.nActiveInteractions++;
+                    }
+
+                    nextParticles[newIdx] = np;
+                    atomicAdd(nActiveParticles, 1);
+                }
+            }
+        }
+    }
+
+    nextParticles[idx] = p;
+}
+
+
+__global__ void
+propagateState(
+    const int step,
+    curandState* rngState,
+    const Particle* curParticles,
+    Particle* nextParticles,
+    int stepStart_nActiveParticles,
+    unsigned int* gridRanges,
+    ParticleInteractionInfo* flatComplexificationInfo,
+    int* partnerMappedComplexificationIndex,
+    ParticleInteractionInfo* partnerMappedComplexificationInfo
+) {
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx >= stepStart_nActiveParticles)
+        return;
+
+    Particle p = curParticles[idx];
+
+    if (!(p.flags & PARTICLE_FLAG_ACTIVE)) {
+        nextParticles[idx] = p;
+        return;
+    }
+
+    // Grid cell index of the current particle
+    const int cgx = getGridIdx(p.pos.x),
+        cgy = getGridIdx(p.pos.y),
+        cgz = getGridIdx(p.pos.z);
+
+    // Up direction of the current particle
+    float3 up = transform_vector(VECTOR_UP, p.rot);
+
+    int complexificationStartIndex = partnerMappedComplexificationIndex[p.type * 2];
+    int complexificationEndIndex = partnerMappedComplexificationIndex[p.type * 2 + 1];
+
+    for (int gx = max(cgx - 1, 0); gx <= min(cgx + 1, d_Config.nGridCells - 1); gx++) {
+        for (int gy = max(cgy - 1, 0); gy <= min(cgy + 1, d_Config.nGridCells - 1); gy++) {
+            for (int gz = max(cgz - 1, 0); gz <= min(cgz + 1, d_Config.nGridCells - 1); gz++) {
+                // Get the range of particle ids in this block
+                const unsigned int startIdx = gridRanges[makeIdx(gx, gy, gz) * 2];
+                const unsigned int endIdx = gridRanges[makeIdx(gx, gy, gz) * 2 + 1];
+                for (int j = startIdx; j < endIdx; j++) {
+                    if (j == idx)
+                        continue;
+
+                    const Particle tp = curParticles[j];
+                    if (!(tp.flags & PARTICLE_FLAG_ACTIVE))
+                        continue;
+
+                    float3 delta = tp.pos - p.pos;
+                    // Skip particles beyond the maximum interaction distance
+                    if (fabs(delta.x) > d_Config.maxInteractionDistance
+                        || fabs(delta.y) > d_Config.maxInteractionDistance
+                        || fabs(delta.z) > d_Config.maxInteractionDistance)
+                        continue;
+
+                    for (int k = 0; k < p.nActiveInteractions; k++) {
+                        ParticleInteraction interaction = p.interactions[k];
+
+                        if (interaction.type < 10)
+                            continue;
+
+                        if (interaction.partnerId == tp.id) {
+                            ParticleInteractionInfo pii = flatComplexificationInfo[interaction.type];
+
+                            if (!pii.propagateState)
+                                continue;
+
+                            if (tp.lastStateChangeStep > p.lastStateChangeStep) {
+                                p.lastStateChangeStep = tp.lastStateChangeStep;
+                                p.state = tp.state;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

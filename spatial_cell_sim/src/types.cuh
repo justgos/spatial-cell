@@ -13,11 +13,27 @@
 
 typedef std::chrono::high_resolution_clock::time_point time_point;
 
-struct ParticleTypeInfo {
-    std::string category;
-    std::string name;
+struct MinimalParticleTypeInfo {
     float radius;
     __int8 hydrophobic; // 0 - false, 1 - true, 2 - polar (e.g. lipid)
+
+    __device__ __host__ MinimalParticleTypeInfo() {
+        //
+    }
+
+    MinimalParticleTypeInfo(
+        float radius,
+        __int8 hydrophobic
+    ) : radius(radius),
+        hydrophobic(hydrophobic)
+    {
+        //
+    }
+};
+
+struct ParticleTypeInfo : MinimalParticleTypeInfo {
+    std::string category;
+    std::string name;
 
     ParticleTypeInfo() {
         //
@@ -28,10 +44,9 @@ struct ParticleTypeInfo {
         std::string name,
         float radius,
         __int8 hydrophobic
-    ) : category(category),
-        name(name),
-        radius(radius),
-        hydrophobic(hydrophobic)
+    ) : MinimalParticleTypeInfo(radius, hydrophobic),
+        category(category),
+        name(name)
     {
         //
     }
@@ -44,11 +59,20 @@ struct ParticleInteractionInfo {
     __int8 firstPartnerState;
     int secondPartnerType;
     __int8 secondPartnerState;
+    bool propagateState;
     bool setState;  // Should we change the participants's state to the ones specified in the interaction?
     bool waitForState;  // Should we wait for the participants' states to become same as specified before transitioning?
     bool waitForAlignment;
     bool onlyViaTransition;  // Can be initiated only via transition from another interaction
-    int transitionTo;  // Upod being formed, this interaction might transform into another one
+    int transitionTo;  // Upon being formed, this interaction might transform into another one
+    /*
+    * Upon transitioning to this interaction, another interaction should be enacted, polymerizing a new monomer.
+    * The target interaction's `partnerType` (the other partner should be one of those in this interaction) 
+    * treated as a type of monomer to by created.
+    * If there's already an interaction with a target interaction's `group`, the new monomer will be attached
+    * to that interaction's partner.
+    */
+    int polymerize;
     bool breakAfterTransition;  // This interaction is meant to change the participants' states, align 'em and then disintegrate
     float4 relativeOrientation;
     float3 relativePosition;
@@ -64,11 +88,13 @@ struct ParticleInteractionInfo {
         __int8 firstPartnerState,
         int secondPartnerType,
         __int8 secondPartnerState,
+        bool propagateState,
         bool setState,
         bool waitForState,
         bool waitForAlignment,
         bool onlyViaTransition,
         int transitionTo,
+        int polymerize,
         bool breakAfterTransition,
         float4 relativeOrientation,
         float3 relativePosition
@@ -78,11 +104,13 @@ struct ParticleInteractionInfo {
         firstPartnerState(firstPartnerState),
         secondPartnerType(secondPartnerType),
         secondPartnerState(secondPartnerState),
+        propagateState(propagateState),
         setState(setState),
         waitForState(waitForState),
         waitForAlignment(waitForAlignment),
         onlyViaTransition(onlyViaTransition),
         transitionTo(transitionTo),
+        polymerize(polymerize),
         breakAfterTransition(breakAfterTransition),
         relativeOrientation(relativeOrientation),
         relativePosition(relativePosition)
@@ -141,6 +169,7 @@ struct Particle {
     int type;
     int flags;
     __int8 state;
+    int lastStateChangeStep;
     float radius;
     __int8 hydrophobic; // 0 - false, 1 - true, 2 - polar (e.g. lipid)
     float3 pos;
@@ -167,6 +196,7 @@ struct Particle {
         type(type),
         flags(flags | PARTICLE_FLAG_ACTIVE),
         state(0),
+        lastStateChangeStep(-1),
         radius(radius),
         hydrophobic(hydrophobic),
         pos(pos),

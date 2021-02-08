@@ -29,3 +29,23 @@ loadParticleTypeInfo() {
 
     return particleTypeInfo;
 }
+
+/*
+* Transform the particle type map into a flat array with index<->id identity
+*/
+SingleBuffer<MinimalParticleTypeInfo>*
+flattenParticleTypeInfo(std::unordered_map<int, ParticleTypeInfo>* particleTypeInfo) {
+    int maxIndex = 0;
+    for (auto it = particleTypeInfo->begin(); it != particleTypeInfo->end(); it++) {
+        maxIndex = max(it->first, maxIndex);
+    }
+
+    auto flattenedInfo = new SingleBuffer<MinimalParticleTypeInfo>(maxIndex + 1);
+
+    for (auto it = particleTypeInfo->begin(); it != particleTypeInfo->end(); it++) {
+        flattenedInfo->h_Current[it->first].radius = it->second.radius;
+        flattenedInfo->h_Current[it->first].hydrophobic = it->second.hydrophobic;
+    }
+
+    return flattenedInfo;
+}

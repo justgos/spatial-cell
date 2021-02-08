@@ -1,7 +1,7 @@
 {
   "numParticles": 65536,
   "numMetabolicParticles": 65536,
-  "steps": 201,
+  "steps": 101,
   "simSize": 400.0,
   "maxInteractionDistance": 8.0,
   "maxDiffusionDistance": 10.0,

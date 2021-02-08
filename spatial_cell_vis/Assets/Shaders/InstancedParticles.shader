@@ -156,8 +156,6 @@
                 o.diff = nl * _LightColor0.rgb;
                 o.ambient = ShadeSH9(half4(worldNormal, 1));*/
 
-            
-
                 v.vertex.xyz = transform_vector(v.vertex.xyz, rot);
                 v.normal.xyz = transform_vector(v.normal.xyz, rot);
                 pos = mul(baseTransform,
@@ -177,7 +175,8 @@
                 
                 int state = (p.flags >> 16) & 0x0F;
                 if (state > 0) {
-                    o.col.rgb = float3(0.0, 1.0, 0.0);
+                    //o.col.rgb = float3(0.0, (float)state / 4.0f, 0.0);
+                    o.col.rgb = float3(0.0, 1.0f, 0.0);
                 }
 
                 o.col.rgb /= (1.0 + (abs(cameraDist.x) + abs(cameraDist.y) + abs(cameraDist.z)) / simSize / scale);

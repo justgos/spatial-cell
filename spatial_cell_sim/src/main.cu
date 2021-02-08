@@ -157,13 +157,15 @@ main(void)
 
     printf("Loading particle type info...\n");
     auto particleTypeInfo = loadParticleTypeInfo();
+    auto flatParticleTypeInfo = flattenParticleTypeInfo(particleTypeInfo);
+    flatParticleTypeInfo->copyToDevice();
     printf("Loading complexification info...\n");
     auto complexificationInfo = loadComplexificationInfo();
     // Used for finding interactions by id (it's equivalent to the array index)
     auto flatComplexificationInfo = flattenComplexificationInfo(complexificationInfo);
     flatComplexificationInfo->copyToDevice();
     // Used for finding interactions for a specific molecule type
-    auto partnerMappedInteractions = partnerMappedComplexificationInfo(complexificationInfo);
+    auto partnerMappedInteractions = partnerMapComplexificationInfo(complexificationInfo);
     partnerMappedInteractions.first->copyToDevice();
     partnerMappedInteractions.second->copyToDevice();
 
@@ -577,6 +579,28 @@ main(void)
         // Transition the complex-interactions
         particles.clearNextOnDevice();
         transitionInteractions KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+            step,
+            rngState.d_Current,
+            particles.d_Current,
+            particles.d_Next,
+            nActiveParticles.h_Current[0],
+            nActiveParticles.d_Current,
+            lastActiveParticle.d_Current,
+            nextParticleId.d_Current,
+            gridRanges.d_Current,
+            flatParticleTypeInfo->d_Current,
+            flatComplexificationInfo->d_Current,
+            partnerMappedInteractions.first->d_Current,
+            partnerMappedInteractions.second->d_Current
+        );
+        particles.swap();
+
+        cudaDeviceSynchronize();
+        nActiveParticles.copyToHost();
+
+        // Propagate the particles states through the interaction links
+        particles.clearNextOnDevice();
+        propagateState KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
             step,
             rngState.d_Current,
             particles.d_Current,
