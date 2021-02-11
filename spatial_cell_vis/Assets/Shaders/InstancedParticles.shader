@@ -141,6 +141,8 @@
                     || pos.z < visibleMinZ
                     || pos.z > visibleMaxZ
                     || (p.type < 8 && !(particleTypeFilter & (0x0000001 << p.type)))
+                    //|| (p.id > 10090 && p.id < 10300)
+                    //|| (p.type >= 100 && p.type <= 166)
                 ) {
                     v.vertex = 0;
                     //o.col = float4(1, 0, 0, 1);
@@ -155,6 +157,10 @@
                 half nl = max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz));
                 o.diff = nl * _LightColor0.rgb;
                 o.ambient = ShadeSH9(half4(worldNormal, 1));*/
+
+                if (p.type >= 100 && p.type <= 166) {
+                    rot /= length(rot);
+                }
 
                 v.vertex.xyz = transform_vector(v.vertex.xyz, rot);
                 v.normal.xyz = transform_vector(v.normal.xyz, rot);

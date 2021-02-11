@@ -124,6 +124,11 @@ public:
         ::copyToHost(h_Current, d_Current, size);
     }
 
+    void
+    clearOnDevice() {
+        cudaMemset(d_Current, 0, size);
+    }
+
     ~SingleBuffer() {
         cudaUnalloc(d_Current);
         free(h_Current);

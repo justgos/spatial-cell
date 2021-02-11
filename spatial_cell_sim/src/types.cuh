@@ -180,6 +180,7 @@ struct Particle {
     float4 angularNoise;
     int nActiveInteractions;
     ParticleInteraction interactions[MAX_ACTIVE_INTERACTIONS];
+    int scheduledPolymerization;
     float4 debugVector;
 
     __device__ __host__ Particle(
@@ -207,6 +208,7 @@ struct Particle {
         angularNoise(QUATERNION_IDENTITY),
         nActiveInteractions(0),
         interactions(),
+        scheduledPolymerization(-1),
         debugVector(make_float4(0, 0, 0, 0))
     {
         //

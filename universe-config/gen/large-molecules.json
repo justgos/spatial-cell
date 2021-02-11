@@ -449,37 +449,43 @@
     "type": 161,
     "category": "rna",
     "name": "TTG",
-    "radius": 0.75
+    "radius": 0.75,
+    "translates_to": "start"
   },
   {
     "type": 162,
     "category": "rna",
     "name": "CTG",
-    "radius": 0.75
+    "radius": 0.75,
+    "translates_to": "start"
   },
   {
     "type": 163,
     "category": "rna",
     "name": "ATG",
-    "radius": 0.75
+    "radius": 0.75,
+    "translates_to": "start"
   },
   {
     "type": 164,
     "category": "rna",
     "name": "TAA",
-    "radius": 0.75
+    "radius": 0.75,
+    "translates_to": "stop"
   },
   {
     "type": 165,
     "category": "rna",
     "name": "TAG",
-    "radius": 0.75
+    "radius": 0.75,
+    "translates_to": "stop"
   },
   {
     "type": 166,
     "category": "rna",
     "name": "TGA",
-    "radius": 0.75
+    "radius": 0.75,
+    "translates_to": "stop"
   },
   {
     "type": 167,

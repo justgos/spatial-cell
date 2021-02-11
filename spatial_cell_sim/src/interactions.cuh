@@ -90,22 +90,27 @@ partnerMapComplexificationInfo(std::unordered_map<int, ParticleInteractionInfo>*
         ParticleInteractionInfo pii = it->second;
         std::vector<ParticleInteractionInfo> *interactionsForType;
 
-        if (partnerMappedInfoMap->count(pii.firstPartnerType)) {
-            interactionsForType = (*partnerMappedInfoMap)[pii.firstPartnerType];
-        } else {
-            interactionsForType = new std::vector<ParticleInteractionInfo>();
-            partnerMappedInfoMap->insert(std::pair<int, std::vector<ParticleInteractionInfo>*>(pii.firstPartnerType, interactionsForType));
+        if (pii.firstPartnerType >= 0) {
+            if (partnerMappedInfoMap->count(pii.firstPartnerType)) {
+                interactionsForType = (*partnerMappedInfoMap)[pii.firstPartnerType];
+            }
+            else {
+                interactionsForType = new std::vector<ParticleInteractionInfo>();
+                partnerMappedInfoMap->insert(std::pair<int, std::vector<ParticleInteractionInfo>*>(pii.firstPartnerType, interactionsForType));
+            }
+            interactionsForType->push_back(pii);
         }
-        interactionsForType->push_back(pii);
 
-        if (partnerMappedInfoMap->count(pii.secondPartnerType)) {
-            interactionsForType = (*partnerMappedInfoMap)[pii.secondPartnerType];
+        if (pii.secondPartnerType >= 0) {
+            if (partnerMappedInfoMap->count(pii.secondPartnerType)) {
+                interactionsForType = (*partnerMappedInfoMap)[pii.secondPartnerType];
+            }
+            else {
+                interactionsForType = new std::vector<ParticleInteractionInfo>();
+                partnerMappedInfoMap->insert(std::pair<int, std::vector<ParticleInteractionInfo>*>(pii.secondPartnerType, interactionsForType));
+            }
+            interactionsForType->push_back(pii);
         }
-        else {
-            interactionsForType = new std::vector<ParticleInteractionInfo>();
-            partnerMappedInfoMap->insert(std::pair<int, std::vector<ParticleInteractionInfo>*>(pii.secondPartnerType, interactionsForType));
-        }
-        interactionsForType->push_back(pii);
     }
 
     auto partnerIndexMap = new SingleBuffer<int>((maxIndex+1) * 2);
@@ -539,71 +544,197 @@ transitionInteractions(
                 polymerization.firstPartnerType == p.type
                 || polymerization.secondPartnerType == p.type
             ) {
-                int newParticleType = polymerization.firstPartnerType == p.type
-                    ? polymerization.secondPartnerType
-                    : polymerization.firstPartnerType;
-                int newParticleState = polymerization.firstPartnerType == p.type
-                    ? polymerization.secondPartnerState
-                    : polymerization.firstPartnerState;
-                MinimalParticleTypeInfo newParticleInfo = flatParticleTypeInfo[newParticleType];
-                int newIdx = atomicAdd(lastActiveParticle, 1);
-                if (newIdx < d_Config.numParticles) {
-                    int newId = atomicAdd(nextParticleId, 1);
-                    Particle np = Particle(
-                        newId,
-                        newParticleType,
-                        0,
-                        newParticleInfo.radius,
-                        newParticleInfo.hydrophobic,
-                        p.pos + transform_vector(
-                            p.type < newParticleType
-                            ? polymerization.relativePosition
-                            : -polymerization.relativePosition,
-                            p.rot
-                        ),
-                        mul(
-                            p.rot,
-                            p.type < newParticleType
-                            ? polymerization.relativeOrientation
-                            : inverse(polymerization.relativeOrientation)
-                        )
-                    );
-                    if (newParticleState >= 0) {
-                        np.state = newParticleState;
-                        np.lastStateChangeStep = step;
-                    }
-                    np.interactions[np.nActiveInteractions].type = targetTransition.polymerize;
-                    np.interactions[np.nActiveInteractions].group = polymerization.group;
-                    np.interactions[np.nActiveInteractions].partnerId = p.id;
-                    np.nActiveInteractions++;
-
-                    int activePolymerizationIndex = -1;
-                    // Does the current particle already have a polymerication interaction active?
-                    for (int k = 0; k < p.nActiveInteractions; k++) {
-                        ParticleInteraction interaction = p.interactions[k];
-                        if (interaction.group == polymerization.group) {
-                            activePolymerizationIndex = k;
-                            break;
-                        }
-                    }
-                    if (activePolymerizationIndex >= 0) {
-                        // Transfer the existing interaction to a new partner
-                        p.interactions[activePolymerizationIndex].partnerId = np.id;
-                    } else {
-                        p.interactions[p.nActiveInteractions].type = targetTransition.polymerize;
-                        p.interactions[p.nActiveInteractions].group = polymerization.group;
-                        p.interactions[p.nActiveInteractions].partnerId = np.id;
-                        p.nActiveInteractions++;
-                    }
-
-                    nextParticles[newIdx] = np;
-                    atomicAdd(nActiveParticles, 1);
-                }
+                p.scheduledPolymerization = targetTransition.polymerize;
             }
         }
     }
 
     nextParticles[idx] = p;
+}
+
+
+__global__ void
+polymerize(
+    const int step,
+    curandState* rngState,
+    Particle* particles,
+    int stepStart_nActiveParticles,
+    int* nActiveParticles,
+    int* lastActiveParticle,
+    int* nextParticleId,
+    unsigned int* gridRanges,
+    MinimalParticleTypeInfo* flatParticleTypeInfo,
+    ParticleInteractionInfo* flatComplexificationInfo,
+    int* partnerMappedComplexificationIndex,
+    ParticleInteractionInfo* partnerMappedComplexificationInfo
+) {
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx >= stepStart_nActiveParticles)
+        return;
+
+    Particle p = particles[idx];
+
+    if (!(p.flags & PARTICLE_FLAG_ACTIVE))
+        return;
+    if (p.scheduledPolymerization < 0)
+        return;
+
+    ParticleInteractionInfo polymerization = flatComplexificationInfo[p.scheduledPolymerization];
+
+    int activePolymerizationIndex = -1;
+    int prevMonomerIdx = -1;
+    Particle prevMonomer;
+    // Does the current particle already have a polymerization interaction active?
+    for (int k = 0; k < p.nActiveInteractions; k++) {
+        ParticleInteraction interaction = p.interactions[k];
+        if (interaction.group == polymerization.group) {
+            activePolymerizationIndex = k;
+            break;
+        }
+    }
+
+    if (activePolymerizationIndex >= 0) {
+        // Grid cell index of the current particle
+        const int cgx = getGridIdx(p.pos.x),
+            cgy = getGridIdx(p.pos.y),
+            cgz = getGridIdx(p.pos.z);
+
+        for (int gx = max(cgx - 1, 0); gx <= min(cgx + 1, d_Config.nGridCells - 1); gx++) {
+            for (int gy = max(cgy - 1, 0); gy <= min(cgy + 1, d_Config.nGridCells - 1); gy++) {
+                for (int gz = max(cgz - 1, 0); gz <= min(cgz + 1, d_Config.nGridCells - 1); gz++) {
+                    // Get the range of particle ids in this block
+                    const unsigned int startIdx = gridRanges[makeIdx(gx, gy, gz) * 2];
+                    const unsigned int endIdx = gridRanges[makeIdx(gx, gy, gz) * 2 + 1];
+                    for (int j = startIdx; j < endIdx; j++) {
+                        if (j == idx)
+                            continue;
+
+                        const Particle tp = particles[j];
+                        if (!(tp.flags & PARTICLE_FLAG_ACTIVE))
+                            continue;
+
+                        if (tp.id == p.interactions[activePolymerizationIndex].partnerId) {
+                            prevMonomerIdx = j;
+                            prevMonomer = tp;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    int newParticleType = polymerization.firstPartnerType == p.type
+        ? polymerization.secondPartnerType
+        : polymerization.firstPartnerType;
+    int newParticleState = polymerization.firstPartnerType == p.type
+        ? polymerization.secondPartnerState
+        : polymerization.firstPartnerState;
+
+    if (newParticleType >= 0) {
+        // Start/continuation of the polymerization
+        MinimalParticleTypeInfo newParticleInfo = flatParticleTypeInfo[newParticleType];
+        int newIdx = atomicAdd(lastActiveParticle, 1) + 1;
+        if (newIdx < d_Config.numParticles) {
+            int newId = atomicAdd(nextParticleId, 1);
+            Particle np = Particle(
+                newId,
+                newParticleType,
+                0,
+                newParticleInfo.radius,
+                newParticleInfo.hydrophobic,
+                p.pos + transform_vector(
+                    p.type < newParticleType
+                    ? polymerization.relativePosition
+                    : -polymerization.relativePosition,
+                    p.rot
+                ),
+                mul(
+                    p.rot,
+                    p.type < newParticleType
+                    ? polymerization.relativeOrientation
+                    : inverse(polymerization.relativeOrientation)
+                )
+            );
+            if (newParticleState >= 0) {
+                np.state = newParticleState;
+                np.lastStateChangeStep = step;
+            }
+            np.interactions[np.nActiveInteractions].type = p.scheduledPolymerization;
+            np.interactions[np.nActiveInteractions].group = polymerization.group;
+            np.interactions[np.nActiveInteractions].partnerId = p.id;
+            np.nActiveInteractions++;
+
+
+            if (prevMonomerIdx >= 0) {
+                // Break the polymerization interaction on the previous monomer
+                for (int k = 0; k < prevMonomer.nActiveInteractions; k++) {
+                    ParticleInteraction interaction = prevMonomer.interactions[k];
+
+                    if (interaction.group == polymerization.group) {
+                        for (int l = k; l < prevMonomer.nActiveInteractions - 1; l++) {
+                            prevMonomer.interactions[l] = prevMonomer.interactions[l + 1];
+                        }
+                        prevMonomer.nActiveInteractions--;
+                        break;
+                    }
+                }
+
+                // Connect the previous and the new monomers
+                prevMonomer.interactions[prevMonomer.nActiveInteractions].type = INTERACTION_TYPE_CHAIN;
+                prevMonomer.interactions[prevMonomer.nActiveInteractions].group = INTERACTION_GROUP_FORWARD;
+                prevMonomer.interactions[prevMonomer.nActiveInteractions].partnerId = np.id;
+                prevMonomer.nActiveInteractions++;
+
+                particles[prevMonomerIdx] = prevMonomer;
+
+                np.interactions[np.nActiveInteractions].type = INTERACTION_TYPE_CHAIN;
+                np.interactions[np.nActiveInteractions].group = INTERACTION_GROUP_BACKWARD;
+                np.interactions[np.nActiveInteractions].partnerId = prevMonomer.id;
+                np.nActiveInteractions++;
+
+                // Transfer the existing interaction to a new partner
+                p.interactions[activePolymerizationIndex].type = p.scheduledPolymerization;
+                p.interactions[activePolymerizationIndex].partnerId = np.id;
+            }
+            else {
+                p.interactions[p.nActiveInteractions].type = p.scheduledPolymerization;
+                p.interactions[p.nActiveInteractions].group = polymerization.group;
+                p.interactions[p.nActiveInteractions].partnerId = np.id;
+                p.nActiveInteractions++;
+            }
+
+            particles[newIdx] = np;
+            atomicAdd(nActiveParticles, 1);
+        }
+    } else {
+        // End of the polymerization
+
+        // Break the polymerization interaction on the previous monomer
+        for (int k = 0; k < prevMonomer.nActiveInteractions; k++) {
+            ParticleInteraction interaction = prevMonomer.interactions[k];
+
+            if (interaction.group == polymerization.group) {
+                for (int l = k; l < prevMonomer.nActiveInteractions - 1; l++) {
+                    prevMonomer.interactions[l] = prevMonomer.interactions[l + 1];
+                }
+                prevMonomer.nActiveInteractions--;
+                break;
+            }
+        }
+        particles[prevMonomerIdx] = prevMonomer;
+
+        // Break the polymerization interaction for the controller particle
+        for (int l = activePolymerizationIndex; l < p.nActiveInteractions - 1; l++) {
+            p.interactions[l] = p.interactions[l + 1];
+        }
+        p.nActiveInteractions--;
+    }
+
+    p.scheduledPolymerization = -1;
+
+    particles[idx] = p;
 }
 
 

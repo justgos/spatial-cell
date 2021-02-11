@@ -72,14 +72,15 @@ setupParticles(
     );
 
     std::vector<int> chainMembers;
-    for (int i = 0; i < 2; i++) {
-        for (auto it = particleTypeInfo->begin(); it != particleTypeInfo->end(); it++) {
-            if (it->second.category == "rna")
-                chainMembers.insert(chainMembers.end(), it->first);
-            /*if (chainMembers.size() >= 3)
-                break;*/
-        }
-    }
+    //for (int i = 0; i < 2; i++) {
+    //    for (auto it = particleTypeInfo->begin(); it != particleTypeInfo->end(); it++) {
+    //        if (it->second.category == "rna")
+    //            chainMembers.insert(chainMembers.end(), it->first);
+    //        /*if (chainMembers.size() >= 3)
+    //            break;*/
+    //    }
+    //}
+    chainMembers.insert(chainMembers.end(), { 161, 160, 145, 160, 145, 160, 145, 164 });
     int chainStartIdx = nActiveParticles->h_Current[0];
     fillParticlesWrappedChain(
         &chainMembers,

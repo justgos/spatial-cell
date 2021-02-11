@@ -106,39 +106,39 @@ move(
                     ) {
                         shouldBeRemoved = true;
                     }*/
-                    if (
-                        p.type == 1
-                        && tp.type == 1
-                        && dist <= p.radius + tp.radius
-                        && step > 10
-                        && orientationAngleDelta < interactionAngleMaxDelta
-                        && relativePositionAngleDelta < interactionAngleMaxDelta
-                    ) {
-                        // Make sure the particle creation happens only once
-                        if (p.id < tp.id) {
-                            int newIdx = atomicAdd(lastActiveParticle, 1);
-                            if (newIdx < d_Config.numParticles) {
-                                int newId = atomicAdd(nextParticleId, 1);
-                                Particle np = Particle(
-                                    newId,
-                                    2,
-                                    0,
-                                    0.001,
-                                    HYDROPHYLIC,
-                                    make_float3(
-                                        p.pos.x + delta.x / 2,
-                                        p.pos.y + delta.y / 2,
-                                        p.pos.z + delta.z / 2
-                                    ),
-                                    random_rotation(&rngState[idx])
-                                );
-                                nextParticles[newIdx] = np;
-                                atomicAdd(nActiveParticles, 1);
-                            }
-                        }
-                        p.radius = 0.002;
-                        p.type = 3;
-                    }
+                    //if (
+                    //    p.type == 1
+                    //    && tp.type == 1
+                    //    && dist <= p.radius + tp.radius
+                    //    && step > 10
+                    //    && orientationAngleDelta < interactionAngleMaxDelta
+                    //    && relativePositionAngleDelta < interactionAngleMaxDelta
+                    //) {
+                    //    // Make sure the particle creation happens only once
+                    //    if (p.id < tp.id) {
+                    //        int newIdx = atomicAdd(lastActiveParticle, 1) + 1;
+                    //        if (newIdx < d_Config.numParticles) {
+                    //            int newId = atomicAdd(nextParticleId, 1);
+                    //            Particle np = Particle(
+                    //                newId,
+                    //                2,
+                    //                0,
+                    //                0.001,
+                    //                HYDROPHYLIC,
+                    //                make_float3(
+                    //                    p.pos.x + delta.x / 2,
+                    //                    p.pos.y + delta.y / 2,
+                    //                    p.pos.z + delta.z / 2
+                    //                ),
+                    //                random_rotation(&rngState[idx])
+                    //            );
+                    //            nextParticles[newIdx] = np;
+                    //            atomicAdd(nActiveParticles, 1);
+                    //        }
+                    //    }
+                    //    p.radius = 0.002;
+                    //    p.type = 3;
+                    //}
                 }
             }
         }
@@ -275,7 +275,8 @@ applyVelocities(
         slerp(QUATERNION_IDENTITY, p.angularVelocity, stepFraction),
         p.rot
     );
-    p.angularVelocity = slerp(p.angularVelocity, QUATERNION_IDENTITY, d_Config.angularVelocityDecay);
+    p.rot /= length(p.rot);
+    p.angularVelocity = slerp(p.angularVelocity, QUATERNION_IDENTITY, 1.0f - d_Config.angularVelocityDecay);
 
     particles[idx] = p;
 }
@@ -595,11 +596,11 @@ relax(
                                 //p.velocity = p.velocity - -normalizedDelta * min(dot(p.velocity, -normalizedDelta), 0.0) * 0.2;
 
                                 // Align relative orientation
-                                constexpr float relativeOrientationRelaxationSpeed = 0.1f;
+                                constexpr float relativeOrientationRelaxationSpeed = 0.9f;
                                 dAngularVelocity = slerp(
                                     dAngularVelocity,
                                     mul(inverse(mul(p.angularVelocity, p.rot)), mul(tp.angularVelocity, getTargetRelativeOrientation(p, tp, pii.relativeOrientation))),
-                                    relativeOrientationRelaxationSpeed
+                                    relativeOrientationRelaxationSpeed * tp.radius / (p.radius + tp.radius)
                                 );
                                 /*p.rot = slerp(
                                     p.rot,
@@ -608,7 +609,7 @@ relax(
                                 );*/
 
                                 // Align relative position
-                                //constexpr float relativePositionRelaxationSpeed = 0.15f;
+                                constexpr float relativePositionRelaxationSpeed = 0.9f;
                                 float3 relaxedRelativePosition = interactionParticipantOrder(p, tp)
                                     ? transform_vector(-pii.relativePosition, mul(inverse(pii.relativeOrientation), mul(tp.angularVelocity, tp.rot)))
                                     : transform_vector(pii.relativePosition, mul(tp.angularVelocity, tp.rot));
@@ -628,7 +629,7 @@ relax(
                                 countedInteractionWeight += interactionWeight;
                                 //targetPos += (relaxedRelativePosition - targetPos) * (interactionWeight / countedInteractionWeight);
                                 //p.velocity += (relaxedRelativePosition - targetPos) * 0.1f * (interactionWeight / countedInteractionWeight);
-                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.9f * tp.radius / (p.radius + tp.radius) * interactionWeight;
+                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * relativePositionRelaxationSpeed * tp.radius / (p.radius + tp.radius) * interactionWeight;
                                 ;  // / max(p.radius, tp.radius);
                                 //targetPos += (relaxedRelativePosition - targetPos) / countedInteractions;
                             }
@@ -668,17 +669,17 @@ relax(
                                 p.debugVector.x += (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
                                 p.debugVector.y += (relaxedRelativePosition.y - p.pos.y) * (1.0 - relativePositionRelaxationSpeed);
                                 p.debugVector.z += (relaxedRelativePosition.z - p.pos.z) * (1.0 - relativePositionRelaxationSpeed);
-                            } else if (interaction.type == 1) {
+                            } else if (interaction.type == INTERACTION_TYPE_CHAIN) {
                                 // Flexible chain interaction
-                                float deltaInteractionDist = -(interactionDistance - dist);
-                                constexpr float distanceRelaxationSpeed = 0.2f;
+                                //float deltaInteractionDist = -(interactionDistance - dist);
+                                //constexpr float distanceRelaxationSpeed = 0.2f;
                                 //moveVec += normalizedDelta * (deltaInteractionDist * distanceRelaxationSpeed);
 
-                                constexpr float relativeOrientationRelaxationSpeed = 0.2f;
+                                constexpr float relativeOrientationRelaxationSpeed = 0.9f;
                                 dAngularVelocity = slerp(
                                     dAngularVelocity,
                                     quaternionFromTo(nextUp, (interaction.group == INTERACTION_GROUP_FORWARD ? -1 : 1) * normalizedNextDelta),
-                                    relativeOrientationRelaxationSpeed
+                                    relativeOrientationRelaxationSpeed * tp.radius / (p.radius + tp.radius)
                                 );
                                 /*p.rot = slerp(
                                     p.rot,
@@ -688,13 +689,12 @@ relax(
 
                                 float targetRelativePositionAngle = PI;
                                 float targetRelativePositionAngleFlex = PI / 8;
-                                constexpr float relativePositionRelaxationSpeed = 0.35f;
-                                // FIXME: the order should be determined not by ids, but by interaction parameters
-                                float3 relPosVec = (p.id < tp.id ? 1 : -1) * (normalizedNextDelta);
+                                constexpr float relativePositionRelaxationSpeed = 0.9f;
+                                float3 relPosVec = (interaction.group == INTERACTION_GROUP_FORWARD ? 1 : -1) * (normalizedNextDelta);
                                 float3 relativePositionRelaxationAxis = safeCross(nextTup, relPosVec);
                                 float currentRelativePositionAngle = angle(nextTup, relPosVec);
 
-                                float3 relaxedRelativePosition = (p.id < tp.id ? -1 : 1) * transform_vector(
+                                float3 relaxedRelativePosition = (interaction.group == INTERACTION_GROUP_FORWARD ? -1 : 1) * transform_vector(
                                     nextTup,
                                     quaternion(
                                         relativePositionRelaxationAxis,
@@ -717,7 +717,7 @@ relax(
                                 float interactionWeight = 1.0f;
                                 countedInteractions += 1.0f;
                                 countedInteractionWeight += interactionWeight;
-                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * 0.9f * tp.radius / (p.radius + tp.radius) * interactionWeight;  // / max(p.radius, tp.radius);
+                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * relativePositionRelaxationSpeed * tp.radius / (p.radius + tp.radius) * interactionWeight;  // / max(p.radius, tp.radius);
                                 //targetPos += (relaxedRelativePosition - targetPos) * (interactionWeight / countedInteractionWeight);*/
 
                                 p.debugVector.x += (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);

@@ -103,11 +103,13 @@ persistFrame(
     FileStorage *storage
 ) {
     // Reduce particles buffer to slimmer representation for saving
+    reducedParticles->clearOnDevice();
     reduceParticles<Particle, ReducedParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles), CUDA_THREADS_PER_BLOCK) (
         particles->d_Current,
         reducedParticles->d_Current,
         nActiveParticles
     );
+    reducedMetabolicParticles->clearOnDevice();
     reduceParticles<MetabolicParticle, ReducedMetabolicParticle> KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveMetabolicParticles), CUDA_THREADS_PER_BLOCK) (
         metabolicParticles->d_Current,
         reducedMetabolicParticles->d_Current,
@@ -365,7 +367,7 @@ main(void)
         cudaDeviceSynchronize();
 
         nActiveParticles.copyToHost();
-        lastActiveParticle.h_Current[0] = nActiveParticles.h_Current[0];
+        lastActiveParticle.h_Current[0] = nActiveParticles.h_Current[0] - 1;
         lastActiveParticle.copyToDevice();
 
         // Simulate the dynamics
@@ -595,23 +597,38 @@ main(void)
         );
         particles.swap();
 
-        cudaDeviceSynchronize();
-        nActiveParticles.copyToHost();
-
-        // Propagate the particles states through the interaction links
-        particles.clearNextOnDevice();
-        propagateState KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+        polymerize KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
             step,
             rngState.d_Current,
             particles.d_Current,
-            particles.d_Next,
             nActiveParticles.h_Current[0],
+            nActiveParticles.d_Current,
+            lastActiveParticle.d_Current,
+            nextParticleId.d_Current,
             gridRanges.d_Current,
+            flatParticleTypeInfo->d_Current,
             flatComplexificationInfo->d_Current,
             partnerMappedInteractions.first->d_Current,
             partnerMappedInteractions.second->d_Current
         );
-        particles.swap();
+
+        cudaDeviceSynchronize();
+        nActiveParticles.copyToHost();
+
+        //// Propagate the particles states through the interaction links
+        //particles.clearNextOnDevice();
+        //propagateState KERNEL_ARGS2(CUDA_NUM_BLOCKS(nActiveParticles.h_Current[0]), CUDA_THREADS_PER_BLOCK) (
+        //    step,
+        //    rngState.d_Current,
+        //    particles.d_Current,
+        //    particles.d_Next,
+        //    nActiveParticles.h_Current[0],
+        //    gridRanges.d_Current,
+        //    flatComplexificationInfo->d_Current,
+        //    partnerMappedInteractions.first->d_Current,
+        //    partnerMappedInteractions.second->d_Current
+        //);
+        //particles.swap();
 
         cudaDeviceSynchronize();
 
