@@ -597,9 +597,18 @@ relax(
 
                                 // Align relative orientation
                                 constexpr float relativeOrientationRelaxationSpeed = 0.9f;
+                                float4 relaxedRelativeOrientation = mul(inverse(mul(p.angularVelocity, p.rot)), mul(tp.angularVelocity, getTargetRelativeOrientation(p, tp, pii.relativeOrientation)));
+                                float4 otherRelaxedRelativeOrientation = mul(inverse(mul(tp.angularVelocity, tp.rot)), mul(p.angularVelocity, getTargetRelativeOrientation(tp, p, pii.relativeOrientation)));
                                 dAngularVelocity = slerp(
                                     dAngularVelocity,
-                                    mul(inverse(mul(p.angularVelocity, p.rot)), mul(tp.angularVelocity, getTargetRelativeOrientation(p, tp, pii.relativeOrientation))),
+                                    mul(
+                                        slerp(
+                                            relaxedRelativeOrientation,
+                                            otherRelaxedRelativeOrientation,
+                                            0.5
+                                        ),
+                                        relaxedRelativeOrientation
+                                    ),
                                     relativeOrientationRelaxationSpeed * tp.radius / (p.radius + tp.radius)
                                 );
                                 /*p.rot = slerp(
@@ -614,6 +623,11 @@ relax(
                                     ? transform_vector(-pii.relativePosition, mul(inverse(pii.relativeOrientation), mul(tp.angularVelocity, tp.rot)))
                                     : transform_vector(pii.relativePosition, mul(tp.angularVelocity, tp.rot));
                                 relaxedRelativePosition += tp.pos;
+
+                                float3 otherRelaxedRelativePosition = interactionParticipantOrder(tp, p)
+                                    ? transform_vector(-pii.relativePosition, mul(inverse(pii.relativeOrientation), mul(p.angularVelocity, p.rot)))
+                                    : transform_vector(pii.relativePosition, mul(p.angularVelocity, p.rot));
+                                otherRelaxedRelativePosition += p.pos;
                                 /*getRelaxedRelativePosition(
                                     p,
                                     tp,
@@ -627,9 +641,15 @@ relax(
                                 float interactionWeight = 1.0f;
                                 countedInteractions += 1.0f;
                                 countedInteractionWeight += interactionWeight;
+
+                                float3 pDVelocity = (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * relativePositionRelaxationSpeed * tp.radius / (p.radius + tp.radius) * interactionWeight;  // / max(p.radius, tp.radius);
+                                float3 tpDVelocity = (otherRelaxedRelativePosition + p.velocity - (tp.pos + tp.velocity)) * relativePositionRelaxationSpeed * p.radius / (p.radius + tp.radius) * interactionWeight;  // / max(p.radius, tp.radius);
+                                // TODO: implement the same mirrored calculation & compensation for the angular velocity
+                                dVelocity += (pDVelocity - (pDVelocity + tpDVelocity) / 2.0f) * relativePositionRelaxationSpeed * p.radius / (p.radius + tp.radius) * interactionWeight;
+
                                 //targetPos += (relaxedRelativePosition - targetPos) * (interactionWeight / countedInteractionWeight);
                                 //p.velocity += (relaxedRelativePosition - targetPos) * 0.1f * (interactionWeight / countedInteractionWeight);
-                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * relativePositionRelaxationSpeed * tp.radius / (p.radius + tp.radius) * interactionWeight;
+                                //dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * relativePositionRelaxationSpeed * tp.radius / (p.radius + tp.radius) * interactionWeight;
                                 ;  // / max(p.radius, tp.radius);
                                 //targetPos += (relaxedRelativePosition - targetPos) / countedInteractions;
                             }
@@ -687,37 +707,60 @@ relax(
                                     relativeOrientationRelaxationSpeed
                                 );*/
 
-                                float targetRelativePositionAngle = PI;
+                                //float targetRelativePositionAngle = interaction.group == INTERACTION_GROUP_FORWARD ? PI : 0;
                                 float targetRelativePositionAngleFlex = PI / 8;
                                 constexpr float relativePositionRelaxationSpeed = 0.9f;
-                                float3 relPosVec = (interaction.group == INTERACTION_GROUP_FORWARD ? 1 : -1) * (normalizedNextDelta);
-                                float3 relativePositionRelaxationAxis = safeCross(nextTup, relPosVec);
-                                float currentRelativePositionAngle = angle(nextTup, relPosVec);
 
-                                float3 relaxedRelativePosition = (interaction.group == INTERACTION_GROUP_FORWARD ? -1 : 1) * transform_vector(
-                                    nextTup,
+                                float3 relUpVec = (interaction.group == INTERACTION_GROUP_FORWARD ? 1 : -1) * nextTup;
+                                float3 relativePositionRelaxationAxis = safeCross(relUpVec, -normalizedNextDelta);
+                                float currentRelativePositionAngle = angle(relUpVec, -normalizedNextDelta);
+
+                                float3 relaxedRelativePosition = transform_vector(
+                                    relUpVec,
                                     quaternion(
                                         relativePositionRelaxationAxis,
                                         min(
                                             max(
                                                 currentRelativePositionAngle,
-                                                targetRelativePositionAngle - targetRelativePositionAngleFlex
+                                                -targetRelativePositionAngleFlex
                                             ),
-                                            targetRelativePositionAngle + targetRelativePositionAngleFlex
+                                            targetRelativePositionAngleFlex
                                         )
                                     )
                                 );
                                 relaxedRelativePosition *= interactionDistance;
                                 relaxedRelativePosition += tp.pos;
-                                // FIXME: the order should be determined not by ids, but by interaction parameters
-                                //if(k < 1 && p.nActiveInteractions > 1)
 
-                                //moveVec += (relaxedRelativePosition - p.pos) * relativePositionRelaxationSpeed;
-                                //float3 pJ = relaxedRelativePosition - p.pos;
+                                float3 otherRelUpVec = (interaction.group == INTERACTION_GROUP_FORWARD ? -1 : 1) * nextUp;
+                                float3 otherRelativePositionRelaxationAxis = safeCross(otherRelUpVec, normalizedNextDelta);
+                                float otherCurrentRelativePositionAngle = angle(otherRelUpVec, normalizedNextDelta);
+
+                                float3 otherRelaxedRelativePosition = transform_vector(
+                                    otherRelUpVec,
+                                    quaternion(
+                                        otherRelativePositionRelaxationAxis,
+                                        min(
+                                            max(
+                                                otherCurrentRelativePositionAngle,
+                                                -targetRelativePositionAngleFlex
+                                            ),
+                                            targetRelativePositionAngleFlex
+                                        )
+                                    )
+                                );
+                                otherRelaxedRelativePosition *= interactionDistance;
+                                otherRelaxedRelativePosition += p.pos;
+
                                 float interactionWeight = 1.0f;
                                 countedInteractions += 1.0f;
                                 countedInteractionWeight += interactionWeight;
-                                dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * relativePositionRelaxationSpeed * tp.radius / (p.radius + tp.radius) * interactionWeight;  // / max(p.radius, tp.radius);
+                                float3 pDVelocity = (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * relativePositionRelaxationSpeed * tp.radius / (p.radius + tp.radius) * interactionWeight;  // / max(p.radius, tp.radius);
+                                float3 tpDVelocity = (otherRelaxedRelativePosition + p.velocity - (tp.pos + tp.velocity)) * relativePositionRelaxationSpeed * p.radius / (p.radius + tp.radius) * interactionWeight;  // / max(p.radius, tp.radius);
+                                // TODO: implement the same mirrored calculation & compensation for the angular velocity
+                                dVelocity += (pDVelocity - (pDVelocity + tpDVelocity) / 2.0f) * relativePositionRelaxationSpeed * p.radius / (p.radius + tp.radius) * interactionWeight;
+                                //dVelocity += normalizedNextDelta * dot(pDVelocity, normalizedNextDelta) * relativePositionRelaxationSpeed * p.radius / (p.radius + tp.radius) * interactionWeight;
+                                //dVelocity += (relaxedRelativePosition + tp.velocity - (p.pos + p.velocity)) * relativePositionRelaxationSpeed * p.radius / (p.radius + tp.radius) * interactionWeight;
+                                //dVelocity += (tp.pos + tp.velocity - (p.pos + p.velocity)) * relativePositionRelaxationSpeed * p.radius / (p.radius + tp.radius) * interactionWeight;
                                 //targetPos += (relaxedRelativePosition - targetPos) * (interactionWeight / countedInteractionWeight);*/
 
                                 p.debugVector.x += (relaxedRelativePosition.x - p.pos.x) * (1.0 - relativePositionRelaxationSpeed);
@@ -732,7 +775,7 @@ relax(
                     if (!interactionPartners) {
                         float collisionDist = p.radius + tp.radius;
                         if (dist < collisionDist) {
-                            //float deltaCollisionDist = -max(collisionDist - dist, 0.0f);
+                            //float del taCollisionDist = -max(collisionDist - dist, 0.0f);
                             //constexpr float collisionRelaxationSpeed = 0.25f;
                             //moveVec += normalizedDelta * (deltaCollisionDist * collisionRelaxationSpeed) * p.radius / (p.radius + tp.radius);
                             float interactionWeight = 1.0f;

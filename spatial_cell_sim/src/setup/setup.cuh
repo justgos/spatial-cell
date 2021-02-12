@@ -123,6 +123,24 @@ setupParticles(
         particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, complexInfo, config, rng
     );
 
+
+    for (int i = 0; i < 1000; i++) {
+        chainStartIdx = nActiveParticles->h_Current[0];
+        fillParticlesWrappedChain(
+            &chainMembers,
+            make_float3(rng() * config->simSize, rng() * config->simSize, rng() * config->simSize),
+            particles->h_Current, nActiveParticles->h_Current, particleTypeInfo, config, rng
+        );
+        chainEndIdx = nActiveParticles->h_Current[0];
+        linkParticlesSerially<Particle>(
+            chainStartIdx,
+            chainEndIdx,
+            1,
+            particles->h_Current, complexificationInfo, config, rng
+        );
+    }
+
+
     //chainStartIdx = nActiveParticles->h_Current[0];
     //fillParticlesStraightLine(
     //    &chainMembers,

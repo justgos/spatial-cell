@@ -44,7 +44,9 @@ loadComplexificationInfo() {
             c.get("polymerize", -1).asInt(),
             c.get("breakAfterTransition", false).asBool(),
             make_float4(relativeOrientation[0].asFloat(), relativeOrientation[1].asFloat(), relativeOrientation[2].asFloat(), relativeOrientation[3].asFloat()),
-            make_float3(relativePosition[0].asFloat(), relativePosition[1].asFloat(), relativePosition[2].asFloat())
+            c.get("orientationAlignmentThreshold", 0.8).asFloat(),
+            make_float3(relativePosition[0].asFloat(), relativePosition[1].asFloat(), relativePosition[2].asFloat()),
+            c.get("positionAlignmentThreshold", 0.8).asFloat()
         )));
     }
 
@@ -323,8 +325,8 @@ complexify(
 
                         // If the particles are well-aligned - create the interaction
                         if (
-                            orientationAlignment > 0.8
-                            && fabs(relativePositionAlignment - 1.0) < 0.2
+                            orientationAlignment > pii.orientationAlignmentThreshold
+                            && fabs(relativePositionAlignment - 1.0) < (1.0 - pii.positionAlignmentThreshold)
                             && (interactionParticipantOrder(p, tp)
                                 ? ((pii.firstPartnerState < 0 || pii.firstPartnerState == p.state) && (pii.secondPartnerState < 0 || pii.secondPartnerState == tp.state))
                                 : ((pii.secondPartnerState < 0 || pii.secondPartnerState == p.state) && (pii.firstPartnerState < 0 || pii.firstPartnerState == tp.state)))
@@ -443,8 +445,8 @@ transitionInteractions(
                             // If the particles are well-aligned - create the interaction
                             if (
                                 (pii.breakAfterTransition || !pii.waitForAlignment
-                                    || (orientationAlignment > 0.8
-                                        && fabs(relativePositionAlignment - 1.0) < 0.2)
+                                    || (orientationAlignment > pii.orientationAlignmentThreshold
+                                        && fabs(relativePositionAlignment - 1.0) < (1.0 - pii.positionAlignmentThreshold))
                                 )
                                 && (!pii.waitForState || 
                                     (interactionParticipantOrder(p, tp)

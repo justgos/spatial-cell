@@ -12869,11 +12869,13 @@
       0.0,
       1.0
     ],
+    "orientationAlignmentThreshold": -1.0,
     "relativePosition": [
       0.0,
       0.0,
       2.0
     ],
+    "positionAlignmentThreshold": 0.1,
     "firstPartnerType": 161,
     "firstPartnerState": 0,
     "secondPartnerType": 1084,
@@ -13021,11 +13023,13 @@
       0.0,
       1.0
     ],
+    "orientationAlignmentThreshold": -1.0,
     "relativePosition": [
       0.0,
       0.0,
       2.0
     ],
+    "positionAlignmentThreshold": 0.1,
     "firstPartnerType": 162,
     "firstPartnerState": 0,
     "secondPartnerType": 1084,
@@ -13173,11 +13177,13 @@
       0.0,
       1.0
     ],
+    "orientationAlignmentThreshold": -1.0,
     "relativePosition": [
       0.0,
       0.0,
       2.0
     ],
+    "positionAlignmentThreshold": 0.1,
     "firstPartnerType": 163,
     "firstPartnerState": 0,
     "secondPartnerType": 1084,

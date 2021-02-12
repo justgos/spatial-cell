@@ -75,7 +75,9 @@ struct ParticleInteractionInfo {
     int polymerize;
     bool breakAfterTransition;  // This interaction is meant to change the participants' states, align 'em and then disintegrate
     float4 relativeOrientation;
+    float orientationAlignmentThreshold;
     float3 relativePosition;
+    float positionAlignmentThreshold;
 
     __device__ __host__ ParticleInteractionInfo() {
         //
@@ -97,7 +99,9 @@ struct ParticleInteractionInfo {
         int polymerize,
         bool breakAfterTransition,
         float4 relativeOrientation,
-        float3 relativePosition
+        float orientationAlignmentThreshold,
+        float3 relativePosition,
+        float positionAlignmentThreshold
     ) : id(id),
         group(group),
         firstPartnerType(firstPartnerType),
@@ -113,7 +117,9 @@ struct ParticleInteractionInfo {
         polymerize(polymerize),
         breakAfterTransition(breakAfterTransition),
         relativeOrientation(relativeOrientation),
-        relativePosition(relativePosition)
+        orientationAlignmentThreshold(orientationAlignmentThreshold),
+        relativePosition(relativePosition),
+        positionAlignmentThreshold(positionAlignmentThreshold)
     {
         //
     }

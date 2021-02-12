@@ -15,16 +15,27 @@ public class MathDebug : MonoBehaviour
     private GameObject reverseObjectA;
     private GameObject reverseObjectB;
 
+    private GameObject[] objects;
+    private GameObject[] refs;
+
     void Start()
     {
         if (refObjectA != null && refObjectA.activeSelf)
         {
-            reverseObjectA = Instantiate(refObjectB, refObjectB.transform.position, refObjectB.transform.rotation);
-            reverseObjectA.name = "reverseObjectA";
-            reverseObjectA.GetComponent<Renderer>().material.color = Color.blue;
-            reverseObjectB = Instantiate(refObjectA, refObjectA.transform.position, refObjectA.transform.rotation);
-            reverseObjectB.name = "reverseObjectB";
-            reverseObjectB.GetComponent<Renderer>().material.color = Color.green;
+            objects = new GameObject[] { refObjectA, refObjectB, refObjectC };
+            refs = new GameObject[objects.Length];
+            for(var i = 0; i < objects.Length; i++)
+            {
+                refs[i] = Instantiate(objects[i], objects[i].transform.position, objects[i].transform.rotation);
+                refs[i].name = objects[i].name + " - ref";
+                refs[i].GetComponent<Renderer>().material.color = Color.blue;
+            }
+            //reverseObjectA = Instantiate(refObjectB, refObjectB.transform.position, refObjectB.transform.rotation);
+            //reverseObjectA.name = "reverseObjectA";
+            //reverseObjectA.GetComponent<Renderer>().material.color = Color.blue;
+            //reverseObjectB = Instantiate(refObjectA, refObjectA.transform.position, refObjectA.transform.rotation);
+            //reverseObjectB.name = "reverseObjectB";
+            //reverseObjectB.GetComponent<Renderer>().material.color = Color.green;
         }
 
         var tup = new Vector3(-9.473894e-01f, -3.133706e-01f, -6.520947e-02f);
@@ -84,68 +95,101 @@ public class MathDebug : MonoBehaviour
 
         if(refObjectA != null && refObjectA.activeSelf)
         {
-            var up = refObjectC.transform.rotation * Vector3.up;
-            float targetRelativePositionAngle = Mathf.PI / 2;
-            int n = 0;
-            new List<GameObject> { refObjectA, refObjectB }.ForEach(go =>
+            for(var i = 0; i < objects.Length; i++)
             {
-                var tup = go.transform.rotation * Vector3.up;
-                var delta = go.transform.position - refObjectC.transform.position;
-                var normalizedDelta = delta.normalized;
-                //var upDeltaQ = Quaternion.FromToRotation(up, normalizedDelta);
-                //float upDeltaAngle;
-                //Vector3 upDeltaAxis;
-                //upDeltaQ.ToAngleAxis(out upDeltaAngle, out upDeltaAxis);
-                //if (n == 0)
-                //{
-                //    Debug.Log("upDeltaAngle " + upDeltaAngle + ", upDeltaAxis " + upDeltaAxis);
-                //    reverseObjectA.transform.position = refObjectC.transform.position + (Quaternion.AngleAxis(targetRelativePositionAngle - upDeltaAngle, Vector3.Cross(up, normalizedDelta)) * Vector3.up);
-                //}
-                //else
-                //    reverseObjectB.transform.position = refObjectC.transform.position + (Quaternion.AngleAxis(targetRelativePositionAngle - 2.0f * Mathf.Acos(Quaternion.FromToRotation(up, normalizedDelta).w), Vector3.Cross(up, normalizedDelta)) * Vector3.up);
+                var p = objects[i];
+                var dPos = Vector3.zero;
+                var dRot = Quaternion.identity;
+                var weightSum = 0.0f;
 
-                var relativePositionRelaxationAxis = Vector3.Cross(tup, -(normalizedDelta));
-                var currentRelativePositionAngle = angle(tup, -(normalizedDelta));
-                Vector3 negDelta = -(normalizedDelta);
-                Vector3 tv = Quaternion.FromToRotation(tup, -(normalizedDelta)) * tup;
+                for (var j = i - 1; j <= i + 1; j += 2)
+                {
+                    if (j < 0 || j >= objects.Length)
+                        continue;
 
-                //Debug.Log("negDelta " + negDelta.ToString("F4") + ", " + tv.ToString("F4"));
+                    var tp = objects[j];
 
-                if (n == 0) {
-                    refObjectB.transform.position = tv;
+                    dRot = Quaternion.Slerp(
+                        dRot,
+                        Quaternion.FromToRotation(p.transform.up, (j > i ? -1 : 1) * (tp.transform.position - p.transform.position).normalized),
+                        1.0f
+                    );
+
+                    var pDPos = (j > i ? 1 : -1) * tp.transform.up;
+                    pDPos += tp.transform.position - p.transform.position;
+
+                    var tpDPos = (j > i ? -1 : 1) * p.transform.up;
+                    tpDPos += p.transform.position - tp.transform.position;
+
+                    dPos += (pDPos - (pDPos + tpDPos) / 2.0f) * 0.5f;
+                    weightSum += 1.0f;
                 }
 
-                //refObjectC.transform.rotation = Quaternion.Slerp(
-                //    refObjectC.transform.rotation,
-                //    Quaternion.FromToRotation(
-                //        up,
-                //        Quaternion.AngleAxis(90, Vector3.Cross(normalizedDelta, up)) * normalizedDelta
-                //    ) * refObjectC.transform.rotation,
-                //    //Quaternion.AngleAxis(targetRelativePositionAngle - 2.0f * Mathf.Acos(Quaternion.FromToRotation(up, normalizedDelta).w), Vector3.Cross(up, normalizedDelta)) * refObjectC.transform.rotation,
-                //    0.05f
-                //);
-                //refObjectC.transform.rotation = Quaternion.Slerp(
-                //    refObjectC.transform.rotation,
-                //    Quaternion.FromToRotation(up, tup) * refObjectC.transform.rotation,
-                //    0.05f
-                //);
-                n++;
-            });
-            
-            //reverseObjectA.transform.rotation = refObjectA.transform.rotation;
-            //reverseObjectA.transform.position = Quaternion.AngleAxis(
-            //    targetRelativePositionAngle,
-            //    Vector3.Cross(refObjectA.transform.rotation * Vector3.up, -(refObjectA.transform.position - reverseObjectA.transform.position)).normalized
-            //) * (reverseObjectA.transform.rotation * Vector3.up) + refObjectA.transform.position;
-            ////reverseObjectA.transform.position = refObjectA.transform.position + Vector3.forward;
+                refs[i].transform.position = p.transform.position + dPos / weightSum;
+                refs[i].transform.rotation = Quaternion.Slerp(Quaternion.identity, dRot, 1.0f / weightSum) * p.transform.rotation;
+            }
+            //var up = refObjectC.transform.rotation * Vector3.up;
+            //float targetRelativePositionAngle = Mathf.PI / 2;
+            //int n = 0;
+            //new List<GameObject> { refObjectA, refObjectB }.ForEach(go =>
+            //{
+            //    var tup = go.transform.rotation * Vector3.up;
+            //    var delta = go.transform.position - refObjectC.transform.position;
+            //    var normalizedDelta = delta.normalized;
+            //    //var upDeltaQ = Quaternion.FromToRotation(up, normalizedDelta);
+            //    //float upDeltaAngle;
+            //    //Vector3 upDeltaAxis;
+            //    //upDeltaQ.ToAngleAxis(out upDeltaAngle, out upDeltaAxis);
+            //    //if (n == 0)
+            //    //{
+            //    //    Debug.Log("upDeltaAngle " + upDeltaAngle + ", upDeltaAxis " + upDeltaAxis);
+            //    //    reverseObjectA.transform.position = refObjectC.transform.position + (Quaternion.AngleAxis(targetRelativePositionAngle - upDeltaAngle, Vector3.Cross(up, normalizedDelta)) * Vector3.up);
+            //    //}
+            //    //else
+            //    //    reverseObjectB.transform.position = refObjectC.transform.position + (Quaternion.AngleAxis(targetRelativePositionAngle - 2.0f * Mathf.Acos(Quaternion.FromToRotation(up, normalizedDelta).w), Vector3.Cross(up, normalizedDelta)) * Vector3.up);
 
-            //reverseObjectB.transform.rotation = refObjectB.transform.rotation;
-            //reverseObjectB.transform.position = Quaternion.AngleAxis(
-            //    targetRelativePositionAngle,
-            //    Vector3.Cross(refObjectB.transform.rotation * Vector3.up, -(refObjectB.transform.position - reverseObjectB.transform.position).normalized)
-            //) * (reverseObjectB.transform.rotation * Vector3.up) + refObjectB.transform.position;
-            ////reverseObjectB.transform.position = Vector3.Cross(refObjectA.transform.rotation * Vector3.up, -(refObjectA.transform.position - reverseObjectA.transform.position).normalized) + refObjectA.transform.position;
-            ////Debug.Log("Cross " + Vector3.Cross(refObjectB.transform.rotation * Vector3.up, -(refObjectB.transform.position - reverseObjectA.transform.position).normalized).ToString("F4"));
+            //    var relativePositionRelaxationAxis = Vector3.Cross(tup, -(normalizedDelta));
+            //    var currentRelativePositionAngle = angle(tup, -(normalizedDelta));
+            //    Vector3 negDelta = -(normalizedDelta);
+            //    Vector3 tv = Quaternion.FromToRotation(tup, -(normalizedDelta)) * tup;
+
+            //    //Debug.Log("negDelta " + negDelta.ToString("F4") + ", " + tv.ToString("F4"));
+
+            //    if (n == 0) {
+            //        refObjectB.transform.position = tv;
+            //    }
+
+            //    //refObjectC.transform.rotation = Quaternion.Slerp(
+            //    //    refObjectC.transform.rotation,
+            //    //    Quaternion.FromToRotation(
+            //    //        up,
+            //    //        Quaternion.AngleAxis(90, Vector3.Cross(normalizedDelta, up)) * normalizedDelta
+            //    //    ) * refObjectC.transform.rotation,
+            //    //    //Quaternion.AngleAxis(targetRelativePositionAngle - 2.0f * Mathf.Acos(Quaternion.FromToRotation(up, normalizedDelta).w), Vector3.Cross(up, normalizedDelta)) * refObjectC.transform.rotation,
+            //    //    0.05f
+            //    //);
+            //    //refObjectC.transform.rotation = Quaternion.Slerp(
+            //    //    refObjectC.transform.rotation,
+            //    //    Quaternion.FromToRotation(up, tup) * refObjectC.transform.rotation,
+            //    //    0.05f
+            //    //);
+            //    n++;
+            //});
+            
+            ////reverseObjectA.transform.rotation = refObjectA.transform.rotation;
+            ////reverseObjectA.transform.position = Quaternion.AngleAxis(
+            ////    targetRelativePositionAngle,
+            ////    Vector3.Cross(refObjectA.transform.rotation * Vector3.up, -(refObjectA.transform.position - reverseObjectA.transform.position)).normalized
+            ////) * (reverseObjectA.transform.rotation * Vector3.up) + refObjectA.transform.position;
+            //////reverseObjectA.transform.position = refObjectA.transform.position + Vector3.forward;
+
+            ////reverseObjectB.transform.rotation = refObjectB.transform.rotation;
+            ////reverseObjectB.transform.position = Quaternion.AngleAxis(
+            ////    targetRelativePositionAngle,
+            ////    Vector3.Cross(refObjectB.transform.rotation * Vector3.up, -(refObjectB.transform.position - reverseObjectB.transform.position).normalized)
+            ////) * (reverseObjectB.transform.rotation * Vector3.up) + refObjectB.transform.position;
+            //////reverseObjectB.transform.position = Vector3.Cross(refObjectA.transform.rotation * Vector3.up, -(refObjectA.transform.position - reverseObjectA.transform.position).normalized) + refObjectA.transform.position;
+            //////Debug.Log("Cross " + Vector3.Cross(refObjectB.transform.rotation * Vector3.up, -(refObjectB.transform.position - reverseObjectA.transform.position).normalized).ToString("F4"));
         }
     }
 }
