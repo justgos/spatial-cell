@@ -611,6 +611,8 @@ public class SimData : MonoBehaviour
 
     public async void ChangeFrame(float frameNumF)
     {
+        if (!gameObject.activeInHierarchy)
+            return;
         var frameNum = (int)frameNumF;
         var frame = frames.get(frameNum);
         if(frame == null)
@@ -654,12 +656,15 @@ public class SimData : MonoBehaviour
 
     void OnDestroy()
     {
-        foreach(var f in frames)
+        if (frames != null)
         {
-            f.value.Value.particles.Dispose();
-            foreach (var entry in f.value.Value.particleMap)
-                entry.Value.Dispose();
-            f.value.Value.metabolicParticles.Dispose();
+            foreach (var f in frames)
+            {
+                f.value.Value.particles.Dispose();
+                foreach (var entry in f.value.Value.particleMap)
+                    entry.Value.Dispose();
+                f.value.Value.metabolicParticles.Dispose();
+            }
         }
         //frames.ForEach(f =>
         //{
